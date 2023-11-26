@@ -1,4 +1,5 @@
 import pandas as pd
+from constants import *
 from Models.PNR import *
 from Models.Flights import *
 
@@ -8,7 +9,6 @@ def PNR_ranking():
 def  Flight_score(pnr, flight):
     pass
 
-
 def extract_PNR_from_CSV(file_name):
     pnr_df = pd.read_csv(file_name)
     # pnr_number, flight_cabin, flight_number, special_requirements, is_checkin,passenger_loyalty,PAX
@@ -16,7 +16,6 @@ def extract_PNR_from_CSV(file_name):
     PNR(row['PNR Number'],row['Cabin'],row['Flight Number'],row['Special Requirements'],row['isCheckin'],row['Passenger Loyalty'],row['PAX'])
     for index, row in pnr_df.iterrows()
     ]
-    
     return pnr_list
 
 def extract_Flights_from_CSV(file_name):
@@ -38,10 +37,3 @@ def extract_Flights_from_CSV(file_name):
         flights.append(Flight(flight_number, departure_city, departure_time,arrival_city,arrival_time,status, **cabins))
     
     return flights
-
-
-
-# x=extract_Flights_from_CSV("./Dataset/flight_schedule_dataset.csv")
-
-# for m in x:
-#     print(m)
