@@ -14,7 +14,7 @@ class Flight:
         self.arrival_city = arrival_city
         self.arrival_time = convert_to_datetime(arrival_time)
         self.departure_time = convert_to_datetime(departure_time)
-        self.status = status.lower()=="true"
+        self.status = status.lower()=="on time"
 
     def __hash__(self) -> int:
         return hash(self.flight_number)
