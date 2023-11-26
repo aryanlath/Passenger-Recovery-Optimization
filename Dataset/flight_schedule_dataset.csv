@@ -1,4 +1,4 @@
-Flight Number,Remaining Capacity A,Remaining Capacity F,Departure City,Departure Time,Arrival City,Arrival Time,Status
+Flight Number,A,F,Departure City,Departure Time,Arrival City,Arrival Time,Status
 1000,133,31,Atlanta,2023-11-17 18:48,Dallas,2023-11-18 03:50,Cancelled
 1001,50,16,Miami,2023-11-18 10:19,Dallas,2023-11-17 18:40,On Time
 1002,119,43,Dallas,2023-11-18 12:49,Chicago,2023-11-17 17:42,On Time
