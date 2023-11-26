@@ -3,8 +3,8 @@ class PNR:
         self.pnr_number = pnr_number
         self.flight_cabin  = flight_cabin
         self.flight_number = flight_number
-        self.special_requirements = special_requirements.lower() == "true"
-        self.is_checkin = is_checkin.lower() == "true"
+        self.special_requirements = special_requirements == "True"
+        self.is_checkin = is_checkin == "true"
         self.passenger_loyalty = passenger_loyalty
         self.PAX = int(PAX)
 
