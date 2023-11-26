@@ -11,6 +11,9 @@ class PNR:
     def __hash__(self) -> int:
         return hash(self.pnr_number)
     
+    def __eq__(self, other):
+        return isinstance(other, PNR) and self.pnr_number == other.pnr_number
+    
     def __repr__(self):
         return f"PNR(pnr_number='{self.pnr_number}', flight_cabin='{self.flight_cabin}', flight_number='{self.flight_number}', special_requirements='{self.special_requirements}', is_checkin={self.is_checkin}, passenger_loyalty='{self.passenger_loyalty}', PAX={self.PAX})"
     

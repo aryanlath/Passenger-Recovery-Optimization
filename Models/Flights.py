@@ -18,6 +18,9 @@ class Flight:
 
     def __hash__(self) -> int:
         return hash(self.flight_number)
+    
+    def __eq__(self, other):
+        return isinstance(other, Flight) and self.flight_number == other.flight_number
 
     def __repr__(self):
         cabins_str = ', '.join([f'{k}: {v}' for k, v in self.cabins.items()])
