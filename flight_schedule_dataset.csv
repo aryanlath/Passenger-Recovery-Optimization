@@ -1,0 +1,50 @@
+Flight Number,Remaining Capacity A,Remaining Capacity F,Departure City,Departure Time,Arrival City,Arrival Time,Status
+1000,133,31,Atlanta,2023-11-17 18:48,Dallas,2023-11-18 03:50,Cancelled
+1001,50,16,Miami,2023-11-18 10:19,Dallas,2023-11-17 18:40,On Time
+1002,119,43,Dallas,2023-11-18 12:49,Chicago,2023-11-17 17:42,On Time
+1003,33,21,Miami,2023-11-18 15:06,New York,2023-11-18 04:33,On Time
+1004,97,12,Atlanta,2023-11-18 05:06,Chicago,2023-11-18 01:20,On Time
+1005,136,25,San Francisco,2023-11-18 16:03,New York,2023-11-17 18:22,On Time
+1006,93,4,Dallas,2023-11-17 20:50,Atlanta,2023-11-17 22:44,On Time
+1008,31,37,Los Angeles,2023-11-17 23:32,San Francisco,2023-11-18 12:18,Cancelled
+1009,39,21,Seattle,2023-11-18 16:36,New York,2023-11-18 13:15,On Time
+1010,44,24,New York,2023-11-18 04:06,Houston,2023-11-18 12:12,Cancelled
+1011,88,33,Houston,2023-11-18 15:19,Los Angeles,2023-11-18 11:38,Cancelled
+1012,112,5,Los Angeles,2023-11-18 05:51,San Francisco,2023-11-17 21:07,On Time
+1013,62,31,Atlanta,2023-11-18 03:27,New York,2023-11-18 03:39,Cancelled
+1014,22,25,San Francisco,2023-11-17 23:26,Seattle,2023-11-18 03:01,On Time
+1016,82,42,Miami,2023-11-18 05:27,New York,2023-11-18 00:54,On Time
+1017,100,4,Boston,2023-11-18 06:44,Los Angeles,2023-11-18 15:24,Cancelled
+1018,122,20,New York,2023-11-17 21:44,Atlanta,2023-11-17 18:54,Cancelled
+1020,2,11,Dallas,2023-11-18 10:28,Chicago,2023-11-18 00:52,Cancelled
+1021,84,0,New York,2023-11-18 17:02,Los Angeles,2023-11-18 10:51,On Time
+1022,62,6,Miami,2023-11-18 11:50,Chicago,2023-11-18 11:34,Cancelled
+1023,19,6,Chicago,2023-11-17 18:23,Dallas,2023-11-18 07:51,On Time
+1024,7,7,Seattle,2023-11-18 03:26,Dallas,2023-11-17 21:38,Cancelled
+1025,101,2,Dallas,2023-11-18 10:22,San Francisco,2023-11-18 08:17,Cancelled
+1028,23,36,Dallas,2023-11-17 23:10,Boston,2023-11-18 15:51,Cancelled
+1029,25,2,New York,2023-11-17 22:21,Atlanta,2023-11-18 08:24,On Time
+1030,17,20,Boston,2023-11-17 22:17,Los Angeles,2023-11-17 23:49,Cancelled
+1033,2,15,Los Angeles,2023-11-18 13:20,Miami,2023-11-17 22:55,Cancelled
+1034,62,9,Houston,2023-11-17 23:18,Atlanta,2023-11-18 02:05,On Time
+1035,125,28,Dallas,2023-11-18 10:52,Los Angeles,2023-11-17 20:53,Cancelled
+1036,127,1,Los Angeles,2023-11-18 01:23,New York,2023-11-18 07:12,Cancelled
+1037,70,20,San Francisco,2023-11-18 10:57,Houston,2023-11-17 22:35,Cancelled
+1038,94,21,San Francisco,2023-11-18 14:40,Dallas,2023-11-18 16:56,On Time
+1039,142,15,Miami,2023-11-18 07:58,Boston,2023-11-17 20:50,On Time
+1040,83,15,Seattle,2023-11-18 11:32,Dallas,2023-11-17 21:40,On Time
+1041,103,27,Boston,2023-11-18 13:54,Miami,2023-11-18 08:24,Cancelled
+1042,27,8,San Francisco,2023-11-18 16:50,New York,2023-11-18 15:31,Cancelled
+1043,45,46,Miami,2023-11-18 13:48,Los Angeles,2023-11-18 05:20,Cancelled
+1044,122,4,Houston,2023-11-18 00:59,Boston,2023-11-18 10:54,Cancelled
+1045,66,27,Los Angeles,2023-11-18 06:32,Dallas,2023-11-17 19:07,On Time
+1046,118,37,Boston,2023-11-18 00:31,Chicago,2023-11-18 10:20,Cancelled
+1047,91,6,Seattle,2023-11-18 16:22,Boston,2023-11-18 04:20,On Time
+1048,24,0,Chicago,2023-11-18 14:20,Houston,2023-11-18 14:28,On Time
+1049,45,44,Miami,2023-11-18 15:35,New York,2023-11-17 18:57,Cancelled
+1050,52,22,Houston,2023-11-18 06:14,Miami,2023-11-18 02:09,Cancelled
+1052,100,36,Atlanta,2023-11-17 17:53,New York,2023-11-18 13:04,On Time
+1053,103,27,Dallas,2023-11-18 00:12,Boston,2023-11-18 02:57,Cancelled
+1054,108,44,Dallas,2023-11-18 10:21,Chicago,2023-11-18 15:28,On Time
+1055,136,30,Seattle,2023-11-18 00:04,Miami,2023-11-18 10:05,Cancelled
+1056,14,12,Seattle,2023-11-18 06:45,Boston,2023-11-18 02:28,On Time
