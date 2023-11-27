@@ -37,3 +37,18 @@ def extract_Flights_from_CSV(file_name):
         flights.append(Flight(flight_number, departure_city, departure_time,arrival_city,arrival_time,status, **cabins))
     
     return flights
+
+def convert_result_to_csv(result):
+    dataframe = pd.DataFrame()
+    PNR = []
+    Flight = []
+    Cabin = []
+    
+    for result_entry in result['Assignments']:
+        PNR.append(result_entry[0])
+        Flight.append(result_entry[1])
+        Cabin.append(result_entry[2])
+    dataframe['PNR'] = PNR
+    dataframe['Flight'] = Flight 
+    dataframe['Cabin'] = Cabin
+    dataframe.to_csv('result.csv',index = False)
