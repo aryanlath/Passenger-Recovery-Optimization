@@ -43,12 +43,26 @@ def convert_result_to_csv(result):
     PNR = []
     Flight = []
     Cabin = []
+    ArrivalCity= []
+    DepartureCity = []
+    ArrivalTime = []
+    DepartureTime = []
+    
+
     
     for result_entry in result['Assignments']:
-        PNR.append(result_entry[0])
-        Flight.append(result_entry[1])
+        PNR.append(result_entry[0].pnr_number)
+        Flight.append(result_entry[1].flight_number)
         Cabin.append(result_entry[2])
+        ArrivalCity.append(result_entry[1].arrival_city)
+        DepartureCity.append(result_entry[1].departure_city)
+        ArrivalTime.append(result_entry[1].arrival_time)
+        DepartureTime.append(result_entry[1].departure_time)
     dataframe['PNR'] = PNR
     dataframe['Flight'] = Flight 
     dataframe['Cabin'] = Cabin
+    dataframe['Arrival City'] = ArrivalCity
+    dataframe['Departure City'] = DepartureCity
+    dataframe['Arrival Time'] = ArrivalTime
+    dataframe['Departure Time'] = DepartureTime
     dataframe.to_csv('result.csv',index = False)
