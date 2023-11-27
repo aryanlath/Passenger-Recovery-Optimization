@@ -42,7 +42,7 @@ def Calculate_PNR_Score(pnr):
     cabin_score["A"]=1000
     cabin_score["F"]=750
     ans+=cabin_score[pnr.flight_cabin]
-    if(pnr.passenger_loyality=='1'):
+    if(pnr.passenger_loyalty=='1'):
         ans+=2000
     return ans
     
