@@ -39,11 +39,11 @@ def Calculate_PNR_Score(pnr):
     if(pnr.special_requirements==1):
         ans+=200
     cabin_score={}
-    cabin_score["F"]=1000
-    cabin_score["J"]=750
-    cabin_score["Y"]=500
+    cabin_score["A"]=1000
+    cabin_score["F"]=750
     ans+=cabin_score[pnr.flight_cabin]
-    ans+=pnr.passenger_loyality
+    if(pnr.passenger_loyality=='1'):
+        ans+=2000
     return ans
     
 def calculate_cabin_score(pnr,Cabin):
