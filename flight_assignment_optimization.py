@@ -45,7 +45,7 @@ def optimize_flight_assignments(PNR_List , all_flights):
         for Flight in PNR_to_Feasible_Flights(PNR):
             for cabin,cabin_capacity in Flight.cabins.items():
                 objective.SetCoefficient(X[(PNR, Flight, cabin)], cost_function(PNR,Flight,cabin))
-    objective.SetMinimization()
+    objective.SetMaximization()
 
     # Solve the problem
     status = solver.Solve()

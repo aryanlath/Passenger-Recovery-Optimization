@@ -58,7 +58,7 @@ def calculate_cabin_score(pnr,Cabin):
 
 
 def helper_cost_function(ArrivalDelay,DepartureDelay,pnr_score,class_score):
-    return (ArrivalDelay+DepartureDelay)*pnr_score*class_score ## Log2(product)
+    return (ArrivalDelay+DepartureDelay)*pnr_score*(class_score + 3)## Log2(product)
 
 
 def cost_function(PNR,flight,Class):
