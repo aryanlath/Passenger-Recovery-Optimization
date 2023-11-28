@@ -66,11 +66,12 @@ def optimize_flight_assignments(PNR_List , all_flights):
             if(len(Flight_Tuple)==1):
                 for cabin,cabin_capacity in Flight_Tuple[0].cabins.items():
                     objective.SetCoefficient(X[(PNR,Flight_Tuple,cabin)],cost_function(PNR,Flight_Tuple,cabin,None))
+                    objective.SetCoefficient((1 - X[(PNR, Flight_Tuple, cabin)]),cost_function(PNR,None,None,None))
             else:
                 for cabin1,cabin_capacity1 in Flight_Tuple[0].cabins.items() :
                     for cabin2,cabin_capacity2 in Flight_Tuple[1].cabins.items():
                         objective.SetCoefficient(X[((PNR,Flight_Tuple,cabin1,cabin2))],cost_function(PNR,Flight_Tuple,cabin1,cabin2))
-                        X[(PNR, Flight_Tuple, cabin1,cabin2)] = solver.BoolVar(f'X[{PNR},{Flight_Tuple},{cabin1},{cabin2}]')
+                        objective.SetCoefficient((1 - X[(PNR, Flight_Tuple, cabin1,cabin2)]),cost_function(PNR,None,None,None))
 
     objective.SetMaximization()
 
