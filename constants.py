@@ -1,7 +1,9 @@
+
 # Passenger data file
 pnr_data_file = "Dataset/passenger_pnr_dataset.csv"
 # Flight data file
 flight_data_file = "Dataset/flight_schedule_dataset.csv"
+
 
 # number of cabins assumed
 n_cabin = 2
@@ -13,3 +15,4 @@ MCT = 1
 MAXCT = 12
 
 M=100
+

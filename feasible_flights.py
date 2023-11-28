@@ -17,20 +17,20 @@ def init_PNR_to_Flight_Object():
         res[pnr.pnr_number] = all_flights.get(str(pnr.flight_number))
     return res
 
-def PNR_to_Feasible_Flights(PNR_Object):
-    all_flights = extract_Flights_from_CSV(flight_data_file)
-    PNR_to_Flight_Object = init_PNR_to_Flight_Object()
-    feasible_flight_list = []
-    my_flight            = PNR_to_Flight_Object[PNR_Object.pnr_number]
-    my_arrival_time      = my_flight.arrival_time
-    my_departure_time  = my_flight.departure_time
-    for flight in all_flights:
-        flight_arrival_time = flight.arrival_time
-        flight_departure_time = flight.departure_time
-        if((flight_departure_time - my_arrival_time).total_seconds() >= 0 and (flight_departure_time - my_arrival_time).total_seconds() <= ETD*60*60 and flight.status):
-            feasible_flight_list.append(flight)
+# def PNR_to_Feasible_Flights(PNR_Object):
+#     all_flights = extract_Flights_from_CSV(flight_data_file)
+#     PNR_to_Flight_Object = init_PNR_to_Flight_Object()
+#     feasible_flight_list = []
+#     my_flight            = PNR_to_Flight_Object[PNR_Object.pnr_number]
+#     my_arrival_time      = my_flight.arrival_time
+#     my_departure_time  = my_flight.departure_time
+#     for flight in all_flights:
+#         flight_arrival_time = flight.arrival_time
+#         flight_departure_time = flight.departure_time
+#         if((flight_departure_time - my_arrival_time).total_seconds() >= 0 and (flight_departure_time - my_arrival_time).total_seconds() <= ETD*60*60 and flight.status):
+#             feasible_flight_list.append(flight)
 
-    return feasible_flight_list
+#     return feasible_flight_list
 
 def visualize_flight_graph(graph):
     plt.figure(figsize=(12, 8))  # Set the size of the plot
@@ -70,7 +70,7 @@ def remove_cancelled_flights(graph, cancelled_flights):
     for edge in edges_to_remove:
         graph.remove_edge(*edge)
 
-def find_flights_with_hops(graph, PNR_Object, number_of_hops):
+def PNR_to_Feasible_Flights(graph,PNR_to_Flight_Object,PNR_Object, number_of_hops=2):
     """
     Find flights from departure_city to arrival_city with exactly number_of_hops.
 
@@ -79,7 +79,6 @@ def find_flights_with_hops(graph, PNR_Object, number_of_hops):
     :param number_of_hops: The exact number of hops (flights) required.
     :return: A list of lists, where each inner list represents a sequence of flights.
     """
-    PNR_to_Flight_Object = init_PNR_to_Flight_Object()
     # print(PNR_Object)
     # print(PNR_to_Flight_Object)
     departure_city = PNR_to_Flight_Object[PNR_Object.pnr_number].departure_city
