@@ -1,6 +1,8 @@
 import pandas as pd
 from datetime import timedelta
-
+import sys
+sys.path.append('./Passenger-Recovery-Optimization')
+from constants import * 
 def MergeDataframes(schedule_csv_path,inventory_csv_path):
     """
         returns merged flightschedule pandas dataframe 
