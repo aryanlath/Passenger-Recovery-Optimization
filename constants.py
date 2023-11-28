@@ -11,3 +11,5 @@ ETD = 72
 MCT = 1
 # maximum connection time
 MAXCT = 12
+
+M=100
