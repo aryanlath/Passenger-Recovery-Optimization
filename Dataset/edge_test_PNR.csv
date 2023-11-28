@@ -1,0 +1,6 @@
+PNR Number,Flight Number,Cabin,Special Requirements,PAX,Passenger Loyalty,isCheckin
+PNR0000,1000,F,False,4,Silver,False
+PNR0001,1001,F,False,2,Silver,True
+PNR0002,1002,F,True,1,Silver,True
+PNR0003,1003,F,False,2,Silver,True
+PNR0004,1004,A,False,2,Silver,True
