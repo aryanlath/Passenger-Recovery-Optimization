@@ -3,7 +3,7 @@ from datetime import timedelta
 import sys
 sys.path.append('..\Passenger-Recovery-Optimization')
 from constants import * 
-def MergeDataframes(schedule_csv_path,inventory_csv_path):
+def MergeDataframes():
     """
         returns merged flightschedule pandas dataframe 
     """
