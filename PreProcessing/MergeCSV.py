@@ -1,9 +1,10 @@
 import pandas as pd
 from datetime import timedelta
 import sys
-sys.path.append('./Passenger-Recovery-Optimization')
+sys.path.append('/Users/gautamsharma/Desktop/Passenger-Recovery-Optimization')
 from constants import * 
-def MergeDataframes(schedule_csv_path,inventory_csv_path):
+
+def MergeDataframes():
     """
         returns merged flightschedule pandas dataframe 
     """
@@ -32,5 +33,3 @@ def MergeDataframes(schedule_csv_path,inventory_csv_path):
     inv_df.drop(['DepartureDate','ArrivalDate','ArrivalTime','DepartureTime'],axis=1,inplace=True)
     inv_df['Status'] = "On Time"
     return inv_df
-
-    
