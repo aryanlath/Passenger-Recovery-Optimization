@@ -16,3 +16,6 @@ MAXCT = 12
 
 M=100
 
+schedule_csv_path = "Dataset/SCHEDULE_FL.csv"
+inventory_csv_path = "Dataset/INV_SCHEDULE.csv"
+
