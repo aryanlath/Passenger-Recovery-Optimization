@@ -28,6 +28,7 @@ def MergeDataframes(schedule_csv_path,inventory_csv_path):
     inv_df['DepartureDatetime'] = pd.to_datetime(inv_df['DepartureDate']) + pd.to_timedelta(inv_df['DepartureTime'].dt.strftime('%H:%M:%S'))
     inv_df['ArrivalDatetime'] = pd.to_datetime(inv_df['ArrivalDate']) + pd.to_timedelta(inv_df['ArrivalTime'].dt.strftime('%H:%M:%S'))
     inv_df.drop(['DepartureDate','ArrivalDate','ArrivalTime','DepartureTime'],axis=1,inplace=True)
+    inv_df['Status'] = "On Time"
     return inv_df
 
     
