@@ -59,6 +59,8 @@ def create_flight_graph():
     i = 0
     for flight in all_flights:
         # Add edge with flight object as an attribute
+        if(flight.status=='Cancelled'):
+            continue
         G.add_edge(flight.departure_city, flight.arrival_city, flight=flight)
         i = i+1
     return G
@@ -85,14 +87,16 @@ def find_flights_with_hops(graph, PNR_Object, number_of_hops):
     departure_time = PNR_to_Flight_Object[PNR_Object.pnr_number].departure_time
     valid_paths = []
     for path in nx.all_simple_paths(graph, source=departure_city, target=arrival_city, cutoff=number_of_hops):
-        if len(path)-1 == number_of_hops:  # Check if the path length matches the number of hops
+        #print(path)
+        if len(path)-1 <= number_of_hops:  # Check if the path length matches the number of hops
+            #print(len(path)-1)
             flights_in_path = []
             for i in range(len(path)-1):
                 flights_between_cities = graph.get_edge_data(path[i], path[i+1])
                 if flights_between_cities:
                     flights_in_path.append([flights_between_cities[key]['flight'] for key in flights_between_cities])
             if flights_in_path:
-                if(number_of_hops == 1):
+                if(len(path)-1 == 1):
                     p = flights_in_path[0]
                     for item in p:
                         f1 = item
@@ -100,7 +104,7 @@ def find_flights_with_hops(graph, PNR_Object, number_of_hops):
                             continue
                         if(abs(f1.departure_time - departure_time).total_seconds() > ETD*60*60):
                                 continue
-                        valid_paths.append(item)
+                        valid_paths.append((item,))
                 else:
                     p = list(product(flights_in_path[0],flights_in_path[1]))
                     i = 0
@@ -113,14 +117,14 @@ def find_flights_with_hops(graph, PNR_Object, number_of_hops):
                             if(abs(f1.departure_time - departure_time).total_seconds() > ETD*60*60):
                                 continue
                         if((f2.departure_time - f1.arrival_time).total_seconds() >= MCT*60*60 and (f2.departure_time - f1.arrival_time).total_seconds() <= MAXCT*60*60):
-                            valid_paths.append(item)
+                            valid_paths.append(tuple(item))
                         i = i+1
     return valid_paths
 
 # G = create_flight_graph()
 # # visualize_flight_graph(G)
-# remove_cancelled_flights(G, ['1041'])
+# # # remove_cancelled_flights(G, ['1041'])
 # pnr_list    = extract_PNR_from_CSV(pnr_data_file)
 # for item in pnr_list:
-#     if(item.flight_number == 1018):
-#         print(find_flights_with_hops(G, item, 1))
+#     if(item.flight_number == 1004):
+#        print(find_flights_with_hops(G, item, 2))
