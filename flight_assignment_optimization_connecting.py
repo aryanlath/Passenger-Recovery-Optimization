@@ -106,8 +106,6 @@ def optimize_flight_assignments(PNR_List , all_flights):
                     # cabin is a tuple Eg: ('A','B')
                     if X[(PNR,Flight_Tuple,cabin)].solution_value() == 1:
                         result['Assignments'].append((PNR, Flight_Tuple, cabin))
-        print()
-        print(len(result['Assignments']))
         return result
     
     else:
