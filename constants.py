@@ -4,6 +4,9 @@ pnr_data_file = "Dataset/passenger_pnr_dataset.csv"
 # Flight data file
 flight_data_file = "Dataset/flight_schedule_dataset.csv"
 
+test_flight_data_file= 'test_data/flight_test.csv'
+
+test_PNR_data_file='test_data/PNR_Test.csv'
 
 # number of cabins assumed
 n_cabin = 2

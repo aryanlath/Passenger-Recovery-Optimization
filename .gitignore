@@ -1,3 +1,7 @@
 __pycache__
 .vscode
+<<<<<<< HEAD
+.git
+=======
 .DS_Store
+>>>>>>> 7dfaebeb6183ed68fb9a5b888e802cf3276d7a2d

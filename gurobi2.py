@@ -30,9 +30,9 @@ def get_flight_cabin_mappings(flights, current_mapping=None, flight_index=0):
         yield from get_flight_cabin_mappings(flights, current_mapping, flight_index + 1)
         current_mapping.pop()
 
-def optimize_flight_assignments(PNR_List , all_flights):
+def optimize_flight_assignments(PNR_List):
     g=create_flight_graph()
-    PNR_to_Flight_Object=init_PNR_to_Flight_Object()
+    all_flights, pnr_objects,_ = init_FlightNumber_to_Flight_Object()
     """
         PNR_List = List of Impacted PNRs
         PNR_to_Feasible_Flights now returns a list of tuples of flight objects Ex. [(Flight1),(Flight1->Flight2),(Flight3)]
@@ -58,25 +58,32 @@ def optimize_flight_assignments(PNR_List , all_flights):
     # Ex. [(Flight1),(Flight1->Flight2),(Flight3)]
     i=0
     for PNR in PNR_List:
-        for FT in PNR_to_Feasible_Flights(g,PNR_to_Flight_Object,PNR):
+        for FT in PNR_to_Feasible_Flights(g,all_flights,PNR):
             cabins_tuple = list(get_flight_cabin_mappings(FT))
             for cabin in cabins_tuple:
                 # cabin is a tuple Eg: ('A','B')
-                print("##",(PNR,FT,cabin))
                 X[(PNR,FT,cabin)] = model.addVar(vtype=GRB.BINARY, name=f'X_i')
                 Y[(PNR,FT,cabin)] = model.addVar(vtype=GRB.BINARY, name=f'Y_i')
                 i+=1
                 model.addConstr(X[(PNR,FT,cabin)]+Y[(PNR,FT,cabin)]==1)
                 X_PNR_Constraint[PNR].append(X[(PNR,FT,cabin)])
 
-            for flight in FT: # Flight is a object
-                for cabin in cabins_tuple: # cabin is a tuple Eg: ('A','B')
-                    for sep_cabin in cabin:
-                        X_Flight_Capacity_Constraint[flight][sep_cabin].append(X[(PNR, FT, cabin)] * PNR.PAX)
+            for flight_index,flight in enumerate(FT): # Flight is a object
+                for cabin in cabins_tuple: # cabin is a tuple Eg: ('A','B') and cabins_tuple = list of cabins
+                        print("hehe",cabin[flight_index])
+                        X_Flight_Capacity_Constraint[flight][cabin[flight_index]].append(X[(PNR, FT, cabin)] * PNR.PAX)
 
-
-
-          
+    print("##################################################")
+    print("Debug")
+    print(X_Flight_Capacity_Constraint['1000','A'])
+    print(X_Flight_Capacity_Constraint['1000','F'])
+    print()
+    print(X_Flight_Capacity_Constraint['1001','A'])
+    print(X_Flight_Capacity_Constraint['1001','F'])
+    print()
+    print(X_Flight_Capacity_Constraint['1002','A'])
+    print(X_Flight_Capacity_Constraint['1001','F'])
+    print("##################################################")
     # Constraints
     # Each PNR can be assigned to only one flight class
     for PNR in PNR_List :
@@ -92,7 +99,7 @@ def optimize_flight_assignments(PNR_List , all_flights):
 
 
     for PNR in PNR_List:
-        for FT in PNR_to_Feasible_Flights(g, PNR_to_Flight_Object, PNR):
+        for FT in PNR_to_Feasible_Flights(g,all_flights,PNR):
             cabins_tuple = get_flight_cabin_mappings(FT)
             for cabin in cabins_tuple:
                 # cabin is a tuple Eg: ('A', 'B')
@@ -111,7 +118,7 @@ def optimize_flight_assignments(PNR_List , all_flights):
         assigned_pnrs = set()
         not_assigned_pnrs = set()
         for PNR in PNR_List:
-            for FT in PNR_to_Feasible_Flights(g, PNR_to_Flight_Object, PNR):
+            for FT in PNR_to_Feasible_Flights(g,all_flights,PNR):
                 cabins_tuple = get_flight_cabin_mappings(FT)
                 for cabin in cabins_tuple:
                     # cabin is a tuple Eg: ('A', 'B')
@@ -119,7 +126,7 @@ def optimize_flight_assignments(PNR_List , all_flights):
                         result['Assignments'].append((PNR, FT, cabin))
                         assigned_pnrs.add(PNR.pnr_number)
         for PNR in PNR_List:
-            for FT in PNR_to_Feasible_Flights(g, PNR_to_Flight_Object, PNR):
+            for FT in PNR_to_Feasible_Flights(g,all_flights,PNR):
                 cabins_tuple = get_flight_cabin_mappings(FT)
                 for cabin in cabins_tuple:
                     # cabin is a tuple Eg: ('A', 'B')
@@ -132,25 +139,19 @@ def optimize_flight_assignments(PNR_List , all_flights):
     else:
         return "The problem does not have an optimal solution."
 
-pnr_list = extract_PNR_from_CSV("./Dataset/passenger_pnr_dataset.csv")
-all_flights = extract_Flights_from_CSV("./Dataset/flight_schedule_dataset.csv")
+all_flights,pnr_list,_ = init_FlightNumber_to_Flight_Object()
+
 
 passenger_pnr_path = 'passenger_pnr_dataset.csv'
 flight_schedule_path = 'flight_schedule_dataset.csv'
 
 
 # Identify the impacted PNRs
-Impacted_PNR = []
-Flight_map = init_PNR_to_Flight_Object(False)
-Flight_to_PNR_map = init_Flight_to_PNR_map()
-for flight in Flight_map:
-    if not Flight_map[flight].status:
-            Impacted_PNR.extend(Flight_to_PNR_map.get(Flight_map[flight].flight_number,[]))
-
+Impacted_PNR = Get_Impacted_passengers(all_flights,pnr_list)
 
 print("Total impacted Passengers: ",len(Impacted_PNR))
 pp.pprint(Impacted_PNR)
-result = optimize_flight_assignments(Impacted_PNR, all_flights)
+result = optimize_flight_assignments(Impacted_PNR)
 print("Total Reassigned: ",len(result['Assignments']))
 
 pp.pprint(result['Assignments'])
