@@ -2,6 +2,7 @@ import pandas as pd
 from constants import *
 from Models.PNR import *
 from Models.Flights import *
+import re
 
 def PNR_ranking():
     pass
@@ -9,14 +10,33 @@ def PNR_ranking():
 def  Flight_score(pnr, flight):
     pass
 
-def extract_PNR_from_CSV(file_name):
-    pnr_df = pd.read_csv(file_name)
-    # pnr_number, flight_cabin, flight_number, special_requirements, is_checkin,passenger_loyalty,PAX
-    pnr_list = [
-    PNR(row['PNR Number'],row['Cabin'],row['Flight Number'],row['Special Requirements'],row['isCheckin'],row['Passenger Loyalty'],row['PAX'])
-    for index, row in pnr_df.iterrows()
-    ]
-    return pnr_list
+
+def extract_PNR_from_CSV(file_path):
+    pnr_objects = []
+    with open(file_path, 'r') as file:
+        for line in file:
+            # pnr = parse_pnr_line(line)/
+    # Using regex to extract values within brackets and the remaining parts
+            matches = re.findall(r'\[.*?\]|[^,]+', line)
+            #/print(matches)
+            # Extracting and parsing each part
+            pnr_number = matches[0]
+           # print(int(x) for x in matches[1].strip('[]').split(','))
+            inv_list = [x for x in matches[1].strip('[]').split(',')]
+            cabin_list= matches[2].strip('[]').split(',')
+            special_requirements = matches[3] == "True"
+            PAX = int(matches[4])
+            passenger_loyalty = matches[5]
+            is_checkin = matches[6] == "True"
+
+    # Combining all elements into a list
+            parsed_list = [pnr_number, inv_list, cabin_list, special_requirements, PAX, passenger_loyalty, is_checkin]
+            if(parsed_list==None) :break
+            #aprint(parsed_list)
+            PNR_Object=PNR(*parsed_list)
+            pnr_objects.append(PNR_Object)
+    #print(pnr_objects)
+    return pnr_objects
 
 def extract_Flights_from_CSV(file_name):
     flights = []
@@ -66,3 +86,7 @@ def convert_result_to_csv(result):
     dataframe['Arrival Time'] = ArrivalTime
     dataframe['Departure Time'] = DepartureTime
     dataframe.to_csv('result.csv',index = False)
+
+
+# pnr_object=parse_pnr_file(test_PNR_data_file)
+# print(pnr_object)

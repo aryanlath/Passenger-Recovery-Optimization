@@ -1,0 +1,12 @@
+Flight Number,A,F,Departure City,Departure Time,Arrival City,Arrival Time,Status
+1005,33,21,Atlanta,2023-11-17 15:06,Chicago,2023-11-18 00:33,Cancelled
+1000,133,31,Atlanta,2023-11-17 18:48,Dallas,2023-11-18 03:50,On Time
+1001,50,16,Dallas,2023-11-18 5:50,Miami,2023-11-18 9:40,On Time
+1002,119,43,Miami,2023-11-18 12:49,Chicago,2023-11-18 17:42,On Time
+1004,97,12,Atlanta,2023-11-17 18:00,Chicago,2023-11-18 01:20,On Time
+1006,93,4,Dallas,2023-11-17 20:50,Los Angeles,2023-11-17 22:44,On Time
+1008,31,37,Los Angeles,2023-11-17 23:32,Seattle,2023-11-18 12:18,On Time
+1009,39,21,Seattle,2023-11-18 16:36,New York,2023-11-18 18:15,On Time
+1010,44,24,New York,2023-11-18 20:06,Houston,2023-11-19 12:12,Cancelled
+1011,44,24,New York,2023-11-18 22:22,Miami,2023-11-19 12:12,On Time
+1012,50,16,Miami,2023-11-19 12:13,Houston,2023-11-19 8:40,On Time

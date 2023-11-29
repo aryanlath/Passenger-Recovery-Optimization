@@ -4,7 +4,7 @@ import feasible_flights
 from constants import *
 def Arrival_Delay(pnr,flight_tuple):
     res=feasible_flights.init_PNR_to_Flight_Object()
-    actual_time=res[pnr.pnr_number].arrival_time
+    actual_time=res[pnr.inv_list[-1]].arrival_time
     new_time=flight_tuple[-1].arrival_time
     delay=(new_time-actual_time).seconds
     if(delay<=6):
@@ -20,7 +20,7 @@ def Arrival_Delay(pnr,flight_tuple):
     
 def Departure_Delay(pnr,flight_tuple):
     res=feasible_flights.init_PNR_to_Flight_Object()
-    actual_time=res[pnr.pnr_number].departure_time
+    actual_time=res[pnr.inv_list[-1]].departure_time
     new_time=flight_tuple[0].departure_time
     delay=(new_time-actual_time).seconds
     if(delay<=6):
@@ -42,22 +42,27 @@ def Calculate_PNR_Score(pnr):
     cabin_score={}
     cabin_score["A"]=1000
     cabin_score["F"]=750
-    ans+=cabin_score[pnr.flight_cabin]
+    for cabin in pnr.cabin_list:
+        ans+=cabin_score[cabin]
+    ans/=len(pnr.cabin_list)
     if(pnr.passenger_loyalty=='1'):
         ans+=2000
     return ans
     
 def calculate_cabin_score(pnr,Cabin_list):
-    intial_cabin=pnr.flight_cabin
+    intial_cabin_avg=0
     final_Cabin_avg=0
     Cabin_score={}
     Cabin_score["A"]=5
     Cabin_score["F"]=3
+    for cabin in pnr.cabin_list:
+        intial_cabin_avg+=Cabin_score[cabin]
+    intial_cabin_avg/=len(pnr.len(Cabin_list))
     for Cabin in Cabin_list:
         final_Cabin_avg+=Cabin_score[Cabin]
     final_Cabin_avg/=len(Cabin_list)
     #cabin_score["Y"]=1
-    return final_Cabin_avg-Cabin_score[intial_cabin]
+    return final_Cabin_avg-intial_cabin_avg
 
 
 
