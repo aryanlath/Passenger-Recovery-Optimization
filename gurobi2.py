@@ -1,5 +1,6 @@
 import pandas as pd
-from ortools.linear_solver import pywraplp
+import gurobipy as gp
+from gurobipy import GRB
 from utils import *
 from Models.Flights import Flight
 from collections import defaultdict
@@ -10,7 +11,7 @@ all_flights =[]
 def get_flight_cabin_mappings(flights, current_mapping=None, flight_index=0):
     """
     To generate the tuple of all possible cabin Mappings.
-    Takes Flight_Tuple as input
+    Takes FT as input
     Returns the list of cabin_tuples
     """
     if current_mapping is None:
@@ -37,10 +38,12 @@ def optimize_flight_assignments(PNR_List , all_flights):
         X_Flight_Capacity_Constraint-> dictionary of dictionaries where outer keys are Flight objects and inner keys are cabins, each value is a list of variables for that Particular Flight,Cabin in its constraint
     """
     # Create the mip solver with the SCIP backend.
-    solver = pywraplp.Solver.CreateSolver('SCIP')
+    # solver = pywraplp.Solver.CreateSolver('SCIP')
 
-    if not solver:
-        return "No solver available."
+    # if not solver:
+    #     return "No solver available."
+    model = gp.Model()
+
     X_PNR_Constraint = defaultdict(list)
     #
     X_Flight_Capacity_Constraint = defaultdict(lambda: defaultdict(list))
@@ -50,17 +53,19 @@ def optimize_flight_assignments(PNR_List , all_flights):
     Y = {} # Store the complements of X
     # PNR_to_Feasible_Flights now returns a list of tuples of flight objects 
     # Ex. [(Flight1),(Flight1->Flight2),(Flight3)]
+    i=0
     for PNR in PNR_List:
-        for Flight_Tuple in PNR_to_Feasible_Flights(g,PNR_to_Flight_Object,PNR):
-            cabins_tuple = get_flight_cabin_mappings(Flight_Tuple)
+        for FT in PNR_to_Feasible_Flights(g,PNR_to_Flight_Object,PNR):
+            cabins_tuple = get_flight_cabin_mappings(FT)
             for cabin in cabins_tuple:
                 # cabin is a tuple Eg: ('A','B')
-                X[(PNR,Flight_Tuple,cabin)] = solver.BoolVar(f'X[{PNR},{Flight_Tuple},{cabin}]')
-                Y[(PNR,Flight_Tuple,cabin)] = solver.BoolVar(f'Y[{PNR},{Flight_Tuple},{cabin}]')
-                solver.Add(X[(PNR,Flight_Tuple,cabin)]+Y[(PNR,Flight_Tuple,cabin)]==1)
-                X_PNR_Constraint[PNR].append(X[(PNR,Flight_Tuple,cabin)])
+                X[(PNR,FT,cabin)] = model.addVar(vtype=GRB.BINARY, name=f'X_i')
+                Y[(PNR,FT,cabin)] = model.addVar(vtype=GRB.BINARY, name=f'Y_i')
+                i+=1
+                model.addConstr(X[(PNR,FT,cabin)]+Y[(PNR,FT,cabin)]==1)
+                X_PNR_Constraint[PNR].append(X[(PNR,FT,cabin)])
 
-            for flight in Flight_Tuple:
+            for flight in FT:
                 for cabin in cabins_tuple:
                     X_Flight_Capacity_Constraint[flight][cabin].append(X[(PNR, flight, cabins_tuple)] * PNR.PAX)
 
@@ -70,44 +75,43 @@ def optimize_flight_assignments(PNR_List , all_flights):
     # Constraints
     # Each PNR can be assigned to only one flight class
     for PNR in PNR_List :
-        solver.Add(sum(X_PNR_Constraint[PNR]) <= 1)
+        model.addConstr(sum(X_PNR_Constraint[PNR]) <= 1)
 
     # The number of assigned passengers should not exceed available seats
     for Flight, constraint_dic in X_Flight_Capacity_Constraint.items():
         for cabin, cabin_list in constraint_dic.items():
-            solver.Add(sum(cabin_list) <= Flight.cabins[cabin])
+            model.addConstr(sum(cabin_list) <= Flight.cabins[cabin])
 
-    # Objective
-    # Maximise the total cost
-    objective = solver.Objective()
+    objective = gp.LinExpr()
 
     for PNR in PNR_List:
-        for Flight_Tuple in PNR_to_Feasible_Flights(g,PNR_to_Flight_Object,PNR):
-            cabins_tuple = get_flight_cabin_mappings(Flight_Tuple)
+        for FT in PNR_to_Feasible_Flights(g, PNR_to_Flight_Object, PNR):
+            cabins_tuple = get_flight_cabin_mappings(FT)
             for cabin in cabins_tuple:
-                # cabin is a tuple Eg: ('A','B')
-                objective.SetCoefficient(X[(PNR,Flight_Tuple,cabin)],cost_function(PNR,Flight_Tuple,cabin))
-                objective.SetCoefficient((Y[(PNR, Flight_Tuple,cabin)]),cost_function(PNR,None,None))
+                # cabin is a tuple Eg: ('A', 'B')
+                X_coeff = cost_function(PNR, FT, cabin)
+                Y_coeff = cost_function(PNR, None, None)
                 
+                # Add coefficients to the objective
+                objective += X[(PNR, FT, cabin)] * X_coeff
+                objective += Y[(PNR, FT, cabin)] * Y_coeff
 
-    objective.SetMaximization()
-
-    # Solve the problem
-    status = solver.Solve()
+    # Set the objective to maximize
+    model.setObjective(objective, GRB.MAXIMIZE)
+    model.optimize()
 
     # Checking if a solution exists
-    if status == pywraplp.Solver.OPTIMAL:
+    if model.status == GRB.OPTIMAL:
         # Extract the solution
-        result = {'Total Cost': objective.Value(), 'Assignments': []}
+        result = {'Total Cost': model.objVal, 'Assignments': []}
         for PNR in PNR_List:
-            for Flight_Tuple in PNR_to_Feasible_Flights(g,PNR_to_Flight_Object,PNR):
-                cabins_tuple = get_flight_cabin_mappings(Flight_Tuple)
+            for FT in PNR_to_Feasible_Flights(g, PNR_to_Flight_Object, PNR):
+                cabins_tuple = get_flight_cabin_mappings(FT)
                 for cabin in cabins_tuple:
-                    # cabin is a tuple Eg: ('A','B')
-                    if X[(PNR,Flight_Tuple,cabin)].solution_value() == 1:
-                        result['Assignments'].append((PNR, Flight_Tuple, cabin))
+                    # cabin is a tuple Eg: ('A', 'B')
+                    if X[(PNR, FT, cabin)].x == 1:
+                        result['Assignments'].append((PNR, FT, cabin))
         return result
-    
     else:
         return "The problem does not have an optimal solution."
 
