@@ -53,13 +53,15 @@ def optimize_flight_assignments(PNR_List , all_flights):
     Y = {} # Store the complements of X
     # PNR_to_Feasible_Flights now returns a list of tuples of flight objects 
     # Ex. [(Flight1),(Flight1->Flight2),(Flight3)]
+    i=0
     for PNR in PNR_List:
         for FT in PNR_to_Feasible_Flights(g,PNR_to_Flight_Object,PNR):
             cabins_tuple = get_flight_cabin_mappings(FT)
             for cabin in cabins_tuple:
                 # cabin is a tuple Eg: ('A','B')
-                X[(PNR,FT,cabin)] = model.addVar(vtype=GRB.BINARY, name=f'X_{PNR}_{FT}_{cabin}')
-                Y[(PNR,FT,cabin)] = model.addVar(vtype=GRB.BINARY, name=f'Y_{PNR}_{FT}_{cabin}')
+                X[(PNR,FT,cabin)] = model.addVar(vtype=GRB.BINARY, name=f'X_i')
+                Y[(PNR,FT,cabin)] = model.addVar(vtype=GRB.BINARY, name=f'Y_i')
+                i+=1
                 model.addConstr(X[(PNR,FT,cabin)]+Y[(PNR,FT,cabin)]==1)
                 X_PNR_Constraint[PNR].append(X[(PNR,FT,cabin)])
 
@@ -80,7 +82,7 @@ def optimize_flight_assignments(PNR_List , all_flights):
         for cabin, cabin_list in constraint_dic.items():
             model.addConstr(sum(cabin_list) <= Flight.cabins[cabin])
 
-    objective = gb.LinExpr()
+    objective = gp.LinExpr()
 
     for PNR in PNR_List:
         for FT in PNR_to_Feasible_Flights(g, PNR_to_Flight_Object, PNR):
@@ -95,11 +97,11 @@ def optimize_flight_assignments(PNR_List , all_flights):
                 objective += Y[(PNR, FT, cabin)] * Y_coeff
 
     # Set the objective to maximize
-    model.setObjective(objective, gb.GRB.MAXIMIZE)
+    model.setObjective(objective, GRB.MAXIMIZE)
     model.optimize()
 
     # Checking if a solution exists
-    if model.status == gb.GRB.OPTIMAL:
+    if model.status == GRB.OPTIMAL:
         # Extract the solution
         result = {'Total Cost': model.objVal, 'Assignments': []}
         for PNR in PNR_List:
