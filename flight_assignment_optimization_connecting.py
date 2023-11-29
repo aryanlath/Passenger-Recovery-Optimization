@@ -123,6 +123,12 @@ flight_schedule_path = 'flight_schedule_dataset.csv'
 # print()
 # print()
 # Call the optimization function
-result = optimize_flight_assignments(pnr_list, all_flights)
+Impacted_PNR = []
+Flight_map = init_PNR_to_Flight_Object(False)
+Flight_to_PNR_map = init_Flight_to_PNR_map()
+for flight in Flight_map:
+    if not Flight_map[flight].status:
+        Impacted_PNR.extend(Flight_to_PNR_map.get(Flight_map[flight].flight_number,[]))
+result = optimize_flight_assignments(Impacted_PNR, all_flights)
 
 print(result)

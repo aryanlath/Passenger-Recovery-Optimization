@@ -5,8 +5,12 @@ from constants import *
 import networkx as nx
 import matplotlib.pyplot as plt
 from itertools import product
+from collections import defaultdict
 
-def init_PNR_to_Flight_Object():
+def init_PNR_to_Flight_Object(choice = True):
+    """
+    If choice is True, returns pnr_to_flight else, flight_to_flight_object
+    """
     res = {}
     all_flights = {}
     pnr_list    = extract_PNR_from_CSV(pnr_data_file)
@@ -15,7 +19,19 @@ def init_PNR_to_Flight_Object():
         all_flights[flight.flight_number] = flight
     for pnr in pnr_list:
         res[pnr.pnr_number] = all_flights.get(str(pnr.flight_number))
-    return res
+    if choice:
+        return res
+    else:
+        return all_flights
+    
+
+def init_Flight_to_PNR_map():
+    """Returns Flight to PNR object map"""
+    Flight_to_PNR_map = defaultdict(list)
+    pnr_list    = extract_PNR_from_CSV(pnr_data_file)
+    for pnr in pnr_list:
+        Flight_to_PNR_map[pnr.flight_number].append(pnr)
+    return Flight_to_PNR_map
 
 # def PNR_to_Feasible_Flights(PNR_Object):
 #     all_flights = extract_Flights_from_CSV(flight_data_file)
@@ -59,7 +75,7 @@ def create_flight_graph():
     i = 0
     for flight in all_flights:
         # Add edge with flight object as an attribute
-        if(flight.status=='Cancelled'):
+        if(not flight.status):
             continue
         G.add_edge(flight.departure_city, flight.arrival_city, flight=flight)
         i = i+1
@@ -120,10 +136,12 @@ def PNR_to_Feasible_Flights(graph,PNR_to_Flight_Object,PNR_Object, number_of_hop
                         i = i+1
     return valid_paths
 
-# G = create_flight_graph()
-# # visualize_flight_graph(G)
-# # # remove_cancelled_flights(G, ['1041'])
-# pnr_list    = extract_PNR_from_CSV(pnr_data_file)
-# for item in pnr_list:
-#     if(item.flight_number == 1004):
-#        print(find_flights_with_hops(G, item, 2))
+G = create_flight_graph()
+#visualize_flight_graph(G)
+# # remove_cancelled_flights(G, ['1041'])
+PNR_to_Flight_Object = init_PNR_to_Flight_Object()
+pnr_list    = extract_PNR_from_CSV(pnr_data_file)
+for item in pnr_list:
+    if(item.flight_number == '1011'):
+       print(item)
+       print(PNR_to_Feasible_Flights(G,PNR_to_Flight_Object,item,2))

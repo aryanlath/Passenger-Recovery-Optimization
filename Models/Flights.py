@@ -24,7 +24,7 @@ class Flight:
 
     def __repr__(self):
         cabins_str = ', '.join([f'{k}: {v}' for k, v in self.cabins.items()])
-        return f"Flight({self.flight_number}, Departure: {self.departure_time}, Destination: {self.departure_city}, Classes: {cabins_str})"
+        return f"{self.flight_number},{cabins_str},status:{self.status}"
 
 
 

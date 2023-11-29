@@ -16,7 +16,7 @@ def Arrival_Delay(pnr,flight_tuple):
     elif(delay<=48):
         return 30
     else:
-        return -100
+        return -1
     
 def Departure_Delay(pnr,flight_tuple):
     res=feasible_flights.init_PNR_to_Flight_Object()
@@ -32,7 +32,7 @@ def Departure_Delay(pnr,flight_tuple):
     elif(delay<=48):
         return 30
     else:
-        return -100
+        return -1
     
 
 def Calculate_PNR_Score(pnr):
