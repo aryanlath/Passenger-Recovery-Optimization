@@ -7,6 +7,7 @@ from collections import defaultdict
 from feasible_flights import *
 from cost_function import *
 all_flights =[]
+
 import pprint 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -35,15 +36,10 @@ def optimize_flight_assignments(PNR_List):
     all_flights, pnr_objects,_ = init_FlightNumber_to_Flight_Object()
     """
         PNR_List = List of Impacted PNRs
-        PNR_to_Feasible_Flights now returns a list of tuples of flight objects Ex. [(Flight1),(Flight1->Flight2),(Flight3)]
         X_PNR_Constraint -> dictionary where keys are PNR objects and each value is a list of variables for that Particular PNR in its constraint
         X_Flight_Capacity_Constraint-> dictionary of dictionaries where outer keys are Flight objects and inner keys are cabins, each value is a list of variables for that Particular Flight,Cabin in its constraint
     """
-    # Create the mip solver with the SCIP backend.
-    # solver = pywraplp.Solver.CreateSolver('SCIP')
 
-    # if not solver:
-    #     return "No solver available."
     model = gp.Model()
     objective = gp.LinExpr(0)
 
@@ -53,37 +49,25 @@ def optimize_flight_assignments(PNR_List):
     # Variables
     # X_ijk = 1 if the ith PNR is assigned to the jth flight's kth class
     X = {}
-    Y = {} # Store the complements of X
+
     # PNR_to_Feasible_Flights now returns a list of tuples of flight objects 
     # Ex. [(Flight1),(Flight1->Flight2),(Flight3)]
+    # X_PNR_Constraint -> dictionary where keys are PNR objects and each value is a list of variables for that Particular PNR in its constraint
+    # X_Flight_Capacity_Constraint-> dictionary of dictionaries where outer keys are Flight objects and inner keys are cabins, each value is a list of variables for that Particular Flight,Cabin in its constraint
     i=0
     for PNR in PNR_List:
         for FT in PNR_to_Feasible_Flights(g,all_flights,PNR):
             cabins_tuple = list(get_flight_cabin_mappings(FT))
             for cabin in cabins_tuple:
                 # cabin is a tuple Eg: ('A','B')
-                X[(PNR,FT,cabin)] = model.addVar(vtype=GRB.BINARY, name=f'X_i')
-                Y[(PNR,FT,cabin)] = model.addVar(vtype=GRB.BINARY, name=f'Y_i')
+                X[(PNR,FT,cabin)] = model.addVar(vtype=GRB.BINARY, name=f'X_{i}')
                 i+=1
-                model.addConstr(X[(PNR,FT,cabin)]+Y[(PNR,FT,cabin)]==1)
                 X_PNR_Constraint[PNR].append(X[(PNR,FT,cabin)])
 
             for flight_index,flight in enumerate(FT): # Flight is a object
                 for cabin in cabins_tuple: # cabin is a tuple Eg: ('A','B') and cabins_tuple = list of cabins
-                        print("hehe",cabin[flight_index])
                         X_Flight_Capacity_Constraint[flight][cabin[flight_index]].append(X[(PNR, FT, cabin)] * PNR.PAX)
 
-    print("##################################################")
-    print("Debug")
-    print(X_Flight_Capacity_Constraint['1000','A'])
-    print(X_Flight_Capacity_Constraint['1000','F'])
-    print()
-    print(X_Flight_Capacity_Constraint['1001','A'])
-    print(X_Flight_Capacity_Constraint['1001','F'])
-    print()
-    print(X_Flight_Capacity_Constraint['1002','A'])
-    print(X_Flight_Capacity_Constraint['1001','F'])
-    print("##################################################")
     # Constraints
     # Each PNR can be assigned to only one flight class
     for PNR in PNR_List :
@@ -97,7 +81,6 @@ def optimize_flight_assignments(PNR_List):
         for cabin, cabin_list in constraint_dic.items():
             model.addConstr(sum(cabin_list) <= Flight.cabins[cabin])
 
-
     for PNR in PNR_List:
         for FT in PNR_to_Feasible_Flights(g,all_flights,PNR):
             cabins_tuple = get_flight_cabin_mappings(FT)
@@ -109,6 +92,8 @@ def optimize_flight_assignments(PNR_List):
     # Set the objective to maximize
     model.setObjective(objective,GRB.MAXIMIZE)
     model.optimize()
+
+    # model.write("try.lp") # To Print the soln in a file
 
     # Checking if a solution exists
     if model.status == GRB.OPTIMAL:
@@ -125,11 +110,13 @@ def optimize_flight_assignments(PNR_List):
                     if X[(PNR, FT, cabin)].x == 1:
                         result['Assignments'].append((PNR, FT, cabin))
                         assigned_pnrs.add(PNR.pnr_number)
+                        
         for PNR in PNR_List:
             for FT in PNR_to_Feasible_Flights(g,all_flights,PNR):
                 cabins_tuple = get_flight_cabin_mappings(FT)
                 for cabin in cabins_tuple:
                     # cabin is a tuple Eg: ('A', 'B')
+                    print(X[(PNR, FT, cabin)].VarName,"=",X[(PNR, FT, cabin)].x)
                     if X[(PNR, FT, cabin)].x == 0:
                         if PNR.pnr_number not in assigned_pnrs and PNR.pnr_number not in not_assigned_pnrs:
                             result['Non Assignments'].append(PNR)
