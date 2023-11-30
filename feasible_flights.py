@@ -33,13 +33,6 @@ def init_FlightNumber_to_Flight_Object():
     return all_flights,pnr_objects,pnr_flight_mapping
     
 
-# def init_Flight_to_PNR_map():
-#     """Returns Flight to PNR object map"""
-#     Flight_to_PNR_map = defaultdict(list)
-#     pnr_list    = extract_PNR_from_CSV(pnr_data_file)
-#     for pnr in pnr_list:
-#         Flight_to_PNR_map[pnr.flight_number].append(pnr)
-#     return Flight_to_PNR_map
 
 def Get_Impacted_passengers(all_flights,pnr_objects):
     Impacted_flights=[]
@@ -58,24 +51,6 @@ def Get_Impacted_passengers(all_flights,pnr_objects):
     
                 
 
-
-        
-
-
-# def PNR_to_Feasible_Flights(PNR_Object):
-#     all_flights = extract_Flights_from_CSV(flight_data_file)
-#     PNR_to_Flight_Object = init_PNR_to_Flight_Object()
-#     feasible_flight_list = []
-#     my_flight            = PNR_to_Flight_Object[PNR_Object.pnr_number]
-#     my_arrival_time      = my_flight.arrival_time
-#     my_departure_time  = my_flight.departure_time
-#     for flight in all_flights:
-#         flight_arrival_time = flight.arrival_time
-#         flight_departure_time = flight.departure_time
-#         if((flight_departure_time - my_arrival_time).total_seconds() >= 0 and (flight_departure_time - my_arrival_time).total_seconds() <= ETD*60*60 and flight.status):
-#             feasible_flight_list.append(flight)
-
-#     return feasible_flight_list
 
 def visualize_flight_graph(graph):
     plt.figure(figsize=(12, 8))  # Set the size of the plot
@@ -182,15 +157,25 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,num_of_hops=10):
             current_hops+=1
     if(earlist_reached_city==None): 
         return None
+
     departure_city = earlist_reached_city
+
     arrival_city   =  all_flights[PNR_Object.inv_list[-1]].arrival_city
-    #print(departure_city,arrival_city)
+
     valid_paths = []
     all_paths=[]
     visited_edges=[]
+    ## Increasing capacity of remaining flights scheduled
+    # pp.pprint(all_flights)
+    
+    curr_location=copy.deepcopy(current_hops)
+    while(curr_location<len(PNR_Object.inv_list)):
+        all_flights[PNR_Object.inv_list[curr_location]].cabins[PNR_Object.cabin_list[curr_location]]+=int(PNR_Object.PAX)
+        curr_location+=1
+
+    # pp.pprint(all_flights)
     custom_dfs(graph,departure_city,arrival_city,valid_paths,visited_edges,all_paths,num_of_hops-current_hops)
     actual_valid_paths=copy.deepcopy(all_paths)
-    print("path:")
     pp.pprint(actual_valid_paths)
     for path in all_paths:
         i=0
@@ -223,9 +208,9 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,num_of_hops=10):
 
 
 # #visualize_flight_graph(G)
-G=create_flight_graph()
-all_flights,all_pnrs,_=init_FlightNumber_to_Flight_Object()
-ans=PNR_to_Feasible_Flights(G,all_flights,all_pnrs["PNR0005"])
+# G=create_flight_graph()
+# all_flights,all_pnrs,_=init_FlightNumber_to_Flight_Object()
+# ans=PNR_to_Feasible_Flights(G,all_flights,all_pnrs["PNR0000"])
 # pp.pprint(ans)
 # # # remove_cancelled_flights(G, ['1041'])
 

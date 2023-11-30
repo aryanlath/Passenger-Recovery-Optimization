@@ -9,7 +9,7 @@ class Flight:
     
     def __init__(self, flight_number,departure_city, departure_time, arrival_city, arrival_time, status,**cabins):
         self.flight_number = str(flight_number)
-        self.cabins = cabins
+        self.cabins = cabins ## Dictionery
         self.departure_city = departure_city
         self.arrival_city = arrival_city
         self.arrival_time = convert_to_datetime(arrival_time)
