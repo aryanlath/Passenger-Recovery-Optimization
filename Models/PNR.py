@@ -27,17 +27,32 @@ class PNR:
         """
             Returns the score associated with the loyalty string (ex. Gold Silver Platinum)
         """
-        pass
+        # Assuming that constants.py has a dictionary where key is string(loyalty_class) and value is score for that loyalty
+        return loyalty_dict[self.loyalty]
 
     def get_ssr_score(self):
         """
             Returns the score associated with this SSR string (ex. WCHR , DEAF )
-
+            
         """
+        if(self.special_requirements == "Grade1"):
+            return PNR_SSR
+        elif (self.special_requirements=="Grade2"):
+            return PNR_SSR/2
         pass
+    
     def get_pnr_score(self):
         """
-            Returns the Total PNR score of this object
+        Calculates the PNR score for each PNR.
+        Calculation done as follows: score = a*s1 + b*s2 + c*s3
+        where,  s1 = PNR_SSR
+                s2 = PNR_loyalty
+                s3 = PNR_pax
         """
+        #TODO normalize s1 , s2 ,s3 if required 
+        s1 = self.get_ssr_score()
+        s2 = self.get_loyalty_score()
+        s3 = self.PAX * PNR_pax
+        return s1 + s2 + s3
 
         pass
