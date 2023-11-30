@@ -50,7 +50,6 @@ def extract_Flights_from_CSV(file_name):
         arrival_city = row['Arrival City']
         arrival_time = row['Arrival Time']
         status = row['Status']
-        
         # Extracting variable class columns
         cabins= row.drop(['Flight Number', 'Departure City','Departure Time','Arrival City','Arrival Time','Status']).to_dict()
         #print(cabins)
