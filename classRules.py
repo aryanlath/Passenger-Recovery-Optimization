@@ -1,0 +1,14 @@
+upgrade=True
+downgrade=True
+classChangeA=['F','S']
+classChangeS=['F','A']
+classChangeF=['S','A']
+classChangeJ=['O','C','I']
+classChangeC=['O','J','I']
+classChangeI=['J','C','O']
+classChangeO=['J','C','I']
+classChangeY=['B','P','Z']
+classChangeB=['Y','P','Z']
+first=False
+business=False
+economy=False

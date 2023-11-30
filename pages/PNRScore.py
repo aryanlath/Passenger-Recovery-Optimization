@@ -1,7 +1,7 @@
 import streamlit as st
 #import streamlit library
 
-from flight_assignment_optimization import *
+# from flight_assignment_optimization import *
 #to import function that returns alternate flights
 
 #default values of data

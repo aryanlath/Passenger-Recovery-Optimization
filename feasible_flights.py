@@ -6,6 +6,8 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import copy
 import pprint 
+from utils import * 
+
 pp = pprint.PrettyPrinter(indent=4)
 
 def Get_All_Maps():
@@ -18,19 +20,21 @@ def Get_All_Maps():
     pnr_flight_mapping = {}
     all_flights = {}
     pnr_objects={}
+    pnr_to_s2 = {}
     pnr_list    = extract_PNR_from_CSV(test_PNR_data_file) 
     all_flight  = extract_Flights_from_CSV(test_flight_data_file) # test data passed
     for flight in all_flight:
         all_flights[flight.flight_number] = flight
     for pnr in pnr_list:
         pnr_objects[pnr.pnr_number] = pnr
+        pnr_to_s2[pnr.pnr_number] = Calculate_PNR_Score(pnr)
     for pnr in pnr_list:
         flight_objects=[]
         for flight in pnr.inv_list:
             flight_objects.append(all_flights[flight])
         pnr_flight_mapping[pnr.pnr_number]=flight_objects
             
-    return all_flights,pnr_objects,pnr_flight_mapping
+    return all_flights,pnr_objects,pnr_flight_mapping,pnr_to_s2
     
 
 
