@@ -2,6 +2,7 @@ from utils import *
 from Models.Flights import Flight
 import feasible_flights 
 from constants import *
+import math
 
 def cost_function(PNR,flight,Cabin):
     """
@@ -14,20 +15,21 @@ def cost_function(PNR,flight,Cabin):
     s1 = flight_quality_score(PNR, flight)
     s2 = PNR_score(PNR)/pnr_normalize_factor
     s3 = class_difference_score(PNR,flight,Cabin)
-    cost = weight_flight_map*log(s1) + weight_pnr_map*log(s2) + weight_cabin_map*log(s3)
+    cost = weight_flight_map*math.log(s1) + weight_pnr_map*math.log(s2) + weight_cabin_map*math.log(s3)
     return None 
     
 
 def PNR_Score(PNR):
+    pass
 
-    final_pnr_score = 0
-    PNR_PAX_score = PNR.PAX * PNR_pax 
-    PNR_Loyalty_score = Loyalty_CM
-    PNR_SSR_Score = 
+def flight_quality_score(PNR,flight):
+    pass
 
+def PNR_score(PNR):
+    pass
 
-
-
+def class_difference_score(PNR,flight,Cabin):
+    pass
 
 
 
