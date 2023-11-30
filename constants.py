@@ -1,5 +1,8 @@
 pnr_data_file = 'Dataset/passenger_pnr_dataset.csv'
 flight_data_file = 'Dataset/flight_schedule_dataset.csv'
+test_PNR_data_file = 'Dataset/test_data/PNR_test.csv'
+test_flight_data_file = 'Dataset/test_data/flight_test.csv'
+airport_code_location_data_file = 'Dataset/airport-code-to-location.csv'
 test_PNR_data_file = 'Dataset/test_data/PNR_Test.csv'
 test_flight_data_file = 'Dataset/test_data/flight_test.csv'
 n_cabin=2
@@ -28,7 +31,7 @@ def init_normalize_factors(all_flights,pnr_objects,pnr_flight_mapping,pnr_to_s2)
     for pnr in pnr_to_s2:
         pnr_normalize_factor = max(pnr_normalize_factor,pnr_to_s2[pnr.pnr_number])
     global flight_normalize_factor
-    flight_normalize_factor = f()
+    flight_normalize_factor = 100
     global cabin_normalize_factor
     cabin_normalize_factor = 100
     return None
