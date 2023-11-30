@@ -95,6 +95,7 @@ def find_airport_location(airport_code):
     """
     This function creates a dictionary of airport codes and their corresponding locations in the form of (longitude, latitude).
     Usage: (longitude, latitude) = find_airport_location(airport_code)
+    Example: (longitude, latitude) = find_airport_location('BOM')
     """
     df = pd.read_csv(airport_code_location_data_file)
     for _, row in df.iterrows():
