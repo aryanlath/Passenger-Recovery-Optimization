@@ -1,24 +1,32 @@
+pnr_data_file = 'Dataset/passenger_pnr_dataset.csv'
+flight_data_file = 'Dataset/flight_schedule_dataset.csv'
+n_cabin=2
+ETD=72
+MCT=1
+MAXCT=12
+PNR_SSR=200
+PNR_connection=100
+PNR_paidservice=200
+PNR_bookingtype=500
+PNR_pax=50
+PNR_penalty=-50
+Loyalty_CM=2000
+Loyalty_platinum=1800
+Loyalty_gold=1600
+Loyalty_silver=1500
+weight_flight_map = 100
+weight_pnr_map = 100
+weight_cabin_map = 100
+pnr_normalize_factor = 100
+flight_normalize_factor = 100
+cabin_normalize_factor = 100
 
-# Passenger data file
-pnr_data_file = "Dataset/Synth_Data/passenger_pnr_dataset.csv"
-# Flight data file
-flight_data_file = "Dataset/Synth_Data/flight_schedule_dataset.csv"
-
-test_flight_data_file= 'Dataset/test_data/flight_test.csv'
-
-test_PNR_data_file='Dataset/test_data/PNR_Test.csv'
-
-# number of cabins assumed
-n_cabin = 2
-# ETD as defined on Page "Flight Selection and Connection" in the Rule Set
-ETD = 72
-# MCT as defined on Page "Flight Selection and Connection" in the Rule Set
-MCT = 1
-# maximum connection time
-MAXCT = 12
-inventory_csv_path="Dataset/Mphasis_Raw/INV_SCHEDULE.csv"
-schedule_csv_path="Dataset/Mphasis_Raw/SCHEDULE_FL.csv"
-M=100
-
-# airport code to location data file
-airport_code_location_data_file = "Dataset/airport-code-to-location.csv"
+def init_normalize_factors(all_flights,pnr_objects,pnr_flight_mapping,pnr_to_s2):
+    global pnr_normalize_factor
+    for pnr in pnr_to_s2:
+        pnr_normalize_factor = max(pnr_normalize_factor,pnr_to_s2[pnr.pnr_number])
+    global flight_normalize_factor
+    flight_normalize_factor = f()
+    global cabin_normalize_factor
+    cabin_normalize_factor = 100
+    return None
