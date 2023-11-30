@@ -20,3 +20,5 @@ inventory_csv_path="Dataset/Mphasis_Raw/INV_SCHEDULE.csv"
 schedule_csv_path="Dataset/Mphasis_Raw/SCHEDULE_FL.csv"
 M=100
 
+# airport code to location data file
+airport_code_location_data_file = "Dataset/airport-code-to-location.csv"
