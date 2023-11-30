@@ -180,20 +180,34 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,num_of_hops=10):
         return None
 
     departure_city = earlist_reached_city
+
     arrival_city   =  all_flights[PNR_Object.inv_list[-1]].arrival_city
 
     valid_paths = []
     all_paths=[]
     visited_edges=[]
+<<<<<<< HEAD
 
+=======
+    ## Increasing capacity of remaining flights scheduled
+    # pp.pprint(all_flights)
+    
+>>>>>>> ae187349b3ac042da7a25662f017df115a919e78
     curr_location=copy.deepcopy(current_hops)
     while(curr_location<len(PNR_Object.inv_list)):
         all_flights[PNR_Object.inv_list[curr_location]].cabins[PNR_Object.cabin_list[curr_location]]+=int(PNR_Object.PAX)
         curr_location+=1
 
+<<<<<<< HEAD
     custom_dfs(graph,departure_city,arrival_city,valid_paths,visited_edges,all_paths,num_of_hops-current_hops)
     actual_valid_paths=copy.deepcopy(all_paths)
 
+=======
+    # pp.pprint(all_flights)
+    custom_dfs(graph,departure_city,arrival_city,valid_paths,visited_edges,all_paths,num_of_hops-current_hops)
+    actual_valid_paths=copy.deepcopy(all_paths)
+    pp.pprint(actual_valid_paths)
+>>>>>>> ae187349b3ac042da7a25662f017df115a919e78
     for path in all_paths:
         isFirst=True
         valid= True
@@ -222,3 +236,21 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,num_of_hops=10):
 
     return list(set(actual_valid_paths))
 
+<<<<<<< HEAD
+=======
+# #visualize_flight_graph(G)
+# G=create_flight_graph()
+# all_flights,all_pnrs,_=init_FlightNumber_to_Flight_Object()
+# ans=PNR_to_Feasible_Flights(G,all_flights,all_pnrs["PNR0000"])
+# pp.pprint(ans)
+# # # remove_cancelled_flights(G, ['1041'])
+
+# ans=PNR_to_Feasible_Flights(G,all_flights,all_pnrs["PNR0005"])
+# print(ans)
+
+# pp.pprint(init_FlightNumber_to_Flight_Object()[0])
+# print()
+# pp.pprint(init_FlightNumber_to_Flight_Object()[1])
+# print()
+# pp.pprint(init_FlightNumber_to_Flight_Object()[2])
+>>>>>>> ae187349b3ac042da7a25662f017df115a919e78

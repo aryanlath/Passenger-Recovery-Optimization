@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 PNR0001,[1040],[F],False,2,Silver,True
 PNR0002,[1054],[F],True,1,Silver,True
 PNR0003,[1024],[F],False,2,Silver,True
@@ -48,3 +49,6 @@ PNR0047,[1003],[F],False,1,Platinum,True
 PNR0048,[1011],[F],True,3,Platinum,False
 PNR0049,[1040],[A],False,4,Platinum,True
 PNR0050,[1004],[A],False,1,Silver,False
+=======
+PNR0000,[1006,1008,1009,1010],[F,A,A,F],False,4,Silver,False
+>>>>>>> ae187349b3ac042da7a25662f017df115a919e78
