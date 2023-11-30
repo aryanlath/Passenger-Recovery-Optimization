@@ -2,11 +2,12 @@ from utils import *
 from Models.PNR import *
 from Models.Flights import *
 from constants import *
+from utils import *
+from cost_function import *
 import networkx as nx
 import matplotlib.pyplot as plt
 import copy
-import pprint 
-from utils import * 
+import pprint
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -27,7 +28,7 @@ def Get_All_Maps():
         all_flights[flight.flight_number] = flight
     for pnr in pnr_list:
         pnr_objects[pnr.pnr_number] = pnr
-        pnr_to_s2[pnr.pnr_number] = Calculate_PNR_Score(pnr)
+        pnr_to_s2[pnr.pnr_number] = PNR_Score(pnr)
     for pnr in pnr_list:
         flight_objects=[]
         for flight in pnr.inv_list:
