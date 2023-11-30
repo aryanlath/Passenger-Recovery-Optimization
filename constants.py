@@ -1,12 +1,12 @@
 
 # Passenger data file
-pnr_data_file = "Dataset/passenger_pnr_dataset.csv"
+pnr_data_file = "Dataset/Synth_Data/passenger_pnr_dataset.csv"
 # Flight data file
-flight_data_file = "Dataset/flight_schedule_dataset.csv"
+flight_data_file = "Dataset/Synth_Data/flight_schedule_dataset.csv"
 
-test_flight_data_file= 'test_data/flight_test.csv'
+test_flight_data_file= 'Dataset/test_data/flight_test.csv'
 
-test_PNR_data_file='test_data/PNR_Test.csv'
+test_PNR_data_file='Dataset/test_data/PNR_Test.csv'
 
 # number of cabins assumed
 n_cabin = 2
@@ -16,7 +16,7 @@ ETD = 72
 MCT = 1
 # maximum connection time
 MAXCT = 12
-inventory_csv_path="Dataset/INV_SCHEDULE.csv"
-schedule_csv_path="Dataset\SCHEDULE_FL.csv"
+inventory_csv_path="Dataset/Mphasis_Raw/INV_SCHEDULE.csv"
+schedule_csv_path="Dataset/Mphasis_Raw/SCHEDULE_FL.csv"
 M=100
 
