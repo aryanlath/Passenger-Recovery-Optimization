@@ -1,5 +1,7 @@
 pnr_data_file = 'Dataset/passenger_pnr_dataset.csv'
 flight_data_file = 'Dataset/flight_schedule_dataset.csv'
+test_PNR_data_file = 'Dataset/test_data/PNR_Test.csv'
+test_flight_data_file = 'Dataset/test_data/flight_test.csv'
 n_cabin=2
 ETD=72
 MCT=1

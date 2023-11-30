@@ -4,13 +4,6 @@ from Models.PNR import *
 from Models.Flights import *
 import re
 
-def PNR_ranking():
-    pass
-
-def  Flight_score(pnr, flight):
-    pass
-
-
 def extract_PNR_from_CSV(file_path):
     pnr_objects = []
     with open(file_path, 'r') as file:
