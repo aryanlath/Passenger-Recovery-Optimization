@@ -90,3 +90,14 @@ def convert_result_to_csv(result):
 
 # pnr_object=parse_pnr_file(test_PNR_data_file)
 # print(pnr_object)
+
+def find_airport_location(airport_code):
+    """
+    This function creates a dictionary of airport codes and their corresponding locations in the form of (longitude, latitude).
+    Usage: (longitude, latitude) = find_airport_location(airport_code)
+    """
+    df = pd.read_csv(airport_code_location_data_file)
+    for _, row in df.iterrows():
+        if row['iata'] == airport_code:
+            return row['latitude'], row['longitude']
+    return None, None
