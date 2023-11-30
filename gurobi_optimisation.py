@@ -33,7 +33,7 @@ def get_flight_cabin_mappings(flights, current_mapping=None, flight_index=0):
 
 def optimize_flight_assignments(PNR_List):
     g=create_flight_graph()
-    all_flights, pnr_objects,_ = init_FlightNumber_to_Flight_Object()
+    all_flights, pnr_objects,_ = Get_All_Maps()
     """
         PNR_List = List of Impacted PNRs
         X_PNR_Constraint -> dictionary where keys are PNR objects and each value is a list of variables for that Particular PNR in its constraint
@@ -110,7 +110,7 @@ def optimize_flight_assignments(PNR_List):
                     if X[(PNR, FT, cabin)].x == 1:
                         result['Assignments'].append((PNR, FT, cabin))
                         assigned_pnrs.add(PNR.pnr_number)
-                        
+
         for PNR in PNR_List:
             for FT in PNR_to_Feasible_Flights(g,all_flights,PNR):
                 cabins_tuple = get_flight_cabin_mappings(FT)
@@ -126,7 +126,7 @@ def optimize_flight_assignments(PNR_List):
     else:
         return "The problem does not have an optimal solution."
 
-all_flights,pnr_list,_ = init_FlightNumber_to_Flight_Object()
+all_flights,pnr_list,_ = Get_All_Maps()
 
 
 passenger_pnr_path = 'passenger_pnr_dataset.csv'
