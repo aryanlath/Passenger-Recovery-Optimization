@@ -37,19 +37,19 @@ Each file contains widgets to adjust various parameters along with some default 
  ### LandingPage.py
  - Main page of the GUI
  - Used to modify cabin allocation and maximum departure delay.
- - Writes to default.py.
+ - **Writes to default.py**.
 
  ### PNRScore.py
 - Used to modify scores for PNR priority calculation parameters like PAX, loyalty, classes, MCT, MAXCT, ETD etc.
-- writes to constants.py.
+- **writes to constants.py**.
 
 ### cabinAndClasses.py
 - Used to allow/disallow class changes during flight allocation and upgrade/downgrade rules.
-- writes to classRules.py.
+- **writes to classRules.py**.
 
 ### flightScore.py
 - Used to modify parameters used to rank the flight and allocate grades like arrival delay, STD and citypairs.
-- writes to flightScores.py.
+- **writes to flightScores.py**.
 ######
 
 
