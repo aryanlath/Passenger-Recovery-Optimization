@@ -1,24 +1,35 @@
 # Passenger-Recovery-Optimization
 
-Airlines routinely change their flight schedules for various reasons like seasonal demands, to
-pick new routes, time changes needed based on daylight savings, changes to flight numbers,
-operating frequency, timings, etc. Many passengers get impacted due these schedule
+Airlines routinely change their flight schedules for various reasons like seasonal demands, picking new routes, time changes needed based on daylight savings, changes to flight numbers,
+operating frequency, timings, etc. Many passengers get impacted due to these schedule
 changes and they need to be regularly re-accommodated to alternate flights. 
 
-The project uses a quantum computing based approach to identify optimal alternate flight solutions for all impacted passengers based on certain constraints and keeping in mind various factors like PNR priority, time to reach destination, special passenger types without jeopardising the flight experience for the passengers.
+The project uses a quantum computing-based approach to identify optimal alternate flight solutions for all impacted passengers based on certain constraints and considering various factors like PNR priority, time to reach the destination, and special passenger types without jeopardizing the flight experience for the passengers.
 
 
 ## Business Rules Engine using Streamlit
 
-We have provided a GUI, deployed using `Streamlit` to easily modify the various scores for each attribute used to calculate PNR scores, flight grades, class allocation etc.
+We have provided a GUI, deployed using `Streamlit` to easily modify the various scores for each attribute used to calculate PNR scores, flight grades, class allocation, etc.
 
 
 ## Deployment
+
+### Installing the dependencies
 
 Run the following command in the terminal
 ```
   pip install -f requirements.txt
 ```
+
+### Setting up the environment file
+
+Make a file named `.env` in the main folder, it's content should be:
+```
+GMAPS_API_KEY=your_actual_api_key
+DWAVE_TOKEN=dwave_token
+```
+
+### Running the program
 Now, to run the script enter the following command in the terminal
 ```bash
   streamlit run landingPage.py
