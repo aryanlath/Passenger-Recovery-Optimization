@@ -53,32 +53,22 @@ class Flight:
         self.departure_time = convert_to_datetime(departure_time)
         self.arrival_time = convert_to_datetime(arrival_time)
         self.status = status.lower()
-
-
-        
-
+        self.cabins = ['FC','BC','PC','EC']
 
     def __hash__(self) -> int:
         return hash(self.inventory_id)
     
     def __eq__(self, other):
         return isinstance(other, Flight) and self.inventory_id == other.inventory_id
+    
+    def get_capacity(self, cabin):
+        """Get the capacity given the cabin"""
+        cabin_capacities={'FC':self.fc_available_inventory, 'BC':self.bc_available_inventory, 'EC':self.ec_available_inventory,'PC':self.pc_available_inventory}
+        return cabin_capacities[cabin]
 
     def __repr__(self):
         return (
-            f"Flight( 'Inventory ID: {self.inventory_id}, FC: {self.fc_class_dict}, BC: {self.bc_class_dict}, PC: {self.pc_class_dict}, EC: {self.ec_class_dict}, Flight Number: {self.flight_number}, Departure City: {self.departure_city}, Arrival City: {self.arrival_city} "
-            
-            # f"FC: {self.fc_available_inventory}, "
-            # f"BC: {self.bc_available_inventory}, "
-            # f"PEC: {self.pc_available_inventory}, "
-            # f"EC: {self.ec_available_inventory}, "
-            # #f"First Class CD: {self.fc_cd}, "
-            # #f"Business Class CD: {self.bc_cd}, "
-            # #f"Premium Economy Class CD: {self.pc_cd}, "
-            # #f"Economy Class CD: {self.ec_cd}, "
-            # f"Depart Time: {self.departure_time}, "
-            # f"Arrival Time: {self.arrival_time}, "
-            # f"Status: {self.status})"
+            f"Flight('Inventory ID: {self.inventory_id}, FC: {self.fc_class_dict}, BC: {self.bc_class_dict}, PC: {self.pc_class_dict}, EC: {self.ec_class_dict}, Flight Number: {self.flight_number}, Departure City: {self.departure_city}, Arrival City: {self.arrival_city} "
         )
     
 

@@ -2,7 +2,7 @@
 # If needed import constants.py
 
 class PNR:
-    def __init__(self, pnr_number,inv_list, sub_class_list, special_requirements,PAX, passenger_loyalty):
+    def __init__(self, pnr_number,inv_list, sub_class_list, special_requirements,PAX, passenger_loyalty,email_id):
 
         # inv_list -> list of inventory ids for this pnr (all the connecting flights)
         # sub_class_list -> list of all the subclasses this PNR is travelling in for each leg of journey
@@ -12,7 +12,7 @@ class PNR:
         self.special_requirements = special_requirements 
         self.PAX = int(PAX)
         self.passenger_loyalty = passenger_loyalty
-        
+        self.email_id = email_id
 
     def __hash__(self) -> int:
         return hash(self.pnr_number)
@@ -21,7 +21,19 @@ class PNR:
         return isinstance(other, PNR) and self.pnr_number == other.pnr_number
     
     def __repr__(self):
-        return f"PNR('{self.pnr_number}', {self.inv_list}, {self.cabin_list}, {self.PAX})"
+        return f"PNR('{self.pnr_number}', {self.inv_list}, {self.sub_class_list}, {self.PAX})"
+    
+    def get_cabin(self,sub_class):
+        """
+        Returns the cabin of this PNR given the sub_class
+        """
+        subclass_to_class_mapping = {
+        'F': 'FC', 'P': 'FC',   # First Class
+        'C': 'BC', 'J': 'BC', 'Z': 'BC',  # Business Class
+        'Q': 'PC', 'R': 'PC', 'S': 'PC', 'T': 'PC', 'H': 'PC', 'M': 'PC',  # Premium Class
+        'Y': 'EC', 'A': 'EC', 'B': 'EC', 'D': 'EC', 'E': 'EC', 'G': 'EC', 'I': 'EC', 'K': 'EC', 'L': 'EC', 'N': 'EC', 'O': 'EC', 'U': 'EC', 'V': 'EC', 'W': 'EC', 'X': 'EC'  # Economy Class
+        }
+        return subclass_to_class_mapping[sub_class]
     
     def get_loyalty_score(self):
         """

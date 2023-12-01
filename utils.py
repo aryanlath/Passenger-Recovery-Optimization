@@ -2,53 +2,174 @@ import pandas as pd
 from constants import *
 from Models.PNR import *
 from Models.Flights import *
-import re
+from collections import defaultdict
+import copy
 
-def extract_PNR_from_CSV(file_path):
-    pnr_objects = []
-    with open(file_path, 'r') as file:
-        for line in file:
-            # pnr = parse_pnr_line(line)/
-    # Using regex to extract values within brackets and the remaining parts
-            matches = re.findall(r'\[.*?\]|[^,]+', line)
-            #/print(matches)
-            # Extracting and parsing each part
-            pnr_number = matches[0]
-           # print(int(x) for x in matches[1].strip('[]').split(','))
-            inv_list = [x for x in matches[1].strip('[]').split(',')]
-            cabin_list= matches[2].strip('[]').split(',')
-            special_requirements = matches[3] == "True"
-            PAX = matches[4]
-            passenger_loyalty = matches[5]
-            is_checkin = matches[6] == "True"
+def string_to_dict(string_dict):
+    # Remove curly braces and split by commas
+    pairs = string_dict[1:-1].split(', ')
 
-    # Combining all elements into a list
-            parsed_list = [pnr_number, inv_list, cabin_list, special_requirements, PAX, passenger_loyalty, is_checkin]
-            if(parsed_list==None) :break
-            #aprint(parsed_list)
-            PNR_Object=PNR(*parsed_list)
-            pnr_objects.append(PNR_Object)
-    #print(pnr_objects)
-    return pnr_objects
+    # Create a dictionary from key-value pairs
+    actual_dict = {}
+    for pair in pairs:
+        key, value = pair.split(': ')
+        actual_dict[key.strip("'")] = int(value)
+
+    return actual_dict
 
 def extract_Flights_from_CSV(file_name):
     flights = []
     df = pd.read_csv(file_name)
 
     for _, row in df.iterrows():
-
-        flight_number = row['Flight Number']
-        departure_time = row['Departure Time']
-        departure_city = row['Departure City']
-        arrival_city = row['Arrival City']
-        arrival_time = row['Arrival Time']
+        inventory_id = row['InventoryId']
+        schedule_id = row['ScheduleId']
+        flight_number = row['FlightNumber']
+        aircraft_type = row['AircraftType']
+        departure_city = row['DepartureAirport']
+        arrival_city = row['ArrivalAirport']
+        total_capacity = row['TotalCapacity']
+        total_inventory = row['TotalInventory']
+        booked_inventory = row['BookedInventory']
+        oversold = row['Oversold']
+        available_inventory = row['AvailableInventory']
+        first_class = row['FirstClass']
+        business_class = row['BusinessClass']
+        premium_economy_class = row['PremiumEconomyClass']
+        economy_class = row['EconomyClass']
+        fc_total_inventory = row['FC_TotalInventory']
+        fc_booked_inventory = row['FC_BookedInventory']
+        fc_oversold = row['FC_Oversold']
+        fc_available_inventory = row['FC_AvailableInventory']
+        bc_total_inventory = row['BC_TotalInventory']
+        bc_booked_inventory = row['BC_BookedInventory']
+        bc_oversold = row['BC_Oversold']
+        bc_available_inventory = row['BC_AvailableInventory']
+        pc_total_inventory = row['PC_TotalInventory']
+        pc_booked_inventory = row['PC_BookedInventory']
+        pc_oversold = row['PC_Oversold']
+        pc_available_inventory = row['PC_AvailableInventory']
+        ec_total_inventory = row['EC_TotalInventory']
+        ec_booked_inventory = row['EC_BookedInventory']
+        ec_oversold = row['EC_Oversold']
+        ec_available_inventory = row['EC_AvailableInventory']
+        fc_cd = string_to_dict(str(row['FC_CD']))
+        bc_cd = string_to_dict(str(row['BC_CD']))
+        pc_cd = string_to_dict(str(row['PC_CD']))
+        ec_cd = string_to_dict(str(row['EC_CD']))
+        departure_time = row['DepartureDatetime']
+        arrival_time = row['ArrivalDatetime']
         status = row['Status']
-        # Extracting variable class columns
-        cabins= row.drop(['Flight Number', 'Departure City','Departure Time','Arrival City','Arrival Time','Status']).to_dict()
-        #print(cabins)
-        flights.append(Flight(flight_number, departure_city, departure_time,arrival_city,arrival_time,status, **cabins))
-    
+        flight = Flight(
+            inventory_id, schedule_id, flight_number, aircraft_type, departure_city, arrival_city,
+            total_capacity, total_inventory, booked_inventory, oversold, available_inventory,
+            first_class, business_class, premium_economy_class, economy_class,
+            fc_total_inventory, fc_booked_inventory, fc_oversold, fc_available_inventory,
+            bc_total_inventory, bc_booked_inventory, bc_oversold, bc_available_inventory,
+            pc_total_inventory, pc_booked_inventory, pc_oversold, pc_available_inventory,
+            ec_total_inventory, ec_booked_inventory, ec_oversold, ec_available_inventory,
+            fc_cd, bc_cd, pc_cd, ec_cd, departure_time, arrival_time, status
+        )
+        flights.append(flight)
+
     return flights
+
+
+def Get_Flight_Map():
+    all_flights = {}
+    all_flight  = extract_Flights_from_CSV(test_flight_data_file)
+    for flight in all_flight:
+        all_flights[flight.inventory_id] = flight
+    return all_flights
+
+
+def sort_and_remove_number(strings):
+    # Sort the strings based on the numeric value after '#' and return the splitted string list
+    sorted_strings = sorted(strings, key=lambda s: int(s.split('#')[1]))
+
+    return [s.split('#')[0] for s in sorted_strings]
+
+
+def extract_PNR_from_CSV(file_path):
+    """
+    We split the inv_list of a PNR as soon as we see a flight that is >=72 hrs to handle round trip aand multi-city booking cases
+    returns the list of PNR_objects, map of originalPNR_number to split PNR_Numbers eg: {"PNR001": ["PNR001#0", "PNR001#1"]}
+    """
+    pnr_dict = {}
+    df = pd.read_csv(file_path)
+    for _,row in df.iterrows():
+        pnr_number = row['RECLOC']
+        subclass = row['COS_CD']
+        seg_seq = int(row['SEG_SEQ'])
+        pax = row['PAX_CNT']
+        inv_id = row.get('INV_ID', None)
+        passenger_loyalty = row.get('LOYALTY', None)
+        special_requirements = row.get('SSR', None)
+        email_id = row.get('CONTACT_EMAIL', "mock@email.com")
+
+        # To get the Legs of flight ordered by seq_number
+
+        if(pnr_dict.get(pnr_number) is None):
+            pnr_dict[pnr_number] = PNR(pnr_number,[inv_id+"#"+str(seg_seq)],[subclass+"#"+str(seg_seq)],special_requirements,pax,passenger_loyalty,email_id)
+        else:
+            pnr_dict[pnr_number].inv_list.append(inv_id+"#"+str(seg_seq),)
+            pnr_dict[pnr_number].sub_class_list.append(subclass+"#"+str(seg_seq))
+
+    # Cleaning up the # and sorting according to the seg_seq
+    for key,value in pnr_dict.items():
+        value.inv_list = sort_and_remove_number(value.inv_list)
+        value.sub_class_list = sort_and_remove_number(value.sub_class_list)
+    pnr_objects=[]
+    pnr_to_split_pnrs=defaultdict(list)
+    all_flights=Get_Flight_Map()
+    pnr_dict_cpy=copy.deepcopy(pnr_dict)
+    
+    for key,pnr_object in pnr_dict_cpy.items():
+        start=0
+        partitions=[]
+        prev_arrival_time=None
+        for flight in pnr_object.inv_list:
+            if(start==0):
+                prev_arrival_time=all_flights[flight].arrival_time
+                start+=1
+            else:
+                if(all_flights[flight].departure_time.timestamp()-prev_arrival_time.timestamp()>ETD*60*60):
+                    partitions.append(start)
+                prev_arrival_time=all_flights[flight].arrival_time
+                start+=1
+        if(len(partitions)==0):
+            continue
+        curr_len=0
+        curr_list=[]
+        curr_subclass=[]
+        num_of_partitions=0
+
+        while(curr_len<len(pnr_object.inv_list)):
+            if(curr_len in partitions):
+                pnr_to_split_pnrs[key].append(key+"#"+str(num_of_partitions))
+                temp=copy.deepcopy(curr_list)
+                temp1=copy.deepcopy(curr_subclass)
+                pnr_dict[key+"#"+str(num_of_partitions)]=PNR(key+"#"+str(num_of_partitions),temp,temp1,special_requirements,pax,passenger_loyalty,email_id)
+                curr_list.clear()
+                curr_subclass.clear()
+                curr_list.append(pnr_object.inv_list[curr_len])
+                curr_subclass.append(pnr_object.sub_class_list[curr_len])
+                curr_len+=1
+                num_of_partitions+=1
+            else:
+                curr_list.append(pnr_object.inv_list[curr_len])
+                curr_subclass.append(pnr_object.sub_class_list[curr_len])
+                curr_len+=1
+        if(len(curr_list)>0):
+            pnr_to_split_pnrs[key].append(key+"#"+str(num_of_partitions))
+            pnr_dict[key+"#"+str(num_of_partitions)]=PNR(key+"#"+str(num_of_partitions),curr_list,curr_subclass,special_requirements,pax,passenger_loyalty,email_id)
+ 
+        del pnr_dict[pnr_object.pnr_number]
+    
+    for key,pnr_object in pnr_dict.items():
+        pnr_objects.append(pnr_object)
+            
+    return pnr_objects,pnr_to_split_pnrs
 
 def convert_result_to_csv(result):
     dataframe = pd.DataFrame()
@@ -94,3 +215,5 @@ def find_airport_location(airport_code):
         if row['iata'] == airport_code:
             return row['latitude'], row['longitude']
     return None, None
+
+
