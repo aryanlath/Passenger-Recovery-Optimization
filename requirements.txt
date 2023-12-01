@@ -3,3 +3,6 @@ networkx
 ortools
 gurobipy
 streamlit
+dimod
+dwave-system
+python-dotenv
