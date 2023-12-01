@@ -205,7 +205,7 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,num_of_hops=4):
         for flight in path:
             if isFirst:
                 if(arrival_time==None):
-                    if((flight.departure_time.timestamp()-departure_time.timestamp())>=ETD*60*60):
+                    if(abs(flight.departure_time.timestamp()-departure_time.timestamp())>=ETD*60*60):
                         valid=False
                         break
                 elif((flight.departure_time.timestamp()-arrival_time.timestamp())<=MCT*60*60 or (flight.departure_time.timestamp()-departure_time.timestamp())>=ETD*60*60):
