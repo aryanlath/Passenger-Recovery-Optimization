@@ -15,10 +15,7 @@ We have provided a GUI, deployed using `Streamlit` to easily modify the various 
 
 ## Deployment
 
-Run the following commands in the terminal
-```bash
-  pip install streamlit
-```
+Run the following command in the terminal
 ```
   pip install -f requirements.txt
 ```
