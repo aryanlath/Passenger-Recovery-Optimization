@@ -1,6 +1,7 @@
 
 # If needed 
-from constants import *
+from init_functions import loyalty_dict
+from constants import PNR_pax,PNR_SSR
 
 class PNR:
     def __init__(self, pnr_number,inv_list, sub_class_list, special_requirements,PAX, passenger_loyalty,email_id):

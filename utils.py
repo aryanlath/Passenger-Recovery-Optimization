@@ -5,27 +5,6 @@ from Models.Flights import *
 from collections import defaultdict
 import copy
 
-loyalty_dict = {}
-
-def init_normalize_factors(all_flights,pnr_objects,pnr_flight_mapping,pnr_to_s2):
-    global pnr_normalize_factor
-    for pnr in pnr_to_s2:
-        pnr_normalize_factor = max(pnr_normalize_factor,pnr_to_s2[pnr])
-    global flight_normalize_factor
-    flight_normalize_factor = 100
-    global cabin_normalize_factor
-    cabin_normalize_factor = 100
-
-def init_loyalty_dictionary():
-    """
-    Initialize the loyalty dictionary
-    """
-    global loyalty_dict
-    loyalty_dict["CM"] = Loyalty_CM
-    loyalty_dict["Platinum"] = Loyalty_platinum
-    loyalty_dict["Gold"] = Loyalty_gold
-    loyalty_dict["Silver"] = Loyalty_silver
-
 def string_to_dict(string_dict):
     # Remove curly braces and split by commas
     pairs = string_dict[1:-1].split(', ')
