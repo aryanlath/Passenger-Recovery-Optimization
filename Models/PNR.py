@@ -52,7 +52,6 @@ class PNR:
             return PNR_SSR
         elif (self.special_requirements=="Grade2"):
             return PNR_SSR/2
-        pass
     
     def get_pnr_score(self):
         """
@@ -67,5 +66,3 @@ class PNR:
         s2 = self.get_loyalty_score()
         s3 = self.PAX * PNR_pax
         return s1 + s2 + s3
-
-        pass
