@@ -40,8 +40,8 @@ def flight_quality_score(PNR, flight_tuple):
     _,_,pnr_flight_mapping,_= feasible_flights.Get_All_Maps()
     first_flight = pnr_flight_mapping[PNR.pnr_number][0]
     last_flight = pnr_flight_mapping[PNR.pnr_number][-1]
-    Arrival_Delay_inHours = (last_flight.arrival_time - flight_tuple[-1].arrival_time).total_seconds()/3600
-    Departure_Delay_inHours = (first_flight.arrival_time - flight_tuple[0].arrival_time).total_seconds()/3600
+    Arrival_Delay_inHours = abs((last_flight.arrival_time - flight_tuple[-1].arrival_time).total_seconds())/3600
+    Departure_Delay_inHours = abs((first_flight.departure_time - flight_tuple[0].departure_time).total_seconds())/3600
     DelayScore = 0 
     
     if(Arrival_Delay_inHours <= 6):
@@ -66,6 +66,8 @@ def flight_quality_score(PNR, flight_tuple):
     else:
         DelayScore += 0.00000001
     
+    # ConnectionScore -> If proposed flight solutions's length increases, score decreases   
+                        # If proposed original flight solutions's length decreases, score increases
     ConnectionScore = connection_constant - len(flight_tuple) + len(pnr_flight_mapping[PNR.pnr_number])
     
     return DelayScore + ConnectionScore*10
@@ -75,13 +77,16 @@ def class_difference_score(PNR, cabin_Tuple):
     Calculates the class difference score for each PNR to flight mapping.
     """
     Cabin_Cost = {
+        # Based on Empirical Cost values of flight tickets of these classes
         "EC": 1,
         "PC": 1.5,
         "BC": 3,
         "FC": 6
     }
-    upgrade_multiplier = 1.1
-    downgrade_multiplier = 1.5
+    # Downgrades are penalized more than upgrades are rewarded
+    # Score returned is 1 ( log(1) == 0 )
+    upgrade_multiplier = 1.3
+    downgrade_multiplier = 1.0/1.5
     sug_sum = 0
     pre_sum = 0
     for i in range(len(cabin_Tuple)):
@@ -93,5 +98,7 @@ def class_difference_score(PNR, cabin_Tuple):
     ratio = sug_sum/pre_sum
     if(ratio > 1):
         return upgrade_multiplier*ratio
+    elif ratio==1:
+        return 1
     else:
         return downgrade_multiplier*ratio
