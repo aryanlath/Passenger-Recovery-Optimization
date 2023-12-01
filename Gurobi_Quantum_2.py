@@ -117,12 +117,15 @@ def quantum_optimize_flight_assignments(PNR_List):
     best = feasible_sampleset.first.sample   
     sampleset = sampler.sample_cqm(CQM)                        
     feasible_sampleset = sampleset.filter(lambda row: row.is_feasible)  
-    best = feasible_sampleset.first.sample  
-    for sample in feasible_sampleset.samples():
+    # best = feasible_sampleset.first.sample  
+    Aggregated_sampleset = feasible_sampleset.aggregate()
+    print("Total No. of Quantum Solutions are " , len(Aggregated_sampleset))
+    for sample in Aggregated_sampleset.samples():
+        print("NEXT SOLUTION\n") 
         for key,val in sample.items():
             if(val==1.0):
                 print(key," = ", val ,my_dict[key])
-        print("NEXT SOLUTION\n")  
+         
     # print(type(feasible_sampleset))
     # print(type(best))
     # print(best)
