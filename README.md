@@ -10,7 +10,7 @@ The project uses a quantum computing based approach to identify optimal alternat
 
 ## Business Rules Engine using Streamlit
 
-A GUI to easily modify the various scores for each attribute used to calculate PNR scores, flight grades, class allocation etc.
+We have provided a GUI, deployed using `Streamlit` to easily modify the various scores for each attribute used to calculate PNR scores, flight grades, class allocation etc.
 
 
 ## Deployment
@@ -32,20 +32,33 @@ Each file contains widgets to adjust various parameters along with some default 
  - Main page of the GUI
  - Used to modify cabin allocation and maximum departure delay.
  - **Writes to default.py**.
-![Landing Page](/readmeSS/Landing_Page_SS.png)
+![Landing Page](/assets/Landing_Page_SS.png)
  ### PNRScore.py
 - Used to modify scores for PNR priority calculation parameters like PAX, loyalty, classes, MCT, MAXCT, ETD etc.
 - **writes to constants.py**.
-![PNR Scores](/readmeSS/PNRScore_SS.png)
+![PNR Scores](/assets/PNRScore_SS.png)
 ### cabinAndClasses.py
 - Used to allow/disallow class changes during flight allocation and upgrade/downgrade rules.
 - **writes to classRules.py**.
-![Flight Scores](/readmeSS/FlightScores_SS.png)
+![Cabins and Classes](/assets/CabinClasses_SS.png)
 ### flightScore.py
 - Used to modify parameters used to rank the flight and allocate grades like arrival delay, STD and citypairs.
 - **writes to flightScores.py**.
-![Cabins and Classes](/readmeSS/CabinClasses_SS.png)
-######
+![Flight Scores](/assets/FlightScores_SS.png)
+
+
+## Glossary
+
+A few terms commonly used by airlines and what they mean
+
+- PNR\
+Passenger name necord data is unverified information provided by passengers and collected by air carriers to enable the reservation and check-in processes. The data is used by the air carriers to manage their air transportation services.
+
+- Cabins\
+Cabins divide every seat on a plane into different categories, each with its own price and set of rules. Fare cabins are identified by one-letter fare codes. There are four main cabins - First, Business, Premium Economy and Economy.
+
+- Classes\
+Each cabin is further divided various classes. They typically denote the level of service or fare type purchased by a passenger. The class often determines the amenities, seat comfort, services, and flexibility available during the flight.  
 
 
 
