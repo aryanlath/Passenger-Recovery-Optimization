@@ -1,7 +1,7 @@
 from feasible_flights import *
 from constants import *
 from gurobi_optimisation import *
-
+from Gurobi_Quantum_2 import *
 import pprint 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -25,5 +25,16 @@ print("Total Reassigned: ",len(result['Assignments']))
 pp.pprint(result['Assignments'])
 print("Not Assigned PNRs: ")
 pp.pprint(result['Non Assignments'])
+print("\n\n\n\n")
+quantum_result = quantum_optimize_flight_assignments(Impacted_PNR)
+# print(quantum_result)
 
+print("QUANTUM RESULTS")
+
+print("Total Reassigned: ",len(quantum_result['Assignments']))
+
+pp.pprint(quantum_result['Assignments'])
+print("Not Assigned PNRs: ")
+pp.pprint(quantum_result['Non Assignments'])
+print("\n\n\n\n")
 
