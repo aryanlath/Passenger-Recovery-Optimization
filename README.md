@@ -15,9 +15,12 @@ We have provided a GUI, deployed using `Streamlit` to easily modify the various 
 
 ## Deployment
 
-Make sure you have streamlit library installed or install it using the following command in the terminal
+Run the following commands in the terminal
 ```bash
   pip install streamlit
+```
+```
+  pip install -f requirements.txt
 ```
 Now, to run the script enter the following command in the terminal
 ```bash
@@ -30,22 +33,28 @@ Now, to run the script enter the following command in the terminal
 Each file contains widgets to adjust various parameters along with some default values. On pressing the proceed button at the bottom of each page, all the values chosen are written into a python file as variables which can be imported for use in other programs.
  ### LandingPage.py
  - Main page of the GUI
- - Used to modify cabin allocation and maximum departure delay.
+ - Used to modify cabin allocation and maximum departure delay
  - **Writes to default.py**.
+   
 ![Landing Page](/assets/Landing_Page_SS.png)
- ### PNRScore.py
-- Used to modify scores for PNR priority calculation parameters like PAX, loyalty, classes, MCT, MAXCT, ETD etc.
-- **writes to constants.py**.
-![PNR Scores](/assets/PNRScore_SS.png)
-### cabinAndClasses.py
-- Used to allow/disallow class changes during flight allocation and upgrade/downgrade rules.
-- **writes to classRules.py**.
-![Cabins and Classes](/assets/CabinClasses_SS.png)
-### flightScore.py
-- Used to modify parameters used to rank the flight and allocate grades like arrival delay, STD and citypairs.
-- **writes to flightScores.py**.
-![Flight Scores](/assets/FlightScores_SS.png)
 
+ ### PNRScore.py
+- Used to modify scores for PNR priority calculation parameters like PAX, loyalty, classes, MCT, MAXCT, ETD, etc
+- **writes to constants.py**
+  
+![PNR Scores](/assets/PNRScore_SS.png)
+
+### cabinAndClasses.py
+- Used to allow/disallow class changes during flight allocation and upgrade/downgrade rules
+- **writes to classRules.py**
+  
+![Cabins and Classes](/assets/CabinClasses_SS.png)
+
+### flightScore.py
+- Used to modify parameters used to rank the flight and allocate grades like arrival delay, STD and citypairs
+- **writes to flightScores.py**
+  
+![Flight Scores](/assets/FlightScores_SS.png)
 
 ## Glossary
 
@@ -69,6 +78,14 @@ SSR stands for Special Service Request. SSRs are codes used within the airline i
 - Loyalty\
 Frequent travelers or passengers who consistently choose to fly with a particular airline or its partners are incentivized by given a loyalty class like gold, and silver. Passengers with a high loyalty class are given a higher preference by the airline.
 
+- MCT\
+Minimum Connection Time between two connecting flights.
+
+- MAXCT\
+Maximum Connection Time between two connecting flights.
+
+- ETD\
+Estimated time of departure of a planned flight.
 
 
 
