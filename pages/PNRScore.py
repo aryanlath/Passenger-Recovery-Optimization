@@ -1,7 +1,7 @@
 import streamlit as st
 #import streamlit library
 
-# from flight_assignment_optimization import *
+#from flight_assignment_optimization import *
 #to import function that returns alternate flights
 
 #default values of data
@@ -83,7 +83,13 @@ st.write("")
 col1,col2,col3=st.columns(3)
 with col1:
     #score for SSR
-    PNR_SSR=st.number_input("SSR",value=200,min_value=0)
+    col1a,col1b=st.columns(2)
+    with col1a:
+        #SSR grade 1
+        grade1=st.number_input("SSR Grade 1",value=250,min_value=0)
+    with col1b:
+        #SSR grade 2
+        grade2=st.number_input("SSR Grade 2",value=150,min_value=0)
     
     #score for connection downline
     PNR_connection=st.number_input("Connection Downline",value=100,min_value=0)
@@ -160,9 +166,12 @@ with col3:
         
         #writing PNR scores
         
-        #SSR score
-        f.write("PNR_SSR="+str(PNR_SSR)+"\n")
-    
+        #SSR score dictionary
+        f.write("PNR_SSR={'grade1':"+str(grade1)+",'grade2':"+str(grade2)+"}\n")
+        
+        #writing loyalty dictionary
+        f.write("loyalty={'CM':"+str(CM)+",'platinum':"+str(platinum)+",'gold':"+str(gold)+",'silver':"+str(silver)+"}\n")
+        
         #connection score
         f.write("PNR_connection="+str(PNR_connection)+"\n")
         
@@ -177,20 +186,6 @@ with col3:
         
         #penalty score
         f.write("PNR_penalty="+str(PNR_penalty)+"\n")
-        
-        #loyalty scores
-        
-        #CM loyalty score
-        f.write("Loyalty_CM="+str(CM)+"\n")
-        
-        #platinum score
-        f.write("Loyalty_platinum="+str(platinum)+"\n")
-        
-        #gold score
-        f.write("Loyalty_gold="+str(gold)+"\n")
-        
-        #silver score
-        f.write("Loyalty_silver="+str(silver)+"\n")
         
         #close file
         f.close()
