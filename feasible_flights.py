@@ -191,7 +191,22 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,num_of_hops=4):
     
     curr_location=copy.deepcopy(current_hops)+1
     while(curr_location<len(PNR_Object.inv_list)):
-        all_flights[PNR_Object.inv_list[curr_location]].cabins[PNR_Object.sub_class_list[curr_location]]+=int(PNR_Object.PAX)
+        cabin = PNR_Object.get_cabin(PNR_Object.sub_class_list[curr_location])
+        sub_class = PNR_Object.sub_class_list[curr_location]
+
+        if cabin=='FC':
+            all_flights[PNR_Object.inv_list[curr_location]].fc_available_inventory+=int(PNR_Object.PAX)
+            all_flights[PNR_Object.inv_list[curr_location]].fc_class_dict[sub_class]+=int(PNR_Object.PAX)
+        elif cabin=='BC':
+            all_flights[PNR_Object.inv_list[curr_location]].bc_available_inventory+=int(PNR_Object.PAX)
+            all_flights[PNR_Object.inv_list[curr_location]].bc_class_dict[sub_class]+=int(PNR_Object.PAX)
+        elif cabin=='PC':
+            all_flights[PNR_Object.inv_list[curr_location]].pc_available_inventory+=int(PNR_Object.PAX)
+            all_flights[PNR_Object.inv_list[curr_location]].pc_class_dict[sub_class]+=int(PNR_Object.PAX)
+        else:
+            all_flights[PNR_Object.inv_list[curr_location]].ec_available_inventory+=int(PNR_Object.PAX)
+            all_flights[PNR_Object.inv_list[curr_location]].ec_class_dict[sub_class]+=int(PNR_Object.PAX)
+
         curr_location+=1
 
     custom_dfs(graph,departure_city,arrival_city,valid_paths,visited_edges,all_paths,num_of_hops-current_hops)
