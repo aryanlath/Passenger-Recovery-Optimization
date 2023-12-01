@@ -1,12 +1,7 @@
-Flight Number,A,F,Departure City,Departure Time,Arrival City,Arrival Time,Status
-1005,33,21,Atlanta,2023-11-17 15:06,Chicago,2023-11-18 00:33,Cancelled
-1000,4,1,Atlanta,2023-11-17 18:48,Dallas,2023-11-18 03:50,On Time
-1001,50,16,Dallas,2023-11-18 5:50,Miami,2023-11-18 9:40,On Time
-1002,119,43,Miami,2023-11-18 12:49,Chicago,2023-11-18 17:42,On Time
-1004,97,12,Atlanta,2023-11-25 18:00,Chicago,2023-11-26 01:20,On Time
-1006,93,4,Dallas,2023-11-17 20:50,Los Angeles,2023-11-17 22:44,On Time
-1008,31,37,Los Angeles,2023-11-17 23:32,Seattle,2023-11-18 12:18,On Time
-1009,39,21,Seattle,2023-11-18 16:36,New York,2023-11-18 18:15,On Time
-1010,44,24,New York,2023-11-18 20:06,Houston,2023-11-19 12:12,Cancelled
-1011,44,24,New York,2023-11-18 22:22,Miami,2023-11-19 12:12,On Time
-1012,50,16,Miami,2023-11-19 13:50,Houston,2023-11-19 8:40,On Time
+InventoryId,ScheduleId,FlightNumber,AircraftType,DepartureAirport,ArrivalAirport,TotalCapacity,TotalInventory,BookedInventory,Oversold,AvailableInventory,FirstClass,BusinessClass,PremiumEconomyClass,EconomyClass,FC_TotalInventory,FC_BookedInventory,FC_Oversold,FC_AvailableInventory,BC_TotalInventory,BC_BookedInventory,BC_Oversold,BC_AvailableInventory,PC_TotalInventory,PC_BookedInventory,PC_Oversold,PC_AvailableInventory,EC_TotalInventory,EC_BookedInventory,EC_Oversold,EC_AvailableInventory,FC_CD,BC_CD,PC_CD,EC_CD,DepartureDatetime,ArrivalDatetime,Status
+INV-ZZ-1875559,SCH-ZZ-7283355,3417,Boeing 787,MAA,CNN,270,300,144,-126,156,27,54,81,108,32,15,12,17,60,29,25,31,94,45,36,49,127,61,47,66,"{'F': 1, 'P': 16}","{'C': 10, 'J': 21, 'Z': 0}","{'Q': 32, 'R': 7, 'S': 5, 'T': 3, 'H': 1, 'M': 1}","{'Y': 9, 'A': 37, 'B': 7, 'D': 8, 'E': 1, 'G': 0, 'I': 4, 'K': 0, 'L': 0, 'N': 0, 'O': 0, 'U': 0, 'V': 0, 'W': 0, 'X': 0}",2024-06-1 04:37:00,2024-06-1 12:50:00,Cancelled
+INV-ZZ-1875560,SCH-ZZ-7283355,3417,Boeing 787,MAA,COK,270,321,143,-127,178,27,54,81,108,32,14,13,18,60,27,27,33,94,42,39,52,123,55,53,68,"{'F': 13, 'P': 5}","{'C': 21, 'J': 12, 'Z': 0}","{'Q': 50, 'R': 1, 'S': 0, 'T': 0, 'H': 1, 'M': 0}","{'Y': 39, 'A': 15, 'B': 7, 'D': 3, 'E': 2, 'G': 2, 'I': 0, 'K': 0, 'L': 0, 'N': 0, 'O': 0, 'U': 0, 'V': 0, 'W': 0, 'X': 0}",2024-06-1 04:37:01,2024-06-1 12:50:00,On Time
+INV-ZZ-1875561,SCH-ZZ-7283355,3417,Boeing 787,COK,GAU,270,321,143,-127,178,27,54,81,108,32,14,13,18,60,27,27,33,94,42,39,52,123,55,53,68,"{'F': 13, 'P': 5}","{'C': 21, 'J': 12, 'Z': 0}","{'Q': 50, 'R': 1, 'S': 0, 'T': 0, 'H': 1, 'M': 0}","{'Y': 39, 'A': 15, 'B': 7, 'D': 3, 'E': 2, 'G': 2, 'I': 0, 'K': 0, 'L': 0, 'N': 0, 'O': 0, 'U': 0, 'V': 0, 'W': 0, 'X': 0}",2024-06-1 14:37:00,2024-06-1 15:50:00,On Time
+INV-ZZ-1875562,SCH-ZZ-7283355,3417,Boeing 787,GAU,CNN,270,321,143,-127,178,27,54,81,108,32,14,13,18,60,27,27,33,94,42,39,52,123,55,53,68,"{'F': 13, 'P': 5}","{'C': 21, 'J': 12, 'Z': 0}","{'Q': 50, 'R': 1, 'S': 0, 'T': 0, 'H': 1, 'M': 0}","{'Y': 39, 'A': 15, 'B': 7, 'D': 3, 'E': 2, 'G': 2, 'I': 0, 'K': 0, 'L': 0, 'N': 0, 'O': 0, 'U': 0, 'V': 0, 'W': 0, 'X': 0}",2024-06-1 17:37:00,2024-06-1 19:50:00,On Time
+INV-ZZ-1875563,SCH-ZZ-7283355,3417,Boeing 787,GAU,CNN,270,321,143,-127,178,27,54,81,108,32,14,13,18,60,27,27,33,94,42,39,52,123,55,53,68,"{'F': 13, 'P': 5}","{'C': 21, 'J': 12, 'Z': 0}","{'Q': 50, 'R': 1, 'S': 0, 'T': 0, 'H': 1, 'M': 0}","{'Y': 39, 'A': 15, 'B': 7, 'D': 3, 'E': 2, 'G': 2, 'I': 0, 'K': 0, 'L': 0, 'N': 0, 'O': 0, 'U': 0, 'V': 0, 'W': 0, 'X': 0}",2024-06-11 17:37:00,2024-06-11 19:50:00,Cancelled
+INV-ZZ-1875564,SCH-ZZ-7283355,3417,Boeing 787,GAU,CNN,270,321,143,-127,178,27,54,81,108,32,14,13,18,60,27,27,33,94,42,39,52,123,55,53,68,"{'F': 13, 'P': 5}","{'C': 21, 'J': 12, 'Z': 0}","{'Q': 50, 'R': 1, 'S': 0, 'T': 0, 'H': 1, 'M': 0}","{'Y': 39, 'A': 15, 'B': 7, 'D': 3, 'E': 2, 'G': 2, 'I': 0, 'K': 0, 'L': 0, 'N': 0, 'O': 0, 'U': 0, 'V': 0, 'W': 0, 'X': 0}",2024-06-11 17:37:00,2024-06-11 19:50:00,On Time
