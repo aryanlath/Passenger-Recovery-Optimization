@@ -1,5 +1,6 @@
 from feasible_flights import *
 from constants import *
+from utils import *
 from gurobi_optimisation import *
 
 import pprint 

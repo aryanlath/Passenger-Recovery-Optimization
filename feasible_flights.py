@@ -187,7 +187,6 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,num_of_hops=4):
     all_paths=[]
     visited_edges=[]
 
-    # TODO: Increasing capacity of remaining flights scheduled
     
     curr_location=copy.deepcopy(current_hops)+1
     while(curr_location<len(PNR_Object.inv_list)):

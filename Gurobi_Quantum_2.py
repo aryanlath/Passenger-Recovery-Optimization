@@ -14,6 +14,13 @@ from dwave.system import LeapHybridCQMSampler
 from dimod import ConstrainedQuadraticModel, BinaryQuadraticModel, QuadraticModel
 from dimod import Real
 all_flights =[]
+from dotenv import load_dotenv
+
+# Load the .env file
+load_dotenv()
+
+# Access the API key
+dwave_token = os.getenv('DWAVE_TOKEN')
 
 variable_index_to_assignment_dict={}
 my_dict= {}
@@ -47,8 +54,7 @@ def quantum_optimize_flight_assignments(PNR_List):
     """
     CQM=dimod.ConstrainedQuadraticModel()
     CQM_obj = 0
-    model = gp.Model()
-    objective = gp.LinExpr(0)
+
 
     X_PNR_Constraint = defaultdict(list)
     #
@@ -110,7 +116,7 @@ def quantum_optimize_flight_assignments(PNR_List):
     # model.setObjective(objective,GRB.MAXIMIZE)
     # model.optimize()
 
-    sampler = LeapHybridCQMSampler(token="DEV-30f3fc1d438c916834cf23027157a1d124e8cbc1")    
+    sampler = LeapHybridCQMSampler(token=dwave_token)    
     sampleset = sampler.sample_cqm(CQM)       
     feasible_sampleset = sampleset.filter(lambda row: row.is_feasible) 
     print("{} feasible solutions of {}.".format(len(feasible_sampleset), len(sampleset)))    

@@ -26,24 +26,3 @@ weight_cabin_map = 100
 pnr_normalize_factor = 100
 flight_normalize_factor = 100
 cabin_normalize_factor = 100
-loyalty_dict = {}
-
-def init_normalize_factors(all_flights,pnr_objects,pnr_flight_mapping,pnr_to_s2):
-    global pnr_normalize_factor
-    for pnr in pnr_to_s2:
-        pnr_normalize_factor = max(pnr_normalize_factor,pnr_to_s2[pnr])
-    global flight_normalize_factor
-    flight_normalize_factor = 100
-    global cabin_normalize_factor
-    cabin_normalize_factor = 100
-
-def init_loyalty_dictionary():
-    """
-    Initialize the loyalty dictionary
-    """
-    global loyalty_dict
-    loyalty_dict["CM"] = Loyalty_CM
-    loyalty_dict["Platinum"] = Loyalty_platinum
-    loyalty_dict["Gold"] = Loyalty_gold
-    loyalty_dict["Silver"] = Loyalty_silver
-    print(loyalty_dict)
