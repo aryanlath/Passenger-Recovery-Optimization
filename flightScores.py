@@ -14,3 +14,4 @@ gradeB=180
 gradeC=150
 stopOver=-20
 equipmentScore=50
+connection_constant = 10
