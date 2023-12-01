@@ -10,7 +10,7 @@ A GUI to easily modify the various scores for each attribute used to calculate P
 
 
 
-### Deployment
+## Deployment
 
 Make sure you have streamlit library installed or install it using the following command in the terminal
 ```bash
@@ -24,7 +24,7 @@ Now, to run the script enter the following command in the terminal
 
 
 
-### Working
+## Working
 
 Files:
  
@@ -55,7 +55,7 @@ Each file contains widgets to adjust various parameters along with some default 
 
  
 
-### Screenshots
+## Screenshots
 
 ![Landing Page](/readmeSS/Landing_Page_SS.png)
 ![PNR Scores](/readmeSS/PNRScore_SS.png)
