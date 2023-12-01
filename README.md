@@ -57,10 +57,10 @@ Each file contains widgets to adjust various parameters along with some default 
 
 ### Screenshots
 
-![Landing Page](/readmepic/Landing_Page_SS.png)
-![PNR Scores](/readmepic/PNRScore_SS.png)
-![Flight Scores](/readmepic/FlightScores_SS.png)
-![Cabins and Classes](/readmepic/CabinClasses_SS.png)
+![Landing Page](/readmeSS/Landing_Page_SS.png)
+![PNR Scores](/readmeSS/PNRScore_SS.png)
+![Flight Scores](/readmeSS/FlightScores_SS.png)
+![Cabins and Classes](/readmeSS/CabinClasses_SS.png)
 
 
 
