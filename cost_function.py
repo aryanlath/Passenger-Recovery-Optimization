@@ -14,7 +14,7 @@ def cost_function(PNR,flight_tuple, cabin_tuple):
            s3 = class difference score
     """
     if(flight_tuple is None):
-        return -1000000
+        return -NON_ASSIGNMENT_COST*PNR_Score(PNR)
     s1 = flight_quality_score(PNR, flight_tuple)
     s2 = PNR_Score(PNR)/pnr_normalize_factor
     s3 = class_difference_score(PNR,cabin_tuple)

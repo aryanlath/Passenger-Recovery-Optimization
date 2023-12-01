@@ -8,6 +8,7 @@ test_flight_data_file = 'Dataset/test_data/flight_test.csv'
 n_cabin=2
 ETD=72
 MCT=1
+NON_ASSIGNMENT_COST=100
 MAXCT=12
 PNR_SSR=200
 PNR_connection=100
