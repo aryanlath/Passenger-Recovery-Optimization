@@ -8,8 +8,6 @@ from feasible_flights import *
 from cost_function import *
 all_flights =[]
 
-import pprint 
-pp = pprint.PrettyPrinter(indent=4)
 
 def get_flight_cabin_mappings(flights, current_mapping=None, flight_index=0):
     """
@@ -126,20 +124,20 @@ def optimize_flight_assignments(PNR_List):
     else:
         return "The problem does not have an optimal solution."
 
-all_flights,pnr_list,_,_ = Get_All_Maps()
+# all_flights,pnr_list,_,_ = Get_All_Maps()
 
 
-passenger_pnr_path = 'passenger_pnr_dataset.csv'
-flight_schedule_path = 'flight_schedule_dataset.csv'
+# passenger_pnr_path = 'passenger_pnr_dataset.csv'
+# flight_schedule_path = 'flight_schedule_dataset.csv'
 
 
-# Identify the impacted PNRs
-Impacted_PNR = Get_Impacted_passengers(all_flights,pnr_list)
-print("Total impacted Passengers: ",len(Impacted_PNR))
-pp.pprint(Impacted_PNR)
-result = optimize_flight_assignments(Impacted_PNR)
-print("Total Reassigned: ",len(result['Assignments']))
+# # Identify the impacted PNRs
+# Impacted_PNR = Get_Impacted_passengers(all_flights,pnr_list)
+# print("Total impacted Passengers: ",len(Impacted_PNR))
+# pp.pprint(Impacted_PNR)
+# result = optimize_flight_assignments(Impacted_PNR)
+# print("Total Reassigned: ",len(result['Assignments']))
 
-pp.pprint(result['Assignments'])
-print("Not Assigned PNRs: ")
-pp.pprint(result['Non Assignments'])
+# pp.pprint(result['Assignments'])
+# print("Not Assigned PNRs: ")
+# pp.pprint(result['Non Assignments'])

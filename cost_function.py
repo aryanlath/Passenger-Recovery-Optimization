@@ -13,9 +13,11 @@ def cost_function(PNR,flight_tuple, cabin_tuple):
            s2 = PNR score
            s3 = class difference score
     """
+    if(flight_tuple is None):
+        return -1000000
     s1 = flight_quality_score(PNR, flight_tuple)
     s2 = PNR_Score(PNR)/pnr_normalize_factor
-    s3 = class_difference_score(PNR, flight_tuple, cabin_tuple)
+    s3 = class_difference_score(PNR,cabin_tuple)
     cost = weight_flight_map*math.log(s1) + weight_pnr_map*math.log(s2) + weight_cabin_map*math.log(s3)
     return cost
 
@@ -35,6 +37,7 @@ def flight_quality_score(PNR, flight_tuple):
     """
     # Dictionary that maps each PNR.pnr_numer to list of all flights taken by that PNR
     # TODO: kNN
+    _,_,pnr_flight_mapping,_= feasible_flights.Get_All_Maps()
     first_flight = pnr_flight_mapping[PNR.pnr_number][0]
     last_flight = pnr_flight_mapping[PNR.pnr_number][-1]
     Arrival_Delay_inHours = (last_flight.arrival_time - flight_tuple[-1].arrival_time).total_seconds()/3600
@@ -84,7 +87,7 @@ def class_difference_score(PNR, cabin_Tuple):
     for i in range(len(cabin_Tuple)):
         sug_sum += Cabin_Cost[cabin_Tuple[i]]
     for i in range(len(PNR.sub_class_list)):
-        pre_sum += Cabin_Cost[PNR.sub_class_list[i]]
+        pre_sum += Cabin_Cost[PNR.get_cabin(PNR.sub_class_list[i])]
     sug_sum /= len(cabin_Tuple)
     pre_sum /= len(PNR.sub_class_list)
     ratio = sug_sum/pre_sum

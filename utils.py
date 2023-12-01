@@ -103,8 +103,8 @@ def extract_PNR_from_CSV(file_path):
         seg_seq = int(row['SEG_SEQ'])
         pax = row['PAX_CNT']
         inv_id = row.get('INV_ID', None)
-        passenger_loyalty = row.get('LOYALTY', None)
-        special_requirements = row.get('SSR', None)
+        passenger_loyalty = row.get('LOYALTY', "Silver")
+        special_requirements = row.get('SSR', "Grade2")
         email_id = row.get('CONTACT_EMAIL', "mock@email.com")
 
         # To get the Legs of flight ordered by seq_number
