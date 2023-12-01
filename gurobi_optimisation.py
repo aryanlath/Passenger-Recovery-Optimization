@@ -119,7 +119,9 @@ def optimize_flight_assignments(PNR_List):
                         if PNR.pnr_number not in assigned_pnrs and PNR.pnr_number not in not_assigned_pnrs:
                             result['Non Assignments'].append(PNR)
                             not_assigned_pnrs.add(PNR.pnr_number)
-
+        for pnr in PNR_List:
+            if pnr.pnr_number not in assigned_pnrs and pnr.pnr_number not in not_assigned_pnrs:
+                result['Non Assignments'].append(pnr.pnr_number)
         return result
     else:
         return "The problem does not have an optimal solution."
