@@ -142,9 +142,6 @@ def Cabin_to_Class(Assignment_list):
            thread_cnt+=1
     for thread in range(thread_cnt):
         thread_map[thread].join()
-    # print("Doing Cabin to Class mapping....\n\n\n")
-    # print("Total Cost of assignment {}:".format(str(total_cost)))
-    # print('\n')
     return assignments
 
 
