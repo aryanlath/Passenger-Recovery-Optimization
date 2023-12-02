@@ -28,7 +28,7 @@ pp.pprint(result['Assignments'])
 print("Not Assigned PNRs: ")
 pp.pprint(result['Non Assignments'])
 print("\n\n\n\n")
-quantum_result =optimize_flight_assignments(Impacted_PNR)
+quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
 print(quantum_result)
 
 print(Cabin_to_Class(result["Assignments"]))
