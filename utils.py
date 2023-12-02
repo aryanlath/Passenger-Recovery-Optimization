@@ -17,6 +17,17 @@ def string_to_dict(string_dict):
 
     return actual_dict
 
+def get_all_airports(file_name):
+    df = pd.read_csv(file_name)
+    airports = set()
+    for _, row in df.iterrows():
+        departure_city = row['DepartureAirport']
+        arrival_city = row['ArrivalAirport']
+        airports.add(departure_city)
+        airports.add(arrival_city)
+    return airports
+
+
 def extract_Flights_from_CSV(file_name):
     flights = []
     df = pd.read_csv(file_name)
