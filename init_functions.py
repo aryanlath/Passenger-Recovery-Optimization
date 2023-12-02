@@ -1,11 +1,15 @@
 from constants import Loyalty_CM,Loyalty_platinum,Loyalty_gold,Loyalty_silver,pnr_normalize_factor,flight_normalize_factor,cabin_normalize_factor
+import constants_immutable
 
 loyalty_dict = {}
 
-def init_normalize_factors(all_flights,pnr_objects,pnr_flight_mapping,pnr_to_s2):
+def init_normalize_factors():
+    """
+    Initializes the normalization factors
+    """
     global pnr_normalize_factor
-    for pnr in pnr_to_s2:
-        pnr_normalize_factor = max(pnr_normalize_factor,pnr_to_s2[pnr])
+    for pnr in constants_immutable.pnr_to_s2:
+        pnr_normalize_factor = max(pnr_normalize_factor, constants_immutable.pnr_to_s2[pnr])
     global flight_normalize_factor
     flight_normalize_factor = 100
     global cabin_normalize_factor

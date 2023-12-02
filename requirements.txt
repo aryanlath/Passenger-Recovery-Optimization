@@ -6,3 +6,5 @@ streamlit
 dimod
 dwave-system
 python-dotenv
+matplotlib
+googlemaps
