@@ -4,6 +4,7 @@ import feasible_flights
 from constants import *
 import math
 from flightScores import *
+import constants_immutable
 
 def cost_function(PNR,flight_tuple, cabin_tuple):
     """
@@ -37,9 +38,9 @@ def flight_quality_score(PNR, flight_tuple):
     """
     # Dictionary that maps each PNR.pnr_numer to list of all flights taken by that PNR
     # TODO: kNN
-    _,_,pnr_flight_mapping,_= feasible_flights.Get_All_Maps()
-    first_flight = pnr_flight_mapping[PNR.pnr_number][0]
-    last_flight = pnr_flight_mapping[PNR.pnr_number][-1]
+    # _,_,pnr_flight_mapping,_= feasible_flights.Get_All_Maps()
+    first_flight = constants_immutable.pnr_flight_mapping[PNR.pnr_number][0]
+    last_flight = constants_immutable.pnr_flight_mapping[PNR.pnr_number][-1]
     Arrival_Delay_inHours = abs((last_flight.arrival_time - flight_tuple[-1].arrival_time).total_seconds())/3600
     Departure_Delay_inHours = abs((first_flight.departure_time - flight_tuple[0].departure_time).total_seconds())/3600
     DelayScore = 0 
@@ -68,7 +69,7 @@ def flight_quality_score(PNR, flight_tuple):
     
     # ConnectionScore -> If proposed flight solutions's length increases, score decreases   
                         # If proposed original flight solutions's length decreases, score increases
-    ConnectionScore = connection_constant - len(flight_tuple) + len(pnr_flight_mapping[PNR.pnr_number])
+    ConnectionScore = connection_constant - len(flight_tuple) + len(constants_immutable.pnr_flight_mapping[PNR.pnr_number])
     
     return DelayScore + ConnectionScore*10
 

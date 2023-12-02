@@ -3,21 +3,21 @@ from constants import *
 from init_functions import *
 from gurobi_optimisation import *
 from Gurobi_Quantum_2 import *
-import pprint 
+import pprint
+import constants_immutable
 pp = pprint.PrettyPrinter(indent=4)
 
 
 # initializes the loyalty scores for the passengers
 init_loyalty_dictionary()
 
-all_flights,pnr_objects,pnr_flight_mapping,pnr_to_s2 = Get_All_Maps()
+# global all_flights, pnr_objects,  pnr_flight_mapping, pnr_to_s2
+constants_immutable.all_flights, constants_immutable.pnr_objects, constants_immutable.pnr_flight_mapping, constants_immutable.pnr_to_s2 = Get_All_Maps()
 # finds the normalization factors for the cost function
-init_normalize_factors(all_flights,pnr_objects,pnr_flight_mapping,pnr_to_s2)
-
-
+init_normalize_factors()
 
 # Identify the impacted PNRs
-Impacted_PNR = Get_Impacted_passengers(all_flights,pnr_objects)
+Impacted_PNR = Get_Impacted_passengers(constants_immutable.all_flights, constants_immutable.pnr_objects)
 print("Total impacted Passengers: ",len(Impacted_PNR))
 pp.pprint(Impacted_PNR)
 result = optimize_flight_assignments(Impacted_PNR)
