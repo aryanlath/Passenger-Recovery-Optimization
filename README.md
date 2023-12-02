@@ -18,7 +18,7 @@ We have provided a GUI, deployed using `Streamlit` to easily modify the various 
 
 Run the following command in the terminal
 ```
-  pip install -f requirements.txt
+  pip install -r requirements.txt
 ```
 
 ### Setting up the environment file
@@ -44,25 +44,25 @@ Each file contains widgets to adjust various parameters along with some default 
  - Used to modify cabin allocation and maximum departure delay
  - **Writes to default.py**.
    
-![Landing Page](/assets/Landing_Page_SS.png)
+![Landing Page](./assets/Landing_Page_SS.png)
 
  ### PNRScore.py
 - Used to modify scores for PNR priority calculation parameters like PAX, loyalty, classes, MCT, MAXCT, ETD, etc
 - **writes to constants.py**
   
-![PNR Scores](/assets/PNRScore_SS.png)
+![PNR Scores](./assets/PNRScore_SS.png)
 
 ### cabinAndClasses.py
 - Used to allow/disallow class changes during flight allocation and upgrade/downgrade rules
 - **writes to classRules.py**
   
-![Cabins and Classes](/assets/CabinClasses_SS.png)
+![Cabins and Classes](./assets/CabinClasses_SS.png)
 
 ### flightScore.py
 - Used to modify parameters used to rank the flight and allocate grades like arrival delay, STD and citypairs
 - **writes to flightScores.py**
   
-![Flight Scores](/assets/FlightScores_SS.png)
+![Flight Scores](./assets/FlightScores_SS.png)
 
 ## Glossary
 
