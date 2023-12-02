@@ -9,6 +9,9 @@ pp = pprint.PrettyPrinter(indent=4)
 from Assign_Class import *
 
 
+
+
+
 # initializes the loyalty scores for the passengers
 init_loyalty_dictionary()
 
@@ -17,8 +20,13 @@ constants_immutable.all_flights, constants_immutable.pnr_objects, constants_immu
 # finds the normalization factors for the cost function
 init_normalize_factors()
 
+
+
 # Identify the impacted PNRs
 Impacted_PNR = Get_Impacted_passengers(constants_immutable.all_flights, constants_immutable.pnr_objects)
+
+
+
 print("Total impacted Passengers: ",len(Impacted_PNR))
 pp.pprint(Impacted_PNR)
 result = optimize_flight_assignments(Impacted_PNR)

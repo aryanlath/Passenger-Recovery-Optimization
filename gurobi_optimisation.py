@@ -6,6 +6,7 @@ from Models.Flights import Flight
 from collections import defaultdict
 from feasible_flights import *
 from cost_function import *
+import threading
 all_flights =[]
 
 
@@ -29,7 +30,7 @@ def get_flight_cabin_mappings(flights, current_mapping=None, flight_index=0):
         yield from get_flight_cabin_mappings(flights, current_mapping, flight_index + 1)
         current_mapping.pop()
 
-def optimize_flight_assignments(PNR_List):
+def optimize_flight_assignments(PNR_List,PNR_to_FeasibleFlights_map):
     g=create_flight_graph()
     all_flights, pnr_objects,_ ,_= Get_All_Maps()
     """
@@ -37,7 +38,6 @@ def optimize_flight_assignments(PNR_List):
         X_PNR_Constraint -> dictionary where keys are PNR objects and each value is a list of variables for that Particular PNR in its constraint
         X_Flight_Capacity_Constraint-> dictionary of dictionaries where outer keys are Flight objects and inner keys are cabins, each value is a list of variables for that Particular Flight,Cabin in its constraint
     """
-
     model = gp.Model()
     objective = gp.LinExpr(0)
 
@@ -53,6 +53,14 @@ def optimize_flight_assignments(PNR_List):
     # X_PNR_Constraint -> dictionary where keys are PNR objects and each value is a list of variables for that Particular PNR in its constraint
     # X_Flight_Capacity_Constraint-> dictionary of dictionaries where outer keys are Flight objects and inner keys are cabins, each value is a list of variables for that Particular Flight,Cabin in its constraint
     i=0
+
+    # thread_map={}
+    # thread_cnt=0
+    # for PNR in PNR_List:
+    #     thread_map[thread_cnt]=threading.Thread(target=PNR_to_Feasible_Flights,args=(g,all_flights,PNR)
+
+
+
     for PNR in PNR_List:
         for FT in PNR_to_Feasible_Flights(g,all_flights,PNR):
             cabins_tuple = list(get_flight_cabin_mappings(FT))
