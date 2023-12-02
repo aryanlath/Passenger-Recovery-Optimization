@@ -1,31 +1,7 @@
 
 # If needed 
-<<<<<<< HEAD
-from constants import *
-loyalty_dict = {}
-
-def init_normalize_factors(all_flights,pnr_objects,pnr_flight_mapping,pnr_to_s2):
-    global pnr_normalize_factor
-    for pnr in pnr_to_s2:
-        pnr_normalize_factor = max(pnr_normalize_factor,pnr_to_s2[pnr])
-    global flight_normalize_factor
-    flight_normalize_factor = 100
-    global cabin_normalize_factor
-    cabin_normalize_factor = 100
-
-def init_loyalty_dictionary():
-    """
-    Initialize the loyalty dictionary
-    """
-    global loyalty_dict
-    loyalty_dict["CM"] = Loyalty_CM
-    loyalty_dict["Platinum"] = Loyalty_platinum
-    loyalty_dict["Gold"] = Loyalty_gold
-    loyalty_dict["Silver"] = Loyalty_silver
-=======
 from init_functions import loyalty_dict
 from constants import PNR_pax,PNR_SSR
->>>>>>> 9461a07c42f71c23d79e98119de277f84ac2672b
 
 class PNR:
     def __init__(self, pnr_number,inv_list, sub_class_list, special_requirements,PAX, passenger_loyalty,email_id):
