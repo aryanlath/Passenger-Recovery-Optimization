@@ -142,7 +142,7 @@ def optimize_flight_assignments(PNR_List):
                 cabins_tuple = get_flight_cabin_mappings(FT)
                 for cabin in cabins_tuple:
                     # cabin is a tuple Eg: ('A', 'B')
-                    # print(X[(PNR, FT, cabin)].VarName,"=",X[(PNR, FT, cabin)].x)
+                    print(X[(PNR, FT, cabin)].VarName,"=",X[(PNR, FT, cabin)].x)
                     if X[(PNR, FT, cabin)].x == 0:
                         if PNR.pnr_number not in assigned_pnrs and PNR.pnr_number not in not_assigned_pnrs:
                             result['Non Assignments'].append(PNR)
