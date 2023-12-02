@@ -2,12 +2,12 @@ from feasible_flights import *
 from constants import *
 from init_functions import *
 from gurobi_optimisation import *
+from gurobi_optimisation_2 import *
 from Gurobi_Quantum_2 import *
 import pprint
 import constants_immutable
 pp = pprint.PrettyPrinter(indent=4)
 from Assign_Class import *
-from handle_city_pairs import *
 
 
 def Main_function():
@@ -25,7 +25,7 @@ def Main_function():
     # Identify the impacted PNRs
     Impacted_PNR = Get_Impacted_passengers(constants_immutable.all_flights, constants_immutable.pnr_objects)
 
-
+    print(Cabin_to_Class(result["Assignments"]))
 
     print("Total impacted Passengers: ",len(Impacted_PNR))
     pp.pprint(Impacted_PNR)
@@ -36,10 +36,9 @@ def Main_function():
     print("Not Assigned PNRs: ")
     pp.pprint(result['Non Assignments'])
     print("\n\n\n\n")
-    quantum_result =optimize_flight_assignments(Impacted_PNR)
-    print(quantum_result)
 
-    print(Cabin_to_Class(result["Assignments"]))
+
+    quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
 
 
     print("QUANTUM RESULTS")
@@ -49,6 +48,16 @@ def Main_function():
     print("Not Assigned PNRs: ")
     pp.pprint(quantum_result['Non Assignments'])
     print("\n\n\n\n")
+    
+    print("Exception List handling...")
+    print() 
+    print()
+    result2 = optimize_flight_assignments_2(result['Non Assignments'],constants_immutable.all_flights)
+    pp.pprint(result2['Assignments'])
+    print("Not Assigned PNRs: ")
+    pp.pprint(result2['Non Assignments'])
+    print("\n\n\n\n")
+
 
 if __name__==  "__main__":
     Main_function()

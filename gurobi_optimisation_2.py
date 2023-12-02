@@ -4,37 +4,16 @@ from gurobipy import GRB
 from utils import *
 from Models.Flights import Flight
 from collections import defaultdict
-from feasible_flights import *
+from feasible_flights_2 import *
 from cost_function import *
 import time
 import threading
 import multiprocessing
-all_flights =[]
+from handle_city_pairs import *
+from gurobi_optimisation import *
 
-
-def get_flight_cabin_mappings(flights, current_mapping=None, flight_index=0):
-    """
-    To generate the tuple of all possible cabin Mappings.
-    Takes FT as input
-    Returns the list of cabin_tuples
-    """
-    if current_mapping is None:
-        current_mapping = []
-
-    if flight_index == len(flights):
-        yield tuple(cabin for _, cabin in current_mapping)
-        return
-
-    flight = flights[flight_index]
-
-    for cabin in flight.cabins:
-        current_mapping.append((flight.inventory_id, cabin))
-        yield from get_flight_cabin_mappings(flights, current_mapping, flight_index + 1)
-        current_mapping.pop()
-
-def optimize_flight_assignments(PNR_List):
+def optimize_flight_assignments_2(PNR_List,all_flights):
     g=create_flight_graph()
-    all_flights, pnr_objects,_ ,_= Get_All_Maps()
     """
         PNR_List = List of Impacted PNRs
         X_PNR_Constraint -> dictionary where keys are PNR objects and each value is a list of variables for that Particular PNR in its constraint
@@ -54,30 +33,26 @@ def optimize_flight_assignments(PNR_List):
     # Ex. [(Flight1),(Flight1->Flight2),(Flight3)]
     # X_PNR_Constraint -> dictionary where keys are PNR objects and each value is a list of variables for that Particular PNR in its constraint
     # X_Flight_Capacity_Constraint-> dictionary of dictionaries where outer keys are Flight objects and inner keys are cabins, each value is a list of variables for that Particular Flight,Cabin in its constraint
-    i=0
-    thread_map={}
-    thread_cnt=0
-    manager=multiprocessing.Manager()
-    PNR_to_FeasibleFlights_map=manager.dict()
-    start = time.time()
+    PNR_to_FeasibleFlights_map = {}
+    start=time.time()
     for PNR in PNR_List:
-        thread_map[thread_cnt]=multiprocessing.Process(target=PNR_to_Feasible_Flights,args=(g,all_flights,PNR,PNR_to_FeasibleFlights_map))
-        thread_map[thread_cnt].start()
-        thread_cnt+=1
-        # PNR_to_Feasible_Flights(g,all_flights,PNR,PNR_to_FeasibleFlights_map)
-    for cnt in range(thread_cnt):
-        thread_map[cnt].join()
-    pp.pprint(PNR_to_FeasibleFlights_map)
-    
+        old_arrival_city = all_flights[PNR.inv_list[-1]].arrival_city
+        proposed_arrival_cities = get_city_pairs_cost(old_arrival_city)
+        net_proposed_flights = []
+        for city in proposed_arrival_cities:
+            net_proposed_flights.extend(PNR_to_Feasible_Flights_2(g,all_flights,PNR,new_arrival_city=city))
+        PNR_to_FeasibleFlights_map[PNR.pnr_number] = net_proposed_flights
     end = time.time()
     print("Without Threading time: ", end-start)
 
     start = time.time()
+    i=0
     for PNR in PNR_List:
         for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
             cabins_tuple = list(get_flight_cabin_mappings(FT))
             for cabin in cabins_tuple:
                 # cabin is a tuple Eg: ('FC','PC')
+                pp.pprint((PNR,FT,cabin))
                 X[(PNR,FT,cabin)] = model.addVar(vtype=GRB.BINARY, name=f'X_{i}')
                 i+=1
                 X_PNR_Constraint[PNR].append(X[(PNR,FT,cabin)])
@@ -132,7 +107,7 @@ def optimize_flight_assignments(PNR_List):
             for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
                 cabins_tuple = get_flight_cabin_mappings(FT)
                 for cabin in cabins_tuple:
-                    # cabin is a tuple Eg: ('FC', 'PC')
+                     # cabin is a tuple Eg: ('FC', 'PC')
                     if X[(PNR, FT, cabin)].x == 1:
                         result['Assignments'].append((PNR, FT, cabin))
                         assigned_pnrs.add(PNR.pnr_number)
