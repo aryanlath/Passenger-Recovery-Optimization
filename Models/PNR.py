@@ -1,5 +1,6 @@
 
 # If needed 
+<<<<<<< HEAD
 from constants import *
 loyalty_dict = {}
 
@@ -21,6 +22,10 @@ def init_loyalty_dictionary():
     loyalty_dict["Platinum"] = Loyalty_platinum
     loyalty_dict["Gold"] = Loyalty_gold
     loyalty_dict["Silver"] = Loyalty_silver
+=======
+from init_functions import loyalty_dict
+from constants import PNR_pax,PNR_SSR
+>>>>>>> 9461a07c42f71c23d79e98119de277f84ac2672b
 
 class PNR:
     def __init__(self, pnr_number,inv_list, sub_class_list, special_requirements,PAX, passenger_loyalty,email_id):

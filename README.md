@@ -1,24 +1,35 @@
 # Passenger-Recovery-Optimization
 
-Airlines routinely change their flight schedules for various reasons like seasonal demands, to
-pick new routes, time changes needed based on daylight savings, changes to flight numbers,
-operating frequency, timings, etc. Many passengers get impacted due these schedule
+Airlines routinely change their flight schedules for various reasons like seasonal demands, picking new routes, time changes needed based on daylight savings, changes to flight numbers,
+operating frequency, timings, etc. Many passengers get impacted due to these schedule
 changes and they need to be regularly re-accommodated to alternate flights. 
 
-The project uses a quantum computing based approach to identify optimal alternate flight solutions for all impacted passengers based on certain constraints and keeping in mind various factors like PNR priority, time to reach destination, special passenger types without jeopardising the flight experience for the passengers.
+The project uses a quantum computing-based approach to identify optimal alternate flight solutions for all impacted passengers based on certain constraints and considering various factors like PNR priority, time to reach the destination, and special passenger types without jeopardizing the flight experience for the passengers.
 
 
 ## Business Rules Engine using Streamlit
 
-We have provided a GUI, deployed using `Streamlit` to easily modify the various scores for each attribute used to calculate PNR scores, flight grades, class allocation etc.
+We have provided a GUI, deployed using `Streamlit` to easily modify the various scores for each attribute used to calculate PNR scores, flight grades, class allocation, etc.
 
 
 ## Deployment
 
+### Installing the dependencies
+
 Run the following command in the terminal
 ```
-  pip install -f requirements.txt
+  pip install -r requirements.txt
 ```
+
+### Setting up the environment file
+
+Make a file named `.env` in the main folder, it's content should be:
+```
+GMAPS_API_KEY=your_actual_api_key
+DWAVE_TOKEN=dwave_token
+```
+
+### Running the program
 Now, to run the script enter the following command in the terminal
 ```bash
   streamlit run landingPage.py
@@ -33,25 +44,25 @@ Each file contains widgets to adjust various parameters along with some default 
  - Used to modify cabin allocation and maximum departure delay
  - **Writes to default.py**.
    
-![Landing Page](/assets/Landing_Page_SS.png)
+![Landing Page](./assets/Landing_Page_SS.png)
 
  ### PNRScore.py
 - Used to modify scores for PNR priority calculation parameters like PAX, loyalty, classes, MCT, MAXCT, ETD, etc
 - **writes to constants.py**
   
-![PNR Scores](/assets/PNRScore_SS.png)
+![PNR Scores](./assets/PNRScore_SS.png)
 
 ### cabinAndClasses.py
 - Used to allow/disallow class changes during flight allocation and upgrade/downgrade rules
 - **writes to classRules.py**
   
-![Cabins and Classes](/assets/CabinClasses_SS.png)
+![Cabins and Classes](./assets/CabinClasses_SS.png)
 
 ### flightScore.py
 - Used to modify parameters used to rank the flight and allocate grades like arrival delay, STD and citypairs
 - **writes to flightScores.py**
   
-![Flight Scores](/assets/FlightScores_SS.png)
+![Flight Scores](./assets/FlightScores_SS.png)
 
 ## Glossary
 
