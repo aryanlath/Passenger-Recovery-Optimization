@@ -5,10 +5,6 @@ from Models.Flights import *
 from collections import defaultdict
 import copy
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 9461a07c42f71c23d79e98119de277f84ac2672b
 def string_to_dict(string_dict):
     # Remove curly braces and split by commas
     pairs = string_dict[1:-1].split(', ')
