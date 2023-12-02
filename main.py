@@ -2,15 +2,9 @@ from feasible_flights import *
 from constants import *
 from init_functions import *
 from gurobi_optimisation import *
-<<<<<<< HEAD
-#from Gurobi_Quantum_2 import *
-from Models.PNR import *
-import pprint 
-=======
 from Gurobi_Quantum_2 import *
 import pprint
 import constants_immutable
->>>>>>> 9461a07c42f71c23d79e98119de277f84ac2672b
 pp = pprint.PrettyPrinter(indent=4)
 from Assign_Class import *
 
