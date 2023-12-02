@@ -5,6 +5,7 @@ test_flight_data_file = 'Dataset/Mphasis_Processed/Mock_Flight_Inv.csv'
 airport_code_location_data_file = 'Dataset/airport-code-to-location.csv'
 # test_PNR_data_file = 'Dataset/test_data/PNR_Test.csv'
 # test_flight_data_file = 'Dataset/test_data/flight_test.csv'
+CITY_PAIR_THRESHOLD=8
 n_cabin=2
 ETD=72
 MCT=1

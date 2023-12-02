@@ -6,6 +6,10 @@ from Gurobi_Quantum_2 import *
 import pprint
 import constants_immutable
 pp = pprint.PrettyPrinter(indent=4)
+from Assign_Class import *
+
+
+
 
 
 # initializes the loyalty scores for the passengers
@@ -16,8 +20,13 @@ constants_immutable.all_flights, constants_immutable.pnr_objects, constants_immu
 # finds the normalization factors for the cost function
 init_normalize_factors()
 
+
+
 # Identify the impacted PNRs
 Impacted_PNR = Get_Impacted_passengers(constants_immutable.all_flights, constants_immutable.pnr_objects)
+
+
+
 print("Total impacted Passengers: ",len(Impacted_PNR))
 pp.pprint(Impacted_PNR)
 result = optimize_flight_assignments(Impacted_PNR)
@@ -27,15 +36,22 @@ pp.pprint(result['Assignments'])
 print("Not Assigned PNRs: ")
 pp.pprint(result['Non Assignments'])
 print("\n\n\n\n")
-quantum_result = quantum_optimize_flight_assignments(Impacted_PNR)
+quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
+print(quantum_result)
+
+print(Cabin_to_Class(result["Assignments"]))
+# print("\n\n\n\n")
+# quantum_result =optimize_flight_assignments(Impacted_PNR)
 # print(quantum_result)
 
-print("QUANTUM RESULTS")
+# print(Cabin_to_Class(result["Assignments"]))
 
-print("Total Reassigned: ",len(quantum_result['Assignments']))
 
-pp.pprint(quantum_result['Assignments'])
-print("Not Assigned PNRs: ")
-pp.pprint(quantum_result['Non Assignments'])
-print("\n\n\n\n")
+# print("QUANTUM RESULTS")
+# print("Total Reassigned: ",len(quantum_result['Assignments']))
+
+# pp.pprint(quantum_result['Assignments'])
+# print("Not Assigned PNRs: ")
+# pp.pprint(quantum_result['Non Assignments'])
+# print("\n\n\n\n")
 

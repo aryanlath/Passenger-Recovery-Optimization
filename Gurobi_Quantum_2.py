@@ -54,26 +54,14 @@ def quantum_optimize_flight_assignments(PNR_List):
     """
     CQM=dimod.ConstrainedQuadraticModel()
     CQM_obj = 0
-
-
     X_PNR_Constraint = defaultdict(list)
-    #
     X_Flight_Capacity_Constraint = defaultdict(lambda: defaultdict(list))
-    # Variables
-    # X_ijk = 1 if the ith PNR is assigned to the jth flight's kth class
     X = {}
-
-    # PNR_to_Feasible_Flights now returns a list of tuples of flight objects 
-    # Ex. [(Flight1),(Flight1->Flight2),(Flight3)]
-    # X_PNR_Constraint -> dictionary where keys are PNR objects and each value is a list of variables for that Particular PNR in its constraint
-    # X_Flight_Capacity_Constraint-> dictionary of dictionaries where outer keys are Flight objects and inner keys are cabins, each value is a list of variables for that Particular Flight,Cabin in its constraint
     i=0
     for PNR in PNR_List:
         for FT in PNR_to_Feasible_Flights(g,all_flights,PNR):
             cabins_tuple = list(get_flight_cabin_mappings(FT))
             for cabin in cabins_tuple:
-                # cabin is a tuple Eg: ('FC','PC')
-                # X[(PNR,FT,cabin)] = model.addVar(vtype=GRB.BINARY, name=f'X_{i}')
                 variable_index_to_assignment_dict[i]=(PNR,FT,cabin)
                 my_dict[f'X_{i}'] = (PNR,FT,cabin)
                 X[(PNR,FT,cabin)] = dimod.Binary(f'X_{i}')
@@ -94,7 +82,6 @@ def quantum_optimize_flight_assignments(PNR_List):
         # Penalise non assignment costs (-M(1-sigma(Xi))) - For each PNR
         Non_assignment_Cost = cost_function(PNR,None,None)
         CQM_obj += Non_assignment_Cost - Non_assignment_Cost*sum(X_PNR_Constraint[PNR])
-        # objective+= Non_assignment_Cost - Non_assignment_Cost*sum(X_PNR_Constraint[PNR])
 
     # The number of assigned passengers should not exceed available seats
     for Flight, constraint_dic in X_Flight_Capacity_Constraint.items():
@@ -113,9 +100,6 @@ def quantum_optimize_flight_assignments(PNR_List):
 
     # Set the objective to maximize
     CQM.set_objective(-1*CQM_obj)
-    # model.setObjective(objective,GRB.MAXIMIZE)
-    # model.optimize()
-
     sampler = LeapHybridCQMSampler(token=dwave_token)    
     sampleset = sampler.sample_cqm(CQM)       
     feasible_sampleset = sampleset.filter(lambda row: row.is_feasible) 
@@ -140,10 +124,6 @@ def quantum_optimize_flight_assignments(PNR_List):
             
         
     # model.write("try.lp") # To Print the soln in a file
-
-    # Checking if a solution exists
-    # if model.status == GRB.OPTIMAL:
-    #     # Extract the solution
     result = { 'Assignments': [],'Non Assignments':[]}
     # set to keep track of assigned PNRs
     assigned_pnrs = set()
@@ -172,10 +152,6 @@ def quantum_optimize_flight_assignments(PNR_List):
                     if PNR.pnr_number not in assigned_pnrs and PNR.pnr_number not in not_assigned_pnrs:
                         result['Non Assignments'].append(PNR.pnr_number)
                         not_assigned_pnrs.add(PNR.pnr_number)
-                # if X[(PNR, FT, cabin)].x == 0:
-                #     if PNR.pnr_number not in assigned_pnrs and PNR.pnr_number not in not_assigned_pnrs:
-                #         result['Non Assignments'].append(PNR)
-                #         not_assigned_pnrs.add(PNR.pnr_number)
                 i+=1
     df_assignments = pd.DataFrame(result['Assignments'], columns=['PNR', 'Flight', 'Cabin'])
     df_non_assignments = pd.DataFrame(result['Non Assignments'], columns=['PNR'])
