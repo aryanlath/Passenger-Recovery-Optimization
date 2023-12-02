@@ -4,6 +4,9 @@ import constants_immutable
 loyalty_dict = {}
 
 def init_normalize_factors():
+    """
+    Initializes the normalization factors
+    """
     global pnr_normalize_factor
     for pnr in constants_immutable.pnr_to_s2:
         pnr_normalize_factor = max(pnr_normalize_factor, constants_immutable.pnr_to_s2[pnr])

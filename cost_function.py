@@ -43,8 +43,26 @@ def flight_quality_score(PNR, flight_tuple):
     last_flight = constants_immutable.pnr_flight_mapping[PNR.pnr_number][-1]
     Arrival_Delay_inHours = abs((last_flight.arrival_time - flight_tuple[-1].arrival_time).total_seconds())/3600
     Departure_Delay_inHours = abs((first_flight.departure_time - flight_tuple[0].departure_time).total_seconds())/3600
-    DelayScore = 0 
-    
+
+    DelayScore = 0
+
+    # Treating preponing and postponing differently for departure
+    # Departure_Delay_inHours = (first_flight.departure_time - flight_tuple[0].departure_time).total_seconds()/3600
+    # if (Departure_Delay_inHours <= -6):
+    #     DelayScore += 0.00000001
+    # elif(Departure_Delay_inHours < 0):
+    #     DelayScore += 10
+    # elif (Departure_Delay_inHours <= 6):
+    #     DelayScore += STD6h
+    # elif (Departure_Delay_inHours <= 12):
+    #     DelayScore += STD12h
+    # elif (Departure_Delay_inHours <= 24):
+    #     DelayScore += STD24h
+    # elif (Departure_Delay_inHours <= 48):
+    #     DelayScore += STD48h
+    # else:
+    #     DelayScore += 0.00000001
+
     if(Arrival_Delay_inHours <= 6):
         DelayScore += arrDelay6h
     elif(Arrival_Delay_inHours <= 12):
@@ -97,9 +115,13 @@ def class_difference_score(PNR, cabin_Tuple):
     sug_sum /= len(cabin_Tuple)
     pre_sum /= len(PNR.sub_class_list)
     ratio = sug_sum/pre_sum
-    if(ratio > 1):
+    if(ratio > 1 and upgrade):
         return upgrade_multiplier*ratio
+    elif(ratio > 1 and not upgrade):
+        return 0.00000001
     elif ratio==1:
         return 1
-    else:
+    elif(ratio < 1 and downgrade):
         return downgrade_multiplier*ratio
+    elif(ratio < 1 and not downgrade):
+        return 0.00000001*downgrade_multiplier*ratio

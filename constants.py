@@ -26,3 +26,5 @@ weight_cabin_map = 100
 pnr_normalize_factor = 100
 flight_normalize_factor = 100
 cabin_normalize_factor = 100
+upgrade = 1
+downgrade = 1
