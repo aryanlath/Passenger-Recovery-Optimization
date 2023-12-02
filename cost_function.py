@@ -5,6 +5,29 @@ from constants import *
 import math
 from flightScores import *
 
+## Customizable
+def cabin_to_class_cost(PNR,Curr_Subclass):
+    """
+    Returns the class to class mapping cost inside a cabin.
+    Input: PNR Object,Current Subclass
+    Returns: Cost (configurable)
+    """
+    subclass_list=PNR.sub_class_list
+    costs={}
+    curr_cost=0
+    for letter_code in range(ord('A'), ord('Z')+1):
+        letter = chr(letter_code)
+        costs[letter]=curr_cost
+        curr_cost+=1
+    avg_cost=0
+    for subclass in subclass_list:
+        avg_cost+=costs[subclass]
+    avg_cost/=len(subclass_list)
+    new_cost=costs[Curr_Subclass]
+    return new_cost-avg_cost
+
+
+
 def cost_function(PNR,flight_tuple, cabin_tuple):
     """
     Calculates the cost function for each PNR to flight mapping.
