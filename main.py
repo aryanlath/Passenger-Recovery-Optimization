@@ -7,7 +7,7 @@ import pprint
 import constants_immutable
 pp = pprint.PrettyPrinter(indent=4)
 from Assign_Class import *
-
+from handle_city_pairs import *
 
 
 
@@ -35,11 +35,15 @@ print("Total Reassigned: ",len(result['Assignments']))
 pp.pprint(result['Assignments'])
 print("Not Assigned PNRs: ")
 pp.pprint(result['Non Assignments'])
+
 print("\n\n\n\n")
 quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
 print(quantum_result)
 
 print(Cabin_to_Class(result["Assignments"]))
+
+for pnr in result["Non Assignments"]:
+    original_arrival = pnr.inv_list
 # print("\n\n\n\n")
 # quantum_result =optimize_flight_assignments(Impacted_PNR)
 # print(quantum_result)
