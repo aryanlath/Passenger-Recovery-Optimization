@@ -10,43 +10,46 @@ from Assign_Class import *
 
 
 
+def Main_function():
 
+    # initializes the loyalty scores for the passengers
+    init_loyalty_dictionary()
 
-# initializes the loyalty scores for the passengers
-init_loyalty_dictionary()
-
-# global all_flights, pnr_objects,  pnr_flight_mapping, pnr_to_s2
-constants_immutable.all_flights, constants_immutable.pnr_objects, constants_immutable.pnr_flight_mapping, constants_immutable.pnr_to_s2 = Get_All_Maps()
-# finds the normalization factors for the cost function
-init_normalize_factors()
-
-
-
-# Identify the impacted PNRs
-Impacted_PNR = Get_Impacted_passengers(constants_immutable.all_flights, constants_immutable.pnr_objects)
+    # global all_flights, pnr_objects,  pnr_flight_mapping, pnr_to_s2
+    constants_immutable.all_flights, constants_immutable.pnr_objects, constants_immutable.pnr_flight_mapping, constants_immutable.pnr_to_s2 = Get_All_Maps()
+    # finds the normalization factors for the cost function
+    init_normalize_factors()
 
 
 
-print("Total impacted Passengers: ",len(Impacted_PNR))
-pp.pprint(Impacted_PNR)
-result = optimize_flight_assignments(Impacted_PNR)
-print("Total Reassigned: ",len(result['Assignments']))
-
-pp.pprint(result['Assignments'])
-print("Not Assigned PNRs: ")
-pp.pprint(result['Non Assignments'])
-print("\n\n\n\n")
-quantum_result =optimize_flight_assignments(Impacted_PNR)
-print(quantum_result)
-
-print(Cabin_to_Class(result["Assignments"]))
+    # Identify the impacted PNRs
+    Impacted_PNR = Get_Impacted_passengers(constants_immutable.all_flights, constants_immutable.pnr_objects)
 
 
-print("QUANTUM RESULTS")
-print("Total Reassigned: ",len(quantum_result['Assignments']))
 
-pp.pprint(quantum_result['Assignments'])
-print("Not Assigned PNRs: ")
-pp.pprint(quantum_result['Non Assignments'])
-print("\n\n\n\n")
+    print("Total impacted Passengers: ",len(Impacted_PNR))
+    pp.pprint(Impacted_PNR)
+    result = optimize_flight_assignments(Impacted_PNR)
+    print("Total Reassigned: ",len(result['Assignments']))
 
+    pp.pprint(result['Assignments'])
+    print("Not Assigned PNRs: ")
+    pp.pprint(result['Non Assignments'])
+    print("\n\n\n\n")
+    quantum_result =optimize_flight_assignments(Impacted_PNR)
+    print(quantum_result)
+
+    print(Cabin_to_Class(result["Assignments"]))
+
+
+    print("QUANTUM RESULTS")
+    print("Total Reassigned: ",len(quantum_result['Assignments']))
+
+    pp.pprint(quantum_result['Assignments'])
+    print("Not Assigned PNRs: ")
+    pp.pprint(quantum_result['Non Assignments'])
+    print("\n\n\n\n")
+
+if __name__==  "__main__":
+    print("hi")
+    Main_function()

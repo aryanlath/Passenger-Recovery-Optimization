@@ -7,8 +7,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import copy
 import pprint
+import multiprocessing
 
 pp = pprint.PrettyPrinter(indent=4)
+lock_thread=multiprocessing.Lock()
 
 def Get_All_Maps():
     """
@@ -150,7 +152,7 @@ def custom_dfs(graph, source, destination, path, visited_edges, all_paths,k):
                 visited_edges.remove(edge)
                 path.pop()
 
-def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,num_of_hops=4,new_arrival_city=None):
+def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_map,num_of_hops=4,new_arrival_city=None):
     """
     Find flights from departure_city to arrival_city with exactly number_of_hops.
     Input : graph , current network graph
@@ -164,7 +166,6 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,num_of_hops=4,new_arriv
     previous_city=all_flights[PNR_Object.inv_list[0]].departure_city
     arrival_time=None
     for flight in PNR_Object.inv_list:
-        
         if(all_flights[flight].status=="cancelled"):
             earliest_reached_city=previous_city
             departure_time=all_flights[flight].departure_time
@@ -238,8 +239,7 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,num_of_hops=4,new_arriv
 
         if not valid:
             actual_valid_paths.remove(path) 
-
-    return list(set(actual_valid_paths))
+    PNR_to_FeasibleFlights_map[PNR_Object.pnr_number] =list(set(actual_valid_paths))
 
 
 # G=create_flight_graph()
