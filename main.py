@@ -3,7 +3,7 @@ from constants import *
 from init_functions import *
 from gurobi_optimisation import *
 from gurobi_optimisation_2 import *
-from Gurobi_Quantum_2 import *
+from Leap_Quantum import *
 import pprint
 import constants_immutable
 pp = pprint.PrettyPrinter(indent=4)
@@ -29,16 +29,23 @@ def Main_function():
 
     print("Total impacted Passengers: ",len(Impacted_PNR))
     pp.pprint(Impacted_PNR)
+    start = time.time()
     result = optimize_flight_assignments(Impacted_PNR)
+    end = time.time()
+    print("Classical Time " , end -start)
     print("Total Reassigned: ",len(result['Assignments']))
 
     pp.pprint(result['Assignments'])
     print("Not Assigned PNRs: ")
     pp.pprint(result['Non Assignments'])
     print("\n\n\n\n")
-
-
+    start = time.time()
     quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
+    end = time.time()
+    print("QUANTUM TIME ", end-start)
+    # print(quantum_result)
+
+    # print(Cabin_to_Class(result["Assignments"]))
 
 
     print("QUANTUM RESULTS")
