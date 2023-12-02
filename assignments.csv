@@ -1,0 +1,8 @@
+,PNR,Flight,Cabin
+0,"PNR('AH3KL0', ['INV-ZZ-6210656'], ['D'], 1)","(Flight('Inventory ID: INV-ZZ-2887660, Departure City: MAA, Arrival City: IDR ,)","('FC',)"
+1,"PNR('CADQPF', ['INV-ZZ-6744454'], ['L'], 1)","(Flight('Inventory ID: INV-ZZ-7994288, Departure City: CNN, Arrival City: MAA ,)","('FC',)"
+2,"PNR('DID2DD', ['INV-ZZ-1404611'], ['B'], 1)","(Flight('Inventory ID: INV-ZZ-9629677, Departure City: LKO, Arrival City: IDR ,)","('FC',)"
+3,"PNR('AXMPOM', ['INV-ZZ-2219734'], ['Q'], 2)","(Flight('Inventory ID: INV-ZZ-1004193, Departure City: PAT, Arrival City: COK ,)","('FC',)"
+4,"PNR('AQ1GTY#1', ['INV-ZZ-5633849'], ['L'], 1)","(Flight('Inventory ID: INV-ZZ-9613077, Departure City: CNN, Arrival City: CCU ,)","('FC',)"
+5,"PNR('EPUPN0#0', ['INV-ZZ-8754275'], ['O'], 1)","(Flight('Inventory ID: INV-ZZ-2370284, Departure City: GOI, Arrival City: BLR ,)","('FC',)"
+6,"PNR('GCFZ3Q#2', ['INV-ZZ-9788403'], ['L'], 1)","(Flight('Inventory ID: INV-ZZ-9110430, Departure City: GOI, Arrival City: DEL ,)","('FC',)"
