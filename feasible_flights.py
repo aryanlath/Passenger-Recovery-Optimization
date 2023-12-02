@@ -150,7 +150,7 @@ def custom_dfs(graph, source, destination, path, visited_edges, all_paths,k):
                 visited_edges.remove(edge)
                 path.pop()
 
-def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,num_of_hops=4):
+def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,num_of_hops=4,new_arrival_city=None):
     """
     Find flights from departure_city to arrival_city with exactly number_of_hops.
     Input : graph , current network graph
@@ -159,7 +159,6 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,num_of_hops=4):
             max num of hops
     Returns: All possible paths consisting of at max num_of hops [(F1,F2,),] : F1,F2 are the flight objects
     """
-
     earliest_reached_city=None
     current_hops=0
     previous_city=all_flights[PNR_Object.inv_list[0]].departure_city
@@ -186,7 +185,7 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,num_of_hops=4):
     valid_paths = []
     all_paths=[]
     visited_edges=[]
-
+    
     
     curr_location=copy.deepcopy(current_hops)+1
     while(curr_location<len(PNR_Object.inv_list)):
@@ -207,7 +206,10 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,num_of_hops=4):
             all_flights[PNR_Object.inv_list[curr_location]].ec_class_dict[sub_class]+=int(PNR_Object.PAX)
 
         curr_location+=1
-
+    
+    if(new_arrival_city!=None):
+        arrival_city=new_arrival_city
+    
     custom_dfs(graph,departure_city,arrival_city,valid_paths,visited_edges,all_paths,num_of_hops-current_hops)
     actual_valid_paths=copy.deepcopy(all_paths)
 
