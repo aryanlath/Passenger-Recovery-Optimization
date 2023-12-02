@@ -67,8 +67,11 @@ class Flight:
         return cabin_capacities[cabin]
 
     def __repr__(self):
+        # return (
+        #     f"Flight('Inventory ID: {self.inventory_id}, FC: {self.fc_class_dict}, BC: {self.bc_class_dict}, PC: {self.pc_class_dict}, EC: {self.ec_class_dict}, Flight Number: {self.flight_number}, Departure City: {self.departure_city}, Arrival City: {self.arrival_city} "
+        # )
         return (
-            f"Flight('Inventory ID: {self.inventory_id}, FC: {self.fc_class_dict}, BC: {self.bc_class_dict}, PC: {self.pc_class_dict}, EC: {self.ec_class_dict}, Flight Number: {self.flight_number}, Departure City: {self.departure_city}, Arrival City: {self.arrival_city} "
+            f"Flight('Inventory ID: {self.inventory_id}, Departure City: {self.departure_city}, Arrival City: {self.arrival_city} "
         )
     
 
