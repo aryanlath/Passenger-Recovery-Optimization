@@ -51,5 +51,4 @@ def Main_function():
     print("\n\n\n\n")
 
 if __name__==  "__main__":
-    print("hi")
     Main_function()
