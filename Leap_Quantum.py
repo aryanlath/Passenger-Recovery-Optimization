@@ -145,29 +145,37 @@ def quantum_optimize_flight_assignments(PNR_List):
     # best = feasible_sampleset.first.sample  
     Aggregated_sampleset = feasible_sampleset.aggregate()
     print("Total No. of Quantum Solutions are " , len(Aggregated_sampleset))
+    j=0
+    Final_Quantum_Solutions =[]
     for sample in Aggregated_sampleset.samples():
-        print("NEXT SOLUTION\n") 
-        for key,val in sample.items():
-            if(val==1.0):
-                print(key," = ", val ,my_dict[key])
+        # print("NEXT SOLUTION\n") 
+        Final_Quantum_Solutions.append(sample)
+        j+=1
+        if(j==3) :
+            break 
+        # for key,val in sample.items():
+        #     if(val==1.0):
+        #         print(key," = ", val ,my_dict[key])
     
-    objective_value = 0
+    Objective_Value_List =[0,0,0]
     i=0
     for PNR in PNR_List:
-        is_PNR_assigned = False
+        is_PNR_assigned = [False,False,False]
         for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
             cabins_tuple = get_flight_cabin_mappings(FT)
             for cabin in cabins_tuple:
                 X_coeff = cost_function(PNR, FT, cabin)
-                if best[f'X_{i}'] == 1.0:
-                    objective_value += X_coeff
-                    is_PNR_assigned = True
+                for idx,solution in Final_Quantum_Solutions.enumerate():
+                    if solution[f'X_{i}'] == 1.0:
+                        Objective_Value_List[idx] += X_coeff
+                        is_PNR_assigned[idx] = True
                 i += 1
-        if not is_PNR_assigned:
-          Non_assignment_Cost = cost_function(PNR, None, None)
-          objective_value += Non_assignment_Cost - Non_assignment_Cost * sum(X_PNR_Constraint[PNR])
+        for idx,check_assigned in is_PNR_assigned.enumerate():
+            if not is_PNR_assigned[idx]:
+                Non_assignment_Cost = cost_function(PNR, None, None)
+                Objective_Value_List[idx] += Non_assignment_Cost - Non_assignment_Cost * sum(X_PNR_Constraint[PNR])
     # Print or return the objective value
-    print("Objective Value: \n", objective_value)    
+    print("Objective Value List of top 3 quantum solutions : \n", Objective_Value_List)    
     # best = feasible_sampleset.first.sample
     # model.write("try.lp") # To Print the soln in a file
 
