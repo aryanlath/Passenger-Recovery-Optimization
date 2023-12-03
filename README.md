@@ -32,7 +32,7 @@ DWAVE_TOKEN=dwave_token
 ### Running the program
 Now, to run the script enter the following command in the terminal
 ```bash
-  streamlit run landingPage.py
+  streamlit run PNRScore.py
 ```
 
 
