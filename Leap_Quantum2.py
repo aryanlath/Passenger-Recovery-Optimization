@@ -182,35 +182,39 @@ def quantum_optimize_flight_assignments(PNR_List):
     # Checking if a solution exists
     # if model.status == GRB.OPTIMAL:
         # Extract the solution
-    result = {'Assignments': [],'Non Assignments':[]}
+    result = [{'Assignments': [],'Non Assignments':[]},{'Assignments': [],'Non Assignments':[]},{'Assignments': [],'Non Assignments':[]}]
     # set to keep track of assigned PNRs
-    assigned_pnrs = set()
-    not_assigned_pnrs = set()
-    i=0
-    for PNR in PNR_List:
-        for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
-            cabins_tuple = get_flight_cabin_mappings(FT)
-            for cabin in cabins_tuple:
-                # cabin is a tuple Eg: ('FC', 'PC')
-                if best[f'X_{i}'] == 1:
-                    result['Assignments'].append((PNR.pnr_number,PNR.email_id, FT, cabin))
-                    assigned_pnrs.add(PNR.pnr_number)
-                i+=1
-    i=0
-    for PNR in PNR_List:
-        for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
-            cabins_tuple = get_flight_cabin_mappings(FT)
-            for cabin in cabins_tuple:
-                # cabin is a tuple Eg: ('A', 'B')
-                # print(X[(PNR, FT, cabin)].VarName,"=",X[(PNR, FT, cabin)].x)
-                if best[f'X_{i}'] == 0:
-                    if PNR.pnr_number not in assigned_pnrs and PNR.pnr_number not in not_assigned_pnrs:
-                        result['Non Assignments'].append(PNR)
-                        not_assigned_pnrs.add(PNR.pnr_number)
-                i+=1
-    for pnr in PNR_List:
-        if pnr.pnr_number not in assigned_pnrs and pnr.pnr_number not in not_assigned_pnrs:
-            result['Non Assignments'].append(pnr.pnr_number)
+    assigned_pnrs=[set(),set(),set()]
+    not_assigned_pnrs = [set(),set(),set()]
+    for idx,solution in enumerate(Final_Quantum_Solutions):
+        i=0
+        for PNR in PNR_List:
+            for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
+                cabins_tuple = get_flight_cabin_mappings(FT)
+                for cabin in cabins_tuple:
+                    if solution[f'X_{i}'] == 1.0:
+                        result[idx]['Assignments'].append((PNR.pnr_number,PNR.email_id, FT, cabin))
+                        assigned_pnrs[idx].add(PNR.pnr_number)
+                        not_assigned_pnrs[idx].add(PNR.pnr_number)
+                    i += 1
+
+    for idx,solution in enumerate(Final_Quantum_Solutions):
+        i=0
+        for PNR in PNR_List:
+            for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
+                cabins_tuple = get_flight_cabin_mappings(FT)
+                for cabin in cabins_tuple:         
+                    if solution[f'X_{i}'] == 1.0:
+                        if PNR.pnr_number not in assigned_pnrs and PNR.pnr_number not in not_assigned_pnrs:
+                            result[idx]['Non Assignments'].append(PNR)
+                            not_assigned_pnrs[idx].add(PNR.pnr_number)
+                    i += 1
+
+    for idx,solution in enumerate(Final_Quantum_Solutions):
+        for pnr in PNR_List:
+            if pnr.pnr_number not in assigned_pnrs[idx] and pnr.pnr_number not in not_assigned_pnrs[idx]:
+                result[idx]['Non Assignments'].append(pnr.pnr_number)
+                
     df_assignments = pd.DataFrame(result['Assignments'], columns=['PNR_Number', 'PNR_Email','Flight', 'Cabin'])
     df_non_assignments = pd.DataFrame(result['Non Assignments'], columns=['PNR'])
     # with pd.ExcelWriter(output_file) as writer:
