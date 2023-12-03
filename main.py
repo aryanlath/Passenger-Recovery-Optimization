@@ -72,7 +72,7 @@ def Main_function():
     print("Total exception handling time: ",end-start)
 
     # send emails
-    send_mail("assignments.csv")
+    send_mail("Results/assignments.csv")
 
 if __name__==  "__main__":
     Main_function()
