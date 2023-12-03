@@ -206,8 +206,8 @@ def quantum_optimize_flight_assignments(PNR_List):
     df_assignments = pd.DataFrame(result['Assignments'], columns=['PNR_Number', 'PNR_Email','Flight', 'Cabin'])
     df_non_assignments = pd.DataFrame(result['Non Assignments'], columns=['PNR'])
     # with pd.ExcelWriter(output_file) as writer:
-    df_assignments.to_csv("assignments.csv")
-    df_non_assignments.to_csv("non_assignments.csv")
+    df_assignments.to_csv("Results/assignments.csv")
+    df_non_assignments.to_csv("Results/non_assignments.csv")
     return result
     # else:
         # return "The problem does not have an optimal solution."
