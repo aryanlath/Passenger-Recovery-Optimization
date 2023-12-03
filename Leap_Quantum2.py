@@ -203,7 +203,7 @@ def quantum_optimize_flight_assignments(PNR_List):
             for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
                 cabins_tuple = get_flight_cabin_mappings(FT)
                 for cabin in cabins_tuple:         
-                    if solution[f'X_{i}'] == 1.0:
+                    if solution[f'X_{i}'] == 0.0:
                         if PNR.pnr_number not in assigned_pnrs[idx] and PNR.pnr_number not in not_assigned_pnrs[idx]:
                             result[idx]['Non Assignments'].append(PNR)
                             not_assigned_pnrs[idx].add(PNR.pnr_number)
