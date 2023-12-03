@@ -42,6 +42,8 @@ def cost_function(PNR,flight_tuple, cabin_tuple):
     s1 = flight_quality_score(PNR, flight_tuple)
     s2 = PNR_Score(PNR)/pnr_normalize_factor
     s3 = class_difference_score(PNR,cabin_tuple)
+    if(s3==0):
+        return - 100*NON_ASSIGNMENT_COST*PNR_Score(PNR)
     cost = weight_flight_map*math.log(s1) + weight_pnr_map*math.log(s2) + weight_cabin_map*math.log(s3)
     return cost
 
@@ -144,10 +146,10 @@ def class_difference_score(PNR, cabin_Tuple):
     if(ratio > 1 and upgrade):
         return upgrade_multiplier*ratio
     elif(ratio > 1 and not upgrade):
-        return 0.00000001
+        return 0.0
     elif ratio==1:
         return 1
     elif(ratio < 1 and downgrade):
         return downgrade_multiplier*ratio
     elif(ratio < 1 and not downgrade):
-        return 0.00000001*downgrade_multiplier*ratio
+        return 0.0
