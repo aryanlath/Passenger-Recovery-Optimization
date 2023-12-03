@@ -170,7 +170,7 @@ def quantum_optimize_flight_assignments(PNR_List):
                         Objective_Value_List[idx] += X_coeff
                         is_PNR_assigned[idx] = True
                 i += 1
-        for idx,check_assigned in enumerate(is_PNR_assigned):
+        for idx,check_assigned in is_PNR_assigned.enumerate():
             if not is_PNR_assigned[idx]:
                 Non_assignment_Cost = cost_function(PNR, None, None)
                 Objective_Value_List[idx] += Non_assignment_Cost - Non_assignment_Cost * sum(X_PNR_Constraint[PNR])
