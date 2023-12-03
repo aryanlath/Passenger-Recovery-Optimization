@@ -79,8 +79,8 @@ with col3:
 #other modifications
 st.subheader("Others")
 
-#divide into 2 columns
-col1,col2=st.columns(2)
+#divide into 3 columns
+col1,col2,col3=st.columns(3)
 with col1:
     #score when stopover is present
     stopOver=st.number_input("Stopover",value=-20)
@@ -88,11 +88,15 @@ with col1:
 with col2:
     #score to add when equipment number matches
     equipmentScore=st.number_input("Matching Equipment number",value=50)
-
+with col3:
+    #score for maximum departure delay
+    maxDepartDelay=st.number_input("Maximum departure delay",value=20,min_value=0)
 
 #add empty space
 st.write("")
 st.write("")
+
+
 
 #columns created to bring button to center
 col1, col2, col3,col4,col5 = st.columns(5)
@@ -136,6 +140,10 @@ with col3:
         
         #adding score for equipment match
         f.write("equipmentScore="+str(equipmentScore)+"\n")
+        
+        #maximum departure delay
+        f.write("maxDepartDelay="+str(maxDepartDelay)+"\n")
+        
         
         #closing file
         f.close()

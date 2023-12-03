@@ -1,5 +1,4 @@
-upgrade=True
-downgrade=True
+upgrade_downgrade=True
 classChangeA=['F','S']
 classChangeS=['F','A']
 classChangeF=['S','A']
@@ -9,6 +8,3 @@ classChangeI=['J','C','O']
 classChangeO=['J','C','I']
 classChangeY=['B','P','Z']
 classChangeB=['Y','P','Z']
-first=False
-business=False
-economy=False
