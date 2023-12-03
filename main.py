@@ -6,6 +6,7 @@ from gurobi_optimisation_2 import *
 from Leap_Quantum import *
 import pprint
 import constants_immutable
+from mailer import *
 pp = pprint.PrettyPrinter(indent=4)
 from Assign_Class import *
 
@@ -70,7 +71,8 @@ def Main_function():
     print("\n\n\n\n")
     print("Total exception handling time: ",end-start)
 
-
+    # send emails
+    send_mail("assignments.csv")
 
 if __name__==  "__main__":
     Main_function()
