@@ -13,7 +13,7 @@ MCT = 1
 MAXCT = 12
 upgrade=True
 downgrade=True
-
+st.title("Business Rules Modification Engine")
 #heading
 st.header("PNR Level Score Modifications")
 st.write("")
@@ -26,34 +26,17 @@ st.write("")
 st.write("")
 
 #score for cabin F
-cabinScoreF=st.slider("F",1500,2000,value=1700)
+cabinScoreFirst=st.slider("First Class",1500,2000,value=1950)
 
 #score for cabin Y
-cabinScoreY=st.slider("Y",1500,2000,value=1500)
+cabinScoreBusiness=st.slider("Business Class",1500,2000,value=1800)
+
+#
+cabinScorePremium=st.slider("Premium Economy",1500,2000,value=1700)
 
 #score for cabin J
-cabinScoreJ=st.slider("J",1500,2000,value=2000)
+cabinScoreEconomy=st.slider("Economy",1500,2000,value=1500)
 st.write("")
-
-
-st.subheader("Class Score")
-
-st.write("")
-
-
-col1, col2, col3 = st.columns(3)
-with col1:
-    #score for class A
-    classScoreA = st.number_input("Enter Score for Class A",value=700,min_value=500,max_value=1000)
-
-with col2:
-    #score for class B
-    classScoreB = st.number_input("Enter Score for Class B",value=700,min_value=500,max_value=1000)
-
-with col3 :
-    #score for class C
-    classScoreC = st.number_input("Enter Score for Class C",value=700,min_value=500,max_value=1000)
-
 
 st.write("")
 
@@ -106,9 +89,31 @@ with col3:
     PNR_pax=st.number_input("PAX",value=50,min_value=0)
     
     #score for no allocation penalty
-    PNR_penalty=st.number_input("Penalty for no allocation",value=-50,max_value=0)
+    PNR_penalty=st.number_input("Penalty for no allocation",value=100,min_value=0)
 
 st.write("")
+
+st.subheader("Weightage")
+
+
+#divide into 3 columns
+col1,col2,col3=st.columns(3)
+with col1:
+    #score when stopover is present
+    weight_flight_map=st.number_input("Enter weightage of flight score",value=100,min_value=0)
+with col2:
+    #score to add when equipment number matches
+    weight_pnr_map=st.number_input("Enter weightage of PNR score",value=100,min_value=0)
+with col3:
+    #score for maximum departure delay
+    weight_cabin_map=st.number_input("Enter weightage of cabin score",value=100,min_value=0)
+
+
+
+#add empty space
+st.write("")
+st.write("")
+
 
 #other modifications
 st.header("Other Modifications")
@@ -125,8 +130,9 @@ with col2:
     
 with col3:
     #constraint for minimum connecting time
-    MCT= st.number_input("Enter Minimun Connecting Time",min_value=0,value=MCT)
+    MCT= st.number_input("Enter Minimum Connecting Time",min_value=0,value=MCT)
 
+CITY_PAIR_THRESHOLD=st.number_input("Enter maximum allowed travel time between original and new airport",min_value=0,value=8)
 #add empty space
 st.write("")
 st.write("")
@@ -158,6 +164,17 @@ with col3:
         #writing ETD 
         f.write("ETD="+str(ETD)+"\n")
         
+        #CabinScore
+        #First
+        f.write("cabinScoreFirst="+str(cabinScoreFirst)+"\n")
+        #Business
+        f.write("cabinScoreBusiness="+str(cabinScoreBusiness)+"\n")
+        #Premium Economy
+        f.write("cabinScorePremium="+str(cabinScorePremium)+"\n")
+        #Economy
+        f.write("cabinScoreEconomy="+str(cabinScoreEconomy)+"\n")
+        
+        
         #writing MCT
         f.write("MCT="+str(MCT)+"\n")
         
@@ -185,7 +202,16 @@ with col3:
         f.write("PNR_pax="+str(PNR_pax)+"\n")
         
         #penalty score
-        f.write("PNR_penalty="+str(PNR_penalty)+"\n")
+        f.write("NON_ASSIGNMENT_COST="+str(-PNR_penalty)+"\n")
+        
+        #writing city pair thershold score
+        f.write("CITY_PAIR_THRESHOLD="+str(CITY_PAIR_THRESHOLD)+"\n")
+        
+        #writing weightage
+        f.write("weight_flight_map="+str(weight_flight_map)+"\n")
+        f.write("weight_pnr_map="+str(weight_pnr_map)+"\n")
+        f.write("weight_cabin_map="+str(weight_cabin_map)+"\n")
+        
         
         #close file
         f.close()
