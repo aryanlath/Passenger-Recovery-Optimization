@@ -16,3 +16,4 @@ all_flights = {}
 pnr_objects = {}
 pnr_flight_mapping = {}
 pnr_to_s2 = {}
+connection_constant = 9.5
