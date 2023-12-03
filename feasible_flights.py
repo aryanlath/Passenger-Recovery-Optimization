@@ -152,6 +152,48 @@ def custom_dfs(graph, source, destination, path, visited_edges, all_paths,k):
                 visited_edges.remove(edge)
                 path.pop()
 
+
+def custom_dfs_iterative(graph, source, destination, k):
+    """
+    Iterative DFS for finding all possible paths composed of distinct edges
+    Input: Networkx graph, source, destination, max_number of hops (k)
+    Output: List of all possible paths composed of distinct edges
+    """
+    stack = [(source, [], set())]
+    all_paths = []
+
+    while stack:
+        current_node, path_edges, visited_nodes = stack.pop()
+
+        if len(path_edges) > k:  # Checking the number of edges in the path
+            continue
+
+        if current_node == destination and len(path_edges) > 0:
+            all_paths.append(tuple(path_edges.copy()))
+            continue
+
+        neighbors = list(graph.neighbors(current_node))
+        for neighbor in neighbors:
+            for key in graph[current_node][neighbor]:
+                edge = (graph[current_node][neighbor][key]["flight"])
+                if neighbor not in visited_nodes:
+                    new_path_edges = path_edges + [edge]
+                    new_visited_nodes = visited_nodes.copy()
+                    new_visited_nodes.add(neighbor)
+                    stack.append((neighbor, new_path_edges, new_visited_nodes))
+
+    return all_paths
+
+# Example Usage:
+# Assuming you have a graph named 'your_graph'
+# all_paths = custom_dfs_iterative_edges(your_graph, source_node, destination_node, max_hops)
+
+# Assuming you have a graph named 'your_graph'
+# all_paths = custom_dfs_iterative(your_graph, source_node, destination_node, max_hops)
+
+
+
+
 def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_map,num_of_hops=4,new_arrival_city=None):
     """
     Find flights from departure_city to arrival_city with exactly number_of_hops.
@@ -183,10 +225,7 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_
 
     arrival_city   =  all_flights[PNR_Object.inv_list[-1]].arrival_city
 
-    valid_paths = []
     all_paths=[]
-    visited_edges=[]
-    
     
     curr_location=copy.deepcopy(current_hops)+1
     while(curr_location<len(PNR_Object.inv_list)):
@@ -211,9 +250,8 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_
     if(new_arrival_city!=None):
         arrival_city=new_arrival_city
     
-    custom_dfs(graph,departure_city,arrival_city,valid_paths,visited_edges,all_paths,num_of_hops-current_hops)
+    all_paths=custom_dfs_iterative(graph,departure_city,arrival_city,num_of_hops-current_hops)
     actual_valid_paths=copy.deepcopy(all_paths)
-
     for path in all_paths:
         isFirst=True
         valid= True
@@ -239,7 +277,7 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_
 
         if not valid:
             actual_valid_paths.remove(path) 
-    PNR_to_FeasibleFlights_map[PNR_Object.pnr_number] =list(set(actual_valid_paths))
+    PNR_to_FeasibleFlights_map[PNR_Object.pnr_number] =actual_valid_paths
 
 
 # G=create_flight_graph()

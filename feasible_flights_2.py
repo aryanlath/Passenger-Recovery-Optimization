@@ -44,10 +44,8 @@ def PNR_to_Feasible_Flights_2(graph,all_flights,PNR_Object,PNR_to_feasible_fligh
 
     arrival_city   =  all_flights[PNR_Object.inv_list[-1]].arrival_city
 
-    valid_paths = []
     all_paths=[]
-    visited_edges=[]
-    
+
     
     curr_location=copy.deepcopy(current_hops)+1
     while(curr_location<len(PNR_Object.inv_list)):
@@ -72,7 +70,7 @@ def PNR_to_Feasible_Flights_2(graph,all_flights,PNR_Object,PNR_to_feasible_fligh
     if(new_arrival_city!=None):
         arrival_city=new_arrival_city
     
-    custom_dfs(graph,departure_city,arrival_city,valid_paths,visited_edges,all_paths,num_of_hops-current_hops)
+    all_paths=custom_dfs_iterative(graph,departure_city,arrival_city,num_of_hops-current_hops)
     actual_valid_paths=copy.deepcopy(all_paths)
 
     for path in all_paths:
