@@ -14,7 +14,7 @@ from Assign_Class import *
 def Main_function():
 
     # initializes the loyalty scores for the passengers
-    init_loyalty_dictionary()
+    # init_loyalty_dictionary()
 
     # global all_flights, pnr_objects,  pnr_flight_mapping, pnr_to_s2
     constants_immutable.all_flights, constants_immutable.pnr_objects, constants_immutable.pnr_flight_mapping, constants_immutable.pnr_to_s2 = Get_All_Maps()
@@ -39,22 +39,22 @@ def Main_function():
     print("Not Assigned PNRs: ")
     pp.pprint(result['Non Assignments'])
     print("\n\n\n\n")
-    start = time.time()
-    quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
-    end = time.time()
-    print("QUANTUM TIME ", end-start)
-    print(quantum_result)
+    # start = time.time()
+    # quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
+    # end = time.time()
+    # print("QUANTUM TIME ", end-start)
+    # print(quantum_result)
 
     # print(Cabin_to_Class(result["Assignments"]))
 
 
-    print("QUANTUM RESULTS")
-    print("Total Reassigned: ",len(quantum_result['Assignments']))
+    # print("QUANTUM RESULTS")
+    # print("Total Reassigned: ",len(quantum_result['Assignments']))
 
-    pp.pprint(quantum_result['Assignments'])
-    print("Not Assigned PNRs: ")
-    pp.pprint(quantum_result['Non Assignments'])
-    print("\n\n\n\n")
+    # pp.pprint(quantum_result['Assignments'])
+    # print("Not Assigned PNRs: ")
+    # pp.pprint(quantum_result['Non Assignments'])
+    # print("\n\n\n\n")
     start=time.time()
     print(Cabin_to_Class(result["Assignments"]))
     end=time.time()

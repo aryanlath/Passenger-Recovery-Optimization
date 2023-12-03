@@ -5,6 +5,7 @@ from constants import *
 import math
 from flightScores import *
 import constants_immutable
+from classRules import *
 
 ## Customizable
 def cabin_to_class_cost(PNR,Curr_Subclass):
@@ -25,7 +26,7 @@ def cabin_to_class_cost(PNR,Curr_Subclass):
         avg_cost+=costs[subclass]
     avg_cost/=len(subclass_list)
     new_cost=costs[Curr_Subclass]
-    return new_cost-avg_cost
+    return int(new_cost)-int(avg_cost)
 
 
 
@@ -40,7 +41,7 @@ def cost_function(PNR,flight_tuple, cabin_tuple):
     if(flight_tuple is None):
         return -NON_ASSIGNMENT_COST*PNR_Score(PNR)
     s1 = flight_quality_score(PNR, flight_tuple)
-    s2 = PNR_Score(PNR)/pnr_normalize_factor
+    s2 = PNR_Score(PNR)/constants_immutable.pnr_normalize_factor
     s3 = class_difference_score(PNR,cabin_tuple)
     if(s3==0):
         return - 100*NON_ASSIGNMENT_COST*PNR_Score(PNR)
@@ -143,13 +144,13 @@ def class_difference_score(PNR, cabin_Tuple):
     sug_sum /= len(cabin_Tuple)
     pre_sum /= len(PNR.sub_class_list)
     ratio = sug_sum/pre_sum
-    if(ratio > 1 and upgrade):
+    if(ratio > 1 and upgrade_downgrade):
         return upgrade_multiplier*ratio
-    elif(ratio > 1 and not upgrade):
+    elif(ratio > 1 and not upgrade_downgrade):
         return 0.0
     elif ratio==1:
         return 1
-    elif(ratio < 1 and downgrade):
+    elif(ratio < 1 and upgrade_downgrade):
         return downgrade_multiplier*ratio
-    elif(ratio < 1 and not downgrade):
+    elif(ratio < 1 and not upgrade_downgrade):
         return 0.0

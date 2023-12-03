@@ -1,7 +1,6 @@
 
 # If needed 
-from init_functions import loyalty_dict
-from constants import PNR_pax,PNR_SSR
+from constants import PNR_pax,PNR_SSR,loyalty_dict
 
 class PNR:
     def __init__(self, pnr_number,inv_list, sub_class_list, special_requirements,PAX, passenger_loyalty,email_id):
@@ -50,9 +49,9 @@ class PNR:
             
         """
         if(self.special_requirements == "Grade1"):
-            return PNR_SSR
+            return PNR_SSR["grade1"]
         elif (self.special_requirements=="Grade2"):
-            return PNR_SSR/2
+            return PNR_SSR["grade2"]
     
     def get_pnr_score(self):
         """

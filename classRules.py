@@ -1,4 +1,4 @@
-upgrade_downgrade=True
+upgrade_downgrade=False
 classChangeA=['F','S']
 classChangeS=['F','A']
 classChangeF=['S','A']
