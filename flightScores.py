@@ -15,3 +15,4 @@ gradeC=150
 stopOver=-20
 equipmentScore=50
 maxDepartDelay=20
+connection_constant = 9.5
