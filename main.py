@@ -25,7 +25,6 @@ def Main_function():
     # Identify the impacted PNRs
     Impacted_PNR = Get_Impacted_passengers(constants_immutable.all_flights, constants_immutable.pnr_objects)
 
-    print(Cabin_to_Class(result["Assignments"]))
 
     print("Total impacted Passengers: ",len(Impacted_PNR))
     pp.pprint(Impacted_PNR)
@@ -35,35 +34,42 @@ def Main_function():
     print("Classical Time " , end -start)
     print("Total Reassigned: ",len(result['Assignments']))
 
-    pp.pprint(result['Assignments'])
-    print("Not Assigned PNRs: ")
-    pp.pprint(result['Non Assignments'])
-    print("\n\n\n\n")
-    start = time.time()
-    quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
-    end = time.time()
-    print("QUANTUM TIME ", end-start)
+    # pp.pprint(result['Assignments'])
+    # print("Not Assigned PNRs: ")
+    # pp.pprint(result['Non Assignments'])
+    # print("\n\n\n\n")
+    # start = time.time()
+    # quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
+    # end = time.time()
+    # print("QUANTUM TIME ", end-start)
     # print(quantum_result)
 
     # print(Cabin_to_Class(result["Assignments"]))
 
 
-    print("QUANTUM RESULTS")
-    print("Total Reassigned: ",len(quantum_result['Assignments']))
+    # print("QUANTUM RESULTS")
+    # print("Total Reassigned: ",len(quantum_result['Assignments']))
 
-    pp.pprint(quantum_result['Assignments'])
-    print("Not Assigned PNRs: ")
-    pp.pprint(quantum_result['Non Assignments'])
+    # pp.pprint(quantum_result['Assignments'])
+    # print("Not Assigned PNRs: ")
+    #pp.pprint(quantum_result['Non Assignments'])
     print("\n\n\n\n")
-    
+    start=time.time()
+    print(Cabin_to_Class(result["Assignments"]))
+    end=time.time()
+    print("Network Flow time :",end-start)
     print("Exception List handling...")
     print() 
     print()
+    start=time.time()
     result2 = optimize_flight_assignments_2(result['Non Assignments'],constants_immutable.all_flights)
+    end=time.time()
     pp.pprint(result2['Assignments'])
     print("Not Assigned PNRs: ")
     pp.pprint(result2['Non Assignments'])
     print("\n\n\n\n")
+    print("Total exception handling time: ",end-start)
+
 
 
 if __name__==  "__main__":

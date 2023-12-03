@@ -144,7 +144,7 @@ def extract_PNR_from_CSV(file_path):
                 prev_arrival_time=all_flights[flight].arrival_time
                 start+=1
             else:
-                if(all_flights[flight].departure_time.timestamp()-prev_arrival_time.timestamp()>ETD*60*60):
+                if(abs(all_flights[flight].departure_time.timestamp()-prev_arrival_time.timestamp())>ETD*60*60):
                     partitions.append(start)
                 prev_arrival_time=all_flights[flight].arrival_time
                 start+=1

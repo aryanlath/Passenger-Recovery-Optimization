@@ -138,7 +138,7 @@ def custom_dfs(graph, source, destination, path, visited_edges, all_paths,k):
     """
     if len(path) > k:  # Check if the current path length exceeds k
          return
-    if source == destination:
+    if source == destination and len(path)>0:
         path=tuple(path)
         all_paths.append(path)
         return

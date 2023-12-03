@@ -11,9 +11,9 @@ import multiprocessing
 from feasible_flights import *
 
 pp = pprint.PrettyPrinter(indent=4)
+lock=multiprocessing.Lock()
 
-
-def PNR_to_Feasible_Flights_2(graph,all_flights,PNR_Object,num_of_hops=4,new_arrival_city=None):
+def PNR_to_Feasible_Flights_2(graph,all_flights,PNR_Object,PNR_to_feasible_flights_map_2,num_of_hops=4,new_arrival_city=None):
     """
     Find flights from departure_city to arrival_city with exactly number_of_hops.
     Input : graph , current network graph
@@ -100,7 +100,11 @@ def PNR_to_Feasible_Flights_2(graph,all_flights,PNR_Object,num_of_hops=4,new_arr
 
         if not valid:
             actual_valid_paths.remove(path) 
-    return list(set(actual_valid_paths))
+    with lock:
+        if(PNR_Object.pnr_number not in PNR_to_feasible_flights_map_2):
+                PNR_to_feasible_flights_map_2[PNR_Object.pnr_number]=actual_valid_paths
+        else:
+                PNR_to_feasible_flights_map_2[PNR_Object.pnr_number].extend(actual_valid_paths)
 
 
 # G=create_flight_graph()
