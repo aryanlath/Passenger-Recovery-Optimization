@@ -185,7 +185,7 @@ def quantum_optimize_flight_assignments(PNR_List):
             for cabin in cabins_tuple:
                 # cabin is a tuple Eg: ('FC', 'PC')
                 if best[f'X_{i}'] == 1:
-                    result['Assignments'].append((PNR, FT, cabin))
+                    result['Assignments'].append((PNR.pnr_number,PNR.email_id, FT, cabin))
                     assigned_pnrs.add(PNR.pnr_number)
                 i+=1
     i=0
@@ -203,7 +203,7 @@ def quantum_optimize_flight_assignments(PNR_List):
     for pnr in PNR_List:
         if pnr.pnr_number not in assigned_pnrs and pnr.pnr_number not in not_assigned_pnrs:
             result['Non Assignments'].append(pnr.pnr_number)
-    df_assignments = pd.DataFrame(result['Assignments'], columns=['PNR', 'Flight', 'Cabin'])
+    df_assignments = pd.DataFrame(result['Assignments'], columns=['PNR_Number', 'PNR_Email','Flight', 'Cabin'])
     df_non_assignments = pd.DataFrame(result['Non Assignments'], columns=['PNR'])
     # with pd.ExcelWriter(output_file) as writer:
     df_assignments.to_csv("assignments.csv")
