@@ -6,6 +6,7 @@ from gurobi_optimisation_2 import *
 from Leap_Quantum import *
 import pprint
 import constants_immutable
+from mailer import *
 pp = pprint.PrettyPrinter(indent=4)
 from Assign_Class import *
 
@@ -34,25 +35,25 @@ def Main_function():
     print("Classical Time " , end -start)
     print("Total Reassigned: ",len(result['Assignments']))
 
-    # pp.pprint(result['Assignments'])
-    # print("Not Assigned PNRs: ")
-    # pp.pprint(result['Non Assignments'])
-    # print("\n\n\n\n")
-    # start = time.time()
-    # quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
-    # end = time.time()
-    # print("QUANTUM TIME ", end-start)
-    # print(quantum_result)
+    pp.pprint(result['Assignments'])
+    print("Not Assigned PNRs: ")
+    pp.pprint(result['Non Assignments'])
+    print("\n\n\n\n")
+    start = time.time()
+    quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
+    end = time.time()
+    print("QUANTUM TIME ", end-start)
+    print(quantum_result)
 
     # print(Cabin_to_Class(result["Assignments"]))
 
 
-    # print("QUANTUM RESULTS")
-    # print("Total Reassigned: ",len(quantum_result['Assignments']))
+    print("QUANTUM RESULTS")
+    print("Total Reassigned: ",len(quantum_result['Assignments']))
 
-    # pp.pprint(quantum_result['Assignments'])
-    # print("Not Assigned PNRs: ")
-    #pp.pprint(quantum_result['Non Assignments'])
+    pp.pprint(quantum_result['Assignments'])
+    print("Not Assigned PNRs: ")
+    pp.pprint(quantum_result['Non Assignments'])
     print("\n\n\n\n")
     start=time.time()
     print(Cabin_to_Class(result["Assignments"]))
@@ -70,7 +71,8 @@ def Main_function():
     print("\n\n\n\n")
     print("Total exception handling time: ",end-start)
 
-
+    # send emails
+    send_mail("Results/assignments.csv")
 
 if __name__==  "__main__":
     Main_function()

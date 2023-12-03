@@ -116,7 +116,7 @@ def extract_PNR_from_CSV(file_path):
         inv_id = row.get('INV_ID', None)
         passenger_loyalty = row.get('LOYALTY', "Silver")
         special_requirements = row.get('SSR', "Grade2")
-        email_id = row.get('CONTACT_EMAIL', "mock@email.com")
+        email_id = row.get('CONTACT_EMAIL', "g-s01@outlook.com")
 
         # To get the Legs of flight ordered by seq_number
 
