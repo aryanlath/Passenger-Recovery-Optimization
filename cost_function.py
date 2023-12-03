@@ -65,26 +65,26 @@ def flight_quality_score(PNR, flight_tuple):
     first_flight = constants_immutable.pnr_flight_mapping[PNR.pnr_number][0]
     last_flight = constants_immutable.pnr_flight_mapping[PNR.pnr_number][-1]
     Arrival_Delay_inHours = abs((last_flight.arrival_time - flight_tuple[-1].arrival_time).total_seconds())/3600
-    Departure_Delay_inHours = abs((first_flight.departure_time - flight_tuple[0].departure_time).total_seconds())/3600
+    # Departure_Delay_inHours = abs((first_flight.departure_time - flight_tuple[0].departure_time).total_seconds())/3600
 
     DelayScore = 0
 
     # Treating preponing and postponing differently for departure
-    # Departure_Delay_inHours = (first_flight.departure_time - flight_tuple[0].departure_time).total_seconds()/3600
-    # if (Departure_Delay_inHours <= -6):
-    #     DelayScore += 0.00000001
-    # elif(Departure_Delay_inHours < 0):
-    #     DelayScore += 10
-    # elif (Departure_Delay_inHours <= 6):
-    #     DelayScore += STD6h
-    # elif (Departure_Delay_inHours <= 12):
-    #     DelayScore += STD12h
-    # elif (Departure_Delay_inHours <= 24):
-    #     DelayScore += STD24h
-    # elif (Departure_Delay_inHours <= 48):
-    #     DelayScore += STD48h
-    # else:
-    #     DelayScore += 0.00000001
+    Departure_Delay_inHours = (first_flight.departure_time - flight_tuple[0].departure_time).total_seconds()/3600
+    if (Departure_Delay_inHours <= -6):
+        DelayScore += 0.00000001
+    elif(Departure_Delay_inHours < 0):
+        DelayScore += 10
+    elif (Departure_Delay_inHours <= 6):
+        DelayScore += STD6h
+    elif (Departure_Delay_inHours <= 12):
+        DelayScore += STD12h
+    elif (Departure_Delay_inHours <= 24):
+        DelayScore += STD24h
+    elif (Departure_Delay_inHours <= 48):
+        DelayScore += STD48h
+    else:
+        DelayScore += 0.00000001
 
     if(Arrival_Delay_inHours <= 6):
         DelayScore += arrDelay6h
@@ -97,22 +97,25 @@ def flight_quality_score(PNR, flight_tuple):
     else:
         DelayScore += 0.00000001
 
-    if(Departure_Delay_inHours <= 6):
-        DelayScore += STD6h
-    elif(Departure_Delay_inHours <= 12):
-        DelayScore += STD12h
-    elif(Departure_Delay_inHours <= 24):
-        DelayScore += STD24h
-    elif(Departure_Delay_inHours <= 48):
-        DelayScore += STD48h
-    else:
-        DelayScore += 0.00000001
+    # if(Departure_Delay_inHours <= 6):
+    #     DelayScore += STD6h
+    # elif(Departure_Delay_inHours <= 12):
+    #     DelayScore += STD12h
+    # elif(Departure_Delay_inHours <= 24):
+    #     DelayScore += STD24h
+    # elif(Departure_Delay_inHours <= 48):
+    #     DelayScore += STD48h
+    # else:
+    #     DelayScore += 0.00000001
     
     # ConnectionScore -> If proposed flight solutions's length increases, score decreases   
                         # If proposed original flight solutions's length decreases, score increases
-    ConnectionScore = connection_constant - len(flight_tuple) + len(constants_immutable.pnr_flight_mapping[PNR.pnr_number])
-    
-    return DelayScore + ConnectionScore*10
+    ConnectionScore = constants_immutable.connection_constant - len(flight_tuple) + len(constants_immutable.pnr_flight_mapping[PNR.pnr_number])
+    min_DelayScore = 0.00000002
+    max_DelayScore = STD6h + arrDelay6h
+    max_ConnectionScore = constants_immutable.connection_constant + 3
+    min_ConnectionScore = constants_immutable.connection_constant - 3
+    return ((DelayScore-min_DelayScore)/(max_DelayScore - min_DelayScore)) * ((ConnectionScore-min_ConnectionScore)/(max_ConnectionScore-min_ConnectionScore))*10
 
 def class_difference_score(PNR, cabin_Tuple):
     """
