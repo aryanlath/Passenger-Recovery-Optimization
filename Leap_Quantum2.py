@@ -170,7 +170,7 @@ def quantum_optimize_flight_assignments(PNR_List):
                         Objective_Value_List[idx] += X_coeff
                         is_PNR_assigned[idx] = True
                 i += 1
-        for idx,check_assigned in is_PNR_assigned.enumerate():
+        for idx,check_assigned in enumerate(is_PNR_assigned):
             if not is_PNR_assigned[idx]:
                 Non_assignment_Cost = cost_function(PNR, None, None)
                 Objective_Value_List[idx] += Non_assignment_Cost - Non_assignment_Cost * sum(X_PNR_Constraint[PNR])
@@ -195,7 +195,6 @@ def quantum_optimize_flight_assignments(PNR_List):
                     if solution[f'X_{i}'] == 1.0:
                         result[idx]['Assignments'].append((PNR.pnr_number,PNR.email_id, FT, cabin))
                         assigned_pnrs[idx].add(PNR.pnr_number)
-                        not_assigned_pnrs[idx].add(PNR.pnr_number)
                     i += 1
 
     for idx,solution in enumerate(Final_Quantum_Solutions):
@@ -205,7 +204,7 @@ def quantum_optimize_flight_assignments(PNR_List):
                 cabins_tuple = get_flight_cabin_mappings(FT)
                 for cabin in cabins_tuple:         
                     if solution[f'X_{i}'] == 1.0:
-                        if PNR.pnr_number not in assigned_pnrs and PNR.pnr_number not in not_assigned_pnrs:
+                        if PNR.pnr_number not in assigned_pnrs[idx] and PNR.pnr_number not in not_assigned_pnrs[idx]:
                             result[idx]['Non Assignments'].append(PNR)
                             not_assigned_pnrs[idx].add(PNR.pnr_number)
                     i += 1
@@ -215,18 +214,19 @@ def quantum_optimize_flight_assignments(PNR_List):
             if pnr.pnr_number not in assigned_pnrs[idx] and pnr.pnr_number not in not_assigned_pnrs[idx]:
                 result[idx]['Non Assignments'].append(pnr.pnr_number)
                 
-    df_assignments = pd.DataFrame(result['Assignments'], columns=['PNR_Number', 'PNR_Email','Flight', 'Cabin'])
-    df_non_assignments = pd.DataFrame(result['Non Assignments'], columns=['PNR'])
-    # with pd.ExcelWriter(output_file) as writer:
-    df_assignments.to_csv("Results/assignments.csv")
-    df_non_assignments.to_csv("Results/non_assignments.csv")
+    for idx, solution in enumerate(Final_Quantum_Solutions):
+        df_assignments = pd.DataFrame(result[idx]['Assignments'], columns=['PNR_Number', 'PNR_Email','Flight', 'Cabin'])
+        df_non_assignments = pd.DataFrame(result[idx]['Non Assignments'], columns=['PNR'])
+    
+        df_assignments.to_csv(f"Results/assignments_{idx}.csv")
+        df_non_assignments.to_csv(f"Results/non_assignments_{idx}.csv")
     return result
     # else:
         # return "The problem does not have an optimal solution."
 
     end = time.time()
     print("Solving time: ", end-start)
-# all_flights,pnr_list,_,_ = Get_All_Maps()
+# all_flights,pnr_list,, = Get_All_Maps()
 
 
 # passenger_pnr_path = 'passenger_pnr_dataset.csv'
