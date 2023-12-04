@@ -2,7 +2,6 @@ from feasible_flights import *
 from constants import *
 from init_functions import *
 from gurobi_optimisation import *
-from gurobi_optimisation_2 import *
 from Leap_Quantum2 import *
 import pprint
 import constants_immutable
@@ -41,21 +40,21 @@ def Main_function():
     pp.pprint(result['Assignments'])
     print("Not Assigned PNRs: ")
     pp.pprint(result['Non Assignments'])
-    print("#"*120)
+    print("#"*100)
     print()
 
-    # Quantum Part
-    start = time.time()
-    quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
-    end = time.time()
-    print("Total Quantum Time:", end-start)
-    print()
-    print("Total Reassigned: ",len(quantum_result[0]['Assignments']))
-    pp.pprint(quantum_result['Assignments'])
-    print("Not Assigned PNRs: ")
-    pp.pprint(quantum_result['Non Assignments'])
-    print("#"*120)
-    print()
+    # Quantum Pipeline
+    # start = time.time()
+    # quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
+    # end = time.time()
+    # print("Total Quantum Time:", end-start)
+    # print()
+    # print("Total Reassigned: ",len(quantum_result[0]['Assignments']))
+    # pp.pprint(quantum_result['Assignments'])
+    # print("Not Assigned PNRs: ")
+    # pp.pprint(quantum_result['Non Assignments'])
+    # print("#"*100)
+    # print()
 
 
     # Constructing 3 CSVs corresponding to the top 3 quantum solutions
@@ -85,7 +84,7 @@ def Main_function():
     print("Network Flow time :",end-start)
     print()
     pp.pprint(final_result)
-    print("#"*120)
+    print("#"*100)
     print()
 
     # Exception List Handling
@@ -98,7 +97,7 @@ def Main_function():
     pp.pprint(city_pairs_result['Assignments'])
     print("Not Assigned PNRs: ")
     pp.pprint(city_pairs_result['Non Assignments'])
-    print("#"*120)
+    print("#"*100)
     print()
     
 
