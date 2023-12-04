@@ -60,8 +60,11 @@ st.write("")
 st.write("")
 
 #variable value true if upgrade allowed
-upgrade_downgrade=st.toggle("Upgrade and Downgrade Allowed",value="True",key=10)
-    
+col1,col2=st.columns(2)
+with col1:    
+    upgrade=st.toggle("Upgrade Allowed",value="True",key=10)
+with col2:
+    downgrade=st.toggle("Downgrade Allowed",value="True",key=11)
    
  #add empty space   
 st.write("")
@@ -84,19 +87,15 @@ with col3:
         f=open("classRules.py","w")
         
         #truth value for upgrade and downgrade
-        f.write("upgrade_downgrade="+str(upgrade_downgrade)+"\n")
-        
+        f.write("upgrade="+str(upgrade)+"\n")
+        f.write("downgrade="+str(downgrade)+"\n")
         #creating lists in the file
         #contains which other classes the original class can be changed to 
-        writeToList(classChangeA,"classChangeA",f)
-        writeToList(classChangeS,"classChangeS",f)
-        writeToList(classChangeF,"classChangeF",f)
-        writeToList(classChangeJ,"classChangeJ",f)
-        writeToList(classChangeC,"classChangeC",f)
-        writeToList(classChangeI,"classChangeI",f)
-        writeToList(classChangeO,"classChangeO",f)
-        writeToList(classChangeY,"classChangeY",f)
-        writeToList(classChangeB,"classChangeB",f)
+        f.write("classChange={'A':"+str(classChangeA)+",'S':"+str(classChangeS)+
+                ",'F':"+str(classChangeF)+",'J':"+str(classChangeJ) +",'C':"+
+                str(classChangeC)+",'I':"+str(classChangeI)+",'O':"+str(classChangeO)
+                +",'Y':"+str(classChangeY)+",'B':"+str(classChangeB)+"}")
+        
         
         #true if first class present
      #   f.write("first="+str(first)+"\n")
