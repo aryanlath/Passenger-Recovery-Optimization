@@ -1,11 +1,18 @@
 Dear Sir/Ma'am,
 Thank you for choosing $Airlines_Name.
 Unfortunately, your flight has been cancelled, please find alternate flight details below.
+PNR Number  - $PNR_Number
+$Cancelled_Flight
 
-Flight Details:
-Your PNR Number is $PNR_Number.
-Your rescheduled flight is $Flight.
-Your cabin is $Cabin.
+
+$Schema_0
+
+$Schema_1
+
+$Schema_2
+
+If you dont wish to choose any of the alternate flights, you may cancel your flight using the link below -
+$Cancellation_link
 
 Have a safe journey.
 
