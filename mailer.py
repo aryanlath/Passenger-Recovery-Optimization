@@ -9,6 +9,11 @@ import time
 from string import Template
 from collections import defaultdict
 from feasible_flights import Get_All_Maps
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 def read_template(filename):
 
     with open(filename, 'r', encoding='utf-8') as template_file:
@@ -28,8 +33,9 @@ def send_mail(assignment_0,assignment_1,assignment_2):
     
     # Define the content of the email
     Airlines_Name = "Mock Airlines"
-    email = "shivamtestmail321@gmail.com"
-    pwd = "avvf oink uqyi iebw"
+    email = os.getenv('flight_mail')
+    pwd = os.getenv('flight_mail_password')
+    
     schema_0_link = 'https://forms.gle/8wZmJ5e9szYm37r48'
     schema_1_link = 'https://forms.gle/q3QrqN8fSHPnkRcq6'
     schema_2_link = 'https://forms.gle/bAot7r4sMkporCvt9'
