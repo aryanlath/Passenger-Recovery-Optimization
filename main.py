@@ -3,7 +3,7 @@ from constants import *
 from init_functions import *
 from gurobi_optimisation import *
 from gurobi_optimisation_2 import *
-from Leap_quantum2 import *
+from Leap_Quantum2 import *
 import pprint
 import constants_immutable
 from mailer import *
@@ -39,22 +39,41 @@ def Main_function():
     print("Not Assigned PNRs: ")
     pp.pprint(result['Non Assignments'])
     print("\n\n\n\n")
-    # start = time.time()
-    # quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
-    # end = time.time()
-    # print("QUANTUM TIME ", end-start)
-    # print(quantum_result)
+    start = time.time()
+    quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
+    end = time.time()
+    print("QUANTUM TIME ", end-start)
+    print(quantum_result)
 
     # print(Cabin_to_Class(result["Assignments"]))
+    print("QUANTUM RESULTS")
+    print("Total Reassigned: ",len(quantum_result[0]['Assignments']))
 
 
-    # print("QUANTUM RESULTS")
-    # print("Total Reassigned: ",len(quantum_result['Assignments']))
+    # Constructing 3 CSVs corresponding to the top 3 quantum solutions
+    for idx in range(0,len(quantum_result)):
+        result_new=Cabin_to_Class(quantum_result[idx]["Assignments"])
+        result_new_modified = []
+        for T in result_new :
+            Cancelled_Flights = []
+            for inv in T[0].inv_list:
+                if(constants_immutable.all_flights[inv].status=="cancelled"):
+                    Cancelled_Flights.append(constants_immutable.all_flights[inv])
+                    
+            result_new_modified.append((T[0].pnr_number,T[0].email_id,T[1],T[2],T[3],Cancelled_Flights))
+        df_assignments = pd.DataFrame(result_new_modified, columns=['PNR_Number', 'PNR_Email','Flight', 'Cabin','Class','Cancelled Flights'])
+        df_non_assignments = pd.DataFrame(quantum_result[idx]['Non Assignments'], columns=['PNR_Number'])
 
-    # pp.pprint(quantum_result['Assignments'])
-    # print("Not Assigned PNRs: ")
-    # pp.pprint(quantum_result['Non Assignments'])
-    # print("\n\n\n\n")
+        df_assignments.to_csv(f"Results/assignments_{idx}.csv")
+        df_non_assignments.to_csv(f"Results/non_assignments_{idx}.csv")
+    
+    
+    
+    
+    pp.pprint(quantum_result[0]['Assignments'])
+    print("Not Assigned PNRs: ")
+    pp.pprint(quantum_result[0]['Non Assignments'])
+    print("\n\n\n\n")
     start=time.time()
     print(Cabin_to_Class(result["Assignments"]))
     end=time.time()

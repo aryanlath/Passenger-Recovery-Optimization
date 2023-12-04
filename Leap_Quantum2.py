@@ -146,10 +146,10 @@ def quantum_optimize_flight_assignments(PNR_List):
     Aggregated_sampleset = feasible_sampleset.aggregate()
     print("Total No. of Quantum Solutions are " , len(Aggregated_sampleset))
     j=0
-    Final_Quantum_Solutions =[]
+    Final_Top3_Quantum_Solutions =[]
     for sample in Aggregated_sampleset.samples():
         # print("NEXT SOLUTION\n") 
-        Final_Quantum_Solutions.append(sample)
+        Final_Top3_Quantum_Solutions.append(sample)
         j+=1
         if(j==3) :
             break 
@@ -165,7 +165,7 @@ def quantum_optimize_flight_assignments(PNR_List):
             cabins_tuple = get_flight_cabin_mappings(FT)
             for cabin in cabins_tuple:
                 X_coeff = cost_function(PNR, FT, cabin)
-                for idx,solution in enumerate(Final_Quantum_Solutions):
+                for idx,solution in enumerate(Final_Top3_Quantum_Solutions):
                     if solution[f'X_{i}'] == 1.0:
                         Objective_Value_List[idx] += X_coeff
                         is_PNR_assigned[idx] = True
@@ -176,28 +176,22 @@ def quantum_optimize_flight_assignments(PNR_List):
                 Objective_Value_List[idx] += Non_assignment_Cost - Non_assignment_Cost * sum(X_PNR_Constraint[PNR])
     # Print or return the objective value
     print("Objective Value List of top 3 quantum solutions : \n", Objective_Value_List)    
-    # best = feasible_sampleset.first.sample
-    # model.write("try.lp") # To Print the soln in a file
-
-    # Checking if a solution exists
-    # if model.status == GRB.OPTIMAL:
-        # Extract the solution
     result = [{'Assignments': [],'Non Assignments':[]},{'Assignments': [],'Non Assignments':[]},{'Assignments': [],'Non Assignments':[]}]
     # set to keep track of assigned PNRs
     assigned_pnrs=[set(),set(),set()]
     not_assigned_pnrs = [set(),set(),set()]
-    for idx,solution in enumerate(Final_Quantum_Solutions):
+    for idx,solution in enumerate(Final_Top3_Quantum_Solutions):
         i=0
         for PNR in PNR_List:
             for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
                 cabins_tuple = get_flight_cabin_mappings(FT)
                 for cabin in cabins_tuple:
                     if solution[f'X_{i}'] == 1.0:
-                        result[idx]['Assignments'].append((PNR.pnr_number,PNR.email_id, FT, cabin))
+                        result[idx]['Assignments'].append((PNR, FT, cabin))
                         assigned_pnrs[idx].add(PNR.pnr_number)
                     i += 1
 
-    for idx,solution in enumerate(Final_Quantum_Solutions):
+    for idx,solution in enumerate(Final_Top3_Quantum_Solutions):
         i=0
         for PNR in PNR_List:
             for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
@@ -205,21 +199,21 @@ def quantum_optimize_flight_assignments(PNR_List):
                 for cabin in cabins_tuple:         
                     if solution[f'X_{i}'] == 0.0:
                         if PNR.pnr_number not in assigned_pnrs[idx] and PNR.pnr_number not in not_assigned_pnrs[idx]:
-                            result[idx]['Non Assignments'].append(PNR)
+                            result[idx]['Non Assignments'].append(PNR.pnr_number)
                             not_assigned_pnrs[idx].add(PNR.pnr_number)
                     i += 1
 
-    for idx,solution in enumerate(Final_Quantum_Solutions):
-        for pnr in PNR_List:
-            if pnr.pnr_number not in assigned_pnrs[idx] and pnr.pnr_number not in not_assigned_pnrs[idx]:
-                result[idx]['Non Assignments'].append(pnr.pnr_number)
+    for idx,solution in enumerate(Final_Top3_Quantum_Solutions):
+        for PNR in PNR_List:
+            if PNR.pnr_number not in assigned_pnrs[idx] and PNR.pnr_number not in not_assigned_pnrs[idx]:
+                result[idx]['Non Assignments'].append(PNR.pnr_number)
                 
-    for idx, solution in enumerate(Final_Quantum_Solutions):
-        df_assignments = pd.DataFrame(result[idx]['Assignments'], columns=['PNR_Number', 'PNR_Email','Flight', 'Cabin'])
-        df_non_assignments = pd.DataFrame(result[idx]['Non Assignments'], columns=['PNR'])
+    # for idx, solution in enumerate(Final_Top3_Quantum_Solutions):
+    #     df_assignments = pd.DataFrame(result[idx]['Assignments'], columns=['PNR_Number', 'PNR_Email','Flight', 'Cabin'])
+    #     df_non_assignments = pd.DataFrame(result[idx]['Non Assignments'], columns=['PNR'])
     
-        df_assignments.to_csv(f"Results/assignments_{idx}.csv")
-        df_non_assignments.to_csv(f"Results/non_assignments_{idx}.csv")
+    #     df_assignments.to_csv(f"Results/assignments_{idx}.csv")
+    #     df_non_assignments.to_csv(f"Results/non_assignments_{idx}.csv")
     return result
     # else:
         # return "The problem does not have an optimal solution."
