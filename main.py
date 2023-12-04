@@ -18,6 +18,7 @@ def Main_function():
 
     # global all_flights, pnr_objects,  pnr_flight_mapping, pnr_to_s2
     constants_immutable.all_flights, constants_immutable.pnr_objects, constants_immutable.pnr_flight_mapping, constants_immutable.pnr_to_s2 = Get_All_Maps()
+
     # finds the normalization factors for the cost function
     init_normalize_factors()
 
@@ -29,25 +30,32 @@ def Main_function():
 
     print("Total impacted Passengers: ",len(Impacted_PNR))
     pp.pprint(Impacted_PNR)
+
+    # Classical part
     start = time.time()
     result = optimize_flight_assignments(Impacted_PNR)
     end = time.time()
-    print("Classical Time " , end -start)
+    print("Total Classical Time:" , end-start)
+    print()
     print("Total Reassigned: ",len(result['Assignments']))
-
     pp.pprint(result['Assignments'])
     print("Not Assigned PNRs: ")
     pp.pprint(result['Non Assignments'])
-    print("\n\n\n\n")
+    print("#"*120)
+    print()
+
+    # Quantum Part
     start = time.time()
     quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
     end = time.time()
-    print("QUANTUM TIME ", end-start)
-    print(quantum_result)
-
-    # print(Cabin_to_Class(result["Assignments"]))
-    print("QUANTUM RESULTS")
+    print("Total Quantum Time:", end-start)
+    print()
     print("Total Reassigned: ",len(quantum_result[0]['Assignments']))
+    pp.pprint(quantum_result['Assignments'])
+    print("Not Assigned PNRs: ")
+    pp.pprint(quantum_result['Non Assignments'])
+    print("#"*120)
+    print()
 
 
     # Constructing 3 CSVs corresponding to the top 3 quantum solutions
@@ -70,25 +78,29 @@ def Main_function():
     
     
     
-    pp.pprint(quantum_result[0]['Assignments'])
-    print("Not Assigned PNRs: ")
-    pp.pprint(quantum_result[0]['Non Assignments'])
-    print("\n\n\n\n")
+    # Network flow pipeline
     start=time.time()
-    print(Cabin_to_Class(result["Assignments"]))
+    final_result = Cabin_to_Class(quantum_result["Assignments"])
     end=time.time()
     print("Network Flow time :",end-start)
-    print("Exception List handling...")
-    print() 
     print()
+    pp.pprint(final_result)
+    print("#"*120)
+    print()
+
+    # Exception List Handling
     start=time.time()
-    result2 = optimize_flight_assignments_2(result['Non Assignments'],constants_immutable.all_flights)
+    city_pairs_result = optimize_flight_assignments(result['Non Assignments'],True)
     end=time.time()
-    pp.pprint(result2['Assignments'])
+    print("Exception Handling time: ",end-start)
+    print()
+    print("Total Assignments with different City-Pairs: ", len(city_pairs_result['Assignments']))
+    pp.pprint(city_pairs_result['Assignments'])
     print("Not Assigned PNRs: ")
-    pp.pprint(result2['Non Assignments'])
-    print("\n\n\n\n")
-    print("Total exception handling time: ",end-start)
+    pp.pprint(city_pairs_result['Non Assignments'])
+    print("#"*120)
+    print()
+    
 
     # send emails
     send_mail("Results/assignments.csv")

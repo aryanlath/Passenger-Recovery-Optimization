@@ -14,7 +14,6 @@ from gurobi_optimisation import *
 
 def optimize_flight_assignments_2(PNR_List,all_flights):
     g=create_flight_graph()
-    print(PNR_List)
     """
         PNR_List = List of Impacted PNRs
         X_PNR_Constraint -> dictionary where keys are PNR objects and each value is a list of variables for that Particular PNR in its constraint

@@ -10,7 +10,10 @@ import pprint
 import multiprocessing
 
 pp = pprint.PrettyPrinter(indent=4)
+
+# Locks to handle synchronisation
 lock_thread=multiprocessing.Lock()
+lock=multiprocessing.Lock()
 
 def Get_All_Maps():
     """
@@ -184,15 +187,6 @@ def custom_dfs_iterative(graph, source, destination, k):
 
     return all_paths
 
-# Example Usage:
-# Assuming you have a graph named 'your_graph'
-# all_paths = custom_dfs_iterative_edges(your_graph, source_node, destination_node, max_hops)
-
-# Assuming you have a graph named 'your_graph'
-# all_paths = custom_dfs_iterative(your_graph, source_node, destination_node, max_hops)
-
-
-
 
 def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_map,num_of_hops=4,new_arrival_city=None):
     """
@@ -201,6 +195,7 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_
             all_flights, a dict consisting of flight number to flight object mapping
             PNR_Object 
             max num of hops
+            new_arrival_city: to handle city pairs
     Returns: All possible paths consisting of at max num_of hops [(F1,F2,),] : F1,F2 are the flight objects
     """
     earliest_reached_city=None
@@ -277,12 +272,14 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_
 
         if not valid:
             actual_valid_paths.remove(path) 
-    PNR_to_FeasibleFlights_map[PNR_Object.pnr_number] =actual_valid_paths
 
+    if new_arrival_city is None:
+        PNR_to_FeasibleFlights_map[PNR_Object.pnr_number] =actual_valid_paths
 
-# G=create_flight_graph()
-# visualize_flight_graph(G)
-# all_flights,all_pnrs,_,_=Get_All_Maps()
-# ans=PNR_to_Feasible_Flights(G,all_flights,all_pnrs["PNR001#1"])
-# pp.pprint(ans)
+    else:
+        with lock:
+            if(PNR_Object.pnr_number not in PNR_to_FeasibleFlights_map):
+                    PNR_to_FeasibleFlights_map[PNR_Object.pnr_number]=actual_valid_paths
+            else:
+                    PNR_to_FeasibleFlights_map[PNR_Object.pnr_number].extend(actual_valid_paths)
 
