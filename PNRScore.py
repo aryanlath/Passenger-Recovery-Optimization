@@ -5,8 +5,14 @@ import streamlit as st
 #to import function that returns alternate flights
 
 #default values of data
-pnr_data_file = "Dataset/passenger_pnr_dataset.csv"
-flight_data_file = "Dataset/flight_schedule_dataset.csv"
+pnr_data_file = 'Dataset/passenger_pnr_dataset.csv'
+flight_data_file = 'Dataset/flight_schedule_dataset.csv'
+test_PNR_data_file = 'Dataset/Mphasis_Processed/Mock_PNR_Booking.csv'
+test_flight_data_file = 'Dataset/Mphasis_Processed/Mock_Flight_Inv.csv'
+airport_code_location_data_file = 'Dataset/airport-code-to-location.csv'
+# test_PNR_data_file = 'Dataset/test_data/PNR_Test.csv'
+# test_flight_data_file = 'Dataset/test_data/flight_test.csv'
+
 n_cabin = 2
 ETD = 72
 MCT = 1
@@ -151,20 +157,17 @@ with col3:
     if (st.button("Proceed")):
         #writing to file when button is pressed
         f = open("constants.py", "w")
+        
+        #pnr data source
         f.write("pnr_data_file = 'Dataset/passenger_pnr_dataset.csv'\n")
-        f.write("flight_data_file = 'Dataset/flight_schedule_dataset.csv'\n"),
-    
-    
+        
+        #important datasets
+        f.write("flight_data_file = 'Dataset/flight_schedule_dataset.csv'\n")
         f.write("test_PNR_data_file = 'Dataset/Mphasis_Processed/Mock_PNR_Booking.csv'\n")
         f.write("test_flight_data_file = 'Dataset/Mphasis_Processed/Mock_Flight_Inv.csv'\n")
         f.write("airport_code_location_data_file = 'Dataset/airport-code-to-location.csv'\n")
-
-
-
-
-
-        #pnr data source
-    
+        f.write("# test_PNR_data_file = 'Dataset/test_data/PNR_Test.csv'\n")
+        f.write("# test_flight_data_file = 'Dataset/test_data/flight_test.csv'\n")
         
         #writing number of cabins
         f.write("n_cabin="+str(n_cabin)+"\n")
@@ -195,7 +198,7 @@ with col3:
         f.write("PNR_SSR={'grade1':"+str(grade1)+",'grade2':"+str(grade2)+"}\n")
         
         #writing loyalty dictionary
-        f.write("loyalty_dict={'CM':"+str(CM)+",'Platinum':"+str(platinum)+",'Gold':"+str(gold)+",'Silver':"+str(silver)+"}\n")
+        f.write("loyalty={'CM':"+str(CM)+",'platinum':"+str(platinum)+",'gold':"+str(gold)+",'silver':"+str(silver)+"}\n")
         
         #connection score
         f.write("PNR_connection="+str(PNR_connection)+"\n")
@@ -210,7 +213,7 @@ with col3:
         f.write("PNR_pax="+str(PNR_pax)+"\n")
         
         #penalty score
-        f.write("NON_ASSIGNMENT_COST="+str(PNR_penalty)+"\n")
+        f.write("NON_ASSIGNMENT_COST="+str(-PNR_penalty)+"\n")
         
         #writing city pair thershold score
         f.write("CITY_PAIR_THRESHOLD="+str(CITY_PAIR_THRESHOLD)+"\n")
