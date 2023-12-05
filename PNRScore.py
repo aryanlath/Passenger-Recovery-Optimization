@@ -182,7 +182,7 @@ with col3:
         f.write("PNR_SSR={'grade1':"+str(grade1)+",'grade2':"+str(grade2)+"}\n")
         
         #writing loyalty dictionary
-        f.write("loyalty={'CM':"+str(CM)+",'platinum':"+str(platinum)+",'gold':"+str(gold)+",'silver':"+str(silver)+"}\n")
+        f.write("loyalty={'CM':"+str(CM)+",'Platinum':"+str(platinum)+",'Gold':"+str(gold)+",'Silver':"+str(silver)+"}\n")
         
         #connection score
         f.write("PNR_connection="+str(PNR_connection)+"\n")

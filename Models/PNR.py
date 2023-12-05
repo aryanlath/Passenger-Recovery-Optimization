@@ -1,6 +1,6 @@
 
 # If needed 
-from constants import PNR_pax,PNR_SSR,loyalty_dict
+from constants import PNR_pax,PNR_SSR,loyalty
 
 class PNR:
     def __init__(self, pnr_number,inv_list, sub_class_list, special_requirements,PAX, passenger_loyalty,email_id):
@@ -41,7 +41,7 @@ class PNR:
             Returns the score associated with the loyalty string (ex. Gold Silver Platinum)
         """
         # Assuming that constants.py has a dictionary where key is string(loyalty_class) and value is score for that loyalty
-        return loyalty_dict[self.passenger_loyalty]
+        return loyalty[self.passenger_loyalty]
 
     def get_ssr_score(self):
         """
