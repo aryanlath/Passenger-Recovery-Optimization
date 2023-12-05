@@ -41,12 +41,6 @@ Now, to run the script enter the following command in the terminal
 ## Working
 
 Each file contains widgets to adjust various parameters along with some default values. On pressing the proceed button at the bottom of each page, all the values chosen are written into a python file as variables which can be imported for use in other programs.
- ### LandingPage.py
- - Main page of the GUI
- - Used to modify cabin allocation and maximum departure delay
- - **Writes to default.py**.
-   
-![Landing Page](./assets/Landing_Page_SS.png)
 
  ### PNRScore.py
 - Used to modify scores for PNR priority calculation parameters like PAX, loyalty, classes, MCT, MAXCT, ETD, etc
