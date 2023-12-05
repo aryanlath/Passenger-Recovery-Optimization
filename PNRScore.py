@@ -197,7 +197,7 @@ with col3:
         f.write("PNR_pax="+str(PNR_pax)+"\n")
         
         #penalty score
-        f.write("NON_ASSIGNMENT_COST="+str(-PNR_penalty)+"\n")
+        f.write("NON_ASSIGNMENT_COST="+str(PNR_penalty)+"\n")
         
         #writing city pair thershold score
         f.write("CITY_PAIR_THRESHOLD="+str(CITY_PAIR_THRESHOLD)+"\n")
