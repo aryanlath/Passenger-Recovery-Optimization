@@ -1,26 +1,12 @@
 import streamlit as st
 #import streamlit library
 
-#from flight_assignment_optimization import *
-#to import function that returns alternate flights
 
-#default values of data
-pnr_data_file = 'Dataset/passenger_pnr_dataset.csv'
-flight_data_file = 'Dataset/flight_schedule_dataset.csv'
-test_PNR_data_file = 'Dataset/Mphasis_Processed/Mock_PNR_Booking.csv'
-test_flight_data_file = 'Dataset/Mphasis_Processed/Mock_Flight_Inv.csv'
-airport_code_location_data_file = 'Dataset/airport-code-to-location.csv'
-# test_PNR_data_file = 'Dataset/test_data/PNR_Test.csv'
-# test_flight_data_file = 'Dataset/test_data/flight_test.csv'
+n_cabin=2
 
-n_cabin = 2
-ETD = 72
-MCT = 1
-MAXCT = 12
-upgrade=True
-downgrade=True
 st.title("Business Rules Modification Engine")
 #heading
+
 st.header("PNR Level Score Modifications")
 st.write("")
 
@@ -31,19 +17,20 @@ st.subheader("Cabin Score")
 st.write("")
 st.write("")
 
-#score for cabin F
+#score for first class
 cabinScoreFirst=st.slider("First Class",1500,2000,value=1950)
 
-#score for cabin Y
+#score for business class
 cabinScoreBusiness=st.slider("Business Class",1500,2000,value=1800)
 
-#
+#score for premium economy class
 cabinScorePremium=st.slider("Premium Economy",1500,2000,value=1700)
 
-#score for cabin J
+#score for economy class
 cabinScoreEconomy=st.slider("Economy",1500,2000,value=1500)
-st.write("")
 
+
+st.write("")
 st.write("")
 
 #loyalty scores
@@ -54,7 +41,6 @@ col1,col2=st.columns(2)
 with col1:
     #score for CM Presidential Platinum class
     CM=st.slider("CM Presidential Platinum",1500,2000,value=2000)
-    
     #score for gold class
     gold=st.slider("Gold",1500,2000,value=1600)
 with col2:
@@ -98,9 +84,7 @@ with col3:
     PNR_penalty=st.number_input("Penalty for no allocation",value=100,min_value=0)
 
 st.write("")
-
 st.subheader("Weightage")
-
 
 #divide into 3 columns
 col1,col2,col3=st.columns(3)
@@ -128,15 +112,15 @@ st.write("")
 col1,col2,col3=st.columns(3)
 with col1:
     #constraint for max ETD
-    ETD = st.number_input("Enter Maximum ETD Allowed",value=ETD,min_value=0)
+    ETD = st.number_input("Enter Maximum ETD Allowed",value=72,min_value=0)
     
 with col2:
     #constraint for maximum connecting time
-    MAXCT= st.number_input("Enter Maximum Connecting Time",min_value=0,value=MAXCT)
+    MAXCT= st.number_input("Enter Maximum Connecting Time",min_value=0,value=12)
     
 with col3:
     #constraint for minimum connecting time
-    MCT= st.number_input("Enter Minimum Connecting Time",min_value=0,value=MCT)
+    MCT= st.number_input("Enter Minimum Connecting Time",min_value=0,value=1)
 
 CITY_PAIR_THRESHOLD=st.number_input("Enter maximum allowed travel time between original and new airport",min_value=0,value=8)
 #add empty space
@@ -213,7 +197,7 @@ with col3:
         f.write("PNR_pax="+str(PNR_pax)+"\n")
         
         #penalty score
-        f.write("NON_ASSIGNMENT_COST="+str(-PNR_penalty)+"\n")
+        f.write("NON_ASSIGNMENT_COST="+str(PNR_penalty)+"\n")
         
         #writing city pair thershold score
         f.write("CITY_PAIR_THRESHOLD="+str(CITY_PAIR_THRESHOLD)+"\n")

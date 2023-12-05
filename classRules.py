@@ -1,10 +1,3 @@
-upgrade_downgrade=False
-classChangeA=['F','S']
-classChangeS=['F','A']
-classChangeF=['S','A']
-classChangeJ=['O','C','I']
-classChangeC=['O','J','I']
-classChangeI=['J','C','O']
-classChangeO=['J','C','I']
-classChangeY=['B','P','Z']
-classChangeB=['Y','P','Z']
+upgrade=True
+downgrade=True
+classChange={'F':['P', 'C'],'P':['C', 'F'],'C':['Z', 'J', 'P'],'Z':['C', 'J', 'P'],'J':['Z', 'C', 'P'],'R':['Q', 'M', 'T'],'T':['Q', 'M', 'R'],'M':['Q', 'R', 'T'],'Q':['R', 'M', 'T'],'S':['Q', 'M', 'T'],'H':['Q', 'M', 'T'],'A':['D', 'L', 'X'],'D':['A', 'X'],'L':['O', 'V', 'X'],'O':['A', 'D', 'X'],'V':['A', 'D', 'O', 'X'],'X':['A', 'D', 'V'],'G':['A', 'O'],'K':['A', 'O'],'Y':['A', 'V', 'X'],'B':['O', 'V', 'X'],'E':['A', 'D', 'L'],'N':['A', 'D', 'L', 'O'],'U':['A', 'D', 'L', 'X'],'W':['L', 'O'],'I':['A', 'D']}
