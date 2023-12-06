@@ -1,12 +1,1 @@
 ,PNR_Number,PNR_Email,Flight,Cabin,Class,Cancelled Flights
-0,AH3KL0,g-s01@outlook.com,"Flight('Inventory ID: INV-ZZ-2887660, Departure City: MAA, Arrival City: IDR ",FC,F,"[Flight('Inventory ID: INV-ZZ-6210656, Departure City: MAA, Arrival City: IDR ]"
-1,CADQPF,g-s01@outlook.com,"Flight('Inventory ID: INV-ZZ-7994288, Departure City: CNN, Arrival City: MAA ",FC,F,"[Flight('Inventory ID: INV-ZZ-6744454, Departure City: CNN, Arrival City: MAA ]"
-2,DID2DD,g-s01@outlook.com,"Flight('Inventory ID: INV-ZZ-9629677, Departure City: LKO, Arrival City: IDR ",FC,P,"[Flight('Inventory ID: INV-ZZ-1404611, Departure City: LKO, Arrival City: IDR ]"
-3,BJAUT5#1,g-s01@outlook.com,"Flight('Inventory ID: INV-ZZ-9629677, Departure City: LKO, Arrival City: IDR ",FC,P,"[Flight('Inventory ID: INV-ZZ-1404611, Departure City: LKO, Arrival City: IDR ]"
-4,AXMPOM,g-s01@outlook.com,"Flight('Inventory ID: INV-ZZ-1004193, Departure City: PAT, Arrival City: COK ",FC,F,"[Flight('Inventory ID: INV-ZZ-2219734, Departure City: PAT, Arrival City: COK ]"
-5,AXMPOM,g-s01@outlook.com,"Flight('Inventory ID: INV-ZZ-1004193, Departure City: PAT, Arrival City: COK ",FC,F,"[Flight('Inventory ID: INV-ZZ-2219734, Departure City: PAT, Arrival City: COK ]"
-6,AQ1GTY#1,g-s01@outlook.com,"Flight('Inventory ID: INV-ZZ-7752551, Departure City: CNN, Arrival City: CCU ",FC,P,"[Flight('Inventory ID: INV-ZZ-5633849, Departure City: CNN, Arrival City: CCU ]"
-7,EPUPN0#0,g-s01@outlook.com,"Flight('Inventory ID: INV-ZZ-2370284, Departure City: GOI, Arrival City: BLR ",FC,F,"[Flight('Inventory ID: INV-ZZ-8754275, Departure City: GOI, Arrival City: BLR ]"
-8,GCFZ3Q#2,g-s01@outlook.com,"Flight('Inventory ID: INV-ZZ-1258669, Departure City: GOI, Arrival City: DEL ",FC,F,"[Flight('Inventory ID: INV-ZZ-9788403, Departure City: GOI, Arrival City: DEL ]"
-9,BRQXSY#1,g-s01@outlook.com,"Flight('Inventory ID: INV-ZZ-1350452, Departure City: CNN, Arrival City: MAA ",FC,F,"[Flight('Inventory ID: INV-ZZ-2937163, Departure City: CNN, Arrival City: MAA ]"
-10,EEOE0D#1,g-s01@outlook.com,"Flight('Inventory ID: INV-ZZ-3681606, Departure City: HYD, Arrival City: DEL ",FC,F,"[Flight('Inventory ID: INV-ZZ-7335906, Departure City: HYD, Arrival City: DEL ]"

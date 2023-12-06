@@ -7,7 +7,7 @@ from ortools.graph.python import min_cost_flow
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
-assignments=[]
+assignments=defaultdict(list)
 lock=threading.Lock() 
 total_cost=0
 
@@ -16,6 +16,7 @@ def Flow(PNR_list,flight_cabin_tuple):
     Flow = min_cost_flow.SimpleMinCostFlow()
     flight_object = flight_cabin_tuple[0]
     Cabin=flight_cabin_tuple[1]
+    order=flight_cabin_tuple[2]
     PNR_to_OR_map={}
     OR_to_PNR_map={}
     c1=0
@@ -108,7 +109,7 @@ def Flow(PNR_list,flight_cabin_tuple):
                 num_acc[pnr_object.pnr_number]+=1
                 flow_val-=1
                 with lock:
-                    assignments.append(final_tuple)
+                    assignments[pnr_object.pnr_number].append([final_tuple,order])
             
     elif status == Flow.INFEASIBLE:
         print("The problem is infeasible.")
@@ -125,13 +126,13 @@ def Flow(PNR_list,flight_cabin_tuple):
 def Cabin_to_Class(Assignment_list):
     """
     Input: Assignment_list is the list of (PNR,Flight_tuple,Cabin_tuple)
-    Returns: A list of (PNR,Flight_tuple,Cabin_tuple,Class_tuple,passenger_number)
+    Returns: A list of (PNR,Flight,Cabin,Class,passenger_number)
     """
     flow_map=defaultdict(list)
     for assignment in Assignment_list:
        i=0
        while(i<len(assignment[1])):
-           flow_map[(assignment[1][i],assignment[2][i])].append(assignment[0])
+           flow_map[(assignment[1][i],assignment[2][i],i)].append(assignment[0])
            i+=1
     thread_map={}
     thread_cnt=0
@@ -142,6 +143,28 @@ def Cabin_to_Class(Assignment_list):
            thread_cnt+=1
     for thread in range(thread_cnt):
         thread_map[thread].join()
+    final_assignments=[]
+    for key1, value_list in assignments.items():
+        assignments[key1] = sorted(value_list, key=lambda x: x[1])
+        # temp=[]
+        # for flights in assignments[key1]:
+        #     temp.append(flights[0])
+        # assignments[key1]=temp
+
+    # for key,value in assignments.items():
+    #     temp=[]
+    #     for flights in value:
+    #         temp.append(flights[0])
+    #     final_assignments.append(temp)
+    #     # pp.pprint(value)
+    for key1, value_list in assignments.items():
+        temp=[]
+        for flights in value_list:
+            temp.append(flights[0])
+        assignments[key1]=temp
+
+        
+    #pp.pprint(assignments)
     return assignments
 
 
