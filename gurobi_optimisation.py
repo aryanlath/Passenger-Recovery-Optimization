@@ -57,10 +57,11 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
     thread_cnt=0
     manager=multiprocessing.Manager()
     PNR_to_FeasibleFlights_map=manager.dict()
+    dp=manager.dict()
     start = time.time()
     if not city_pairs:
         for PNR in PNR_List:
-            thread_map[thread_cnt]=multiprocessing.Process(target=PNR_to_Feasible_Flights,args=(g,all_flights,PNR,PNR_to_FeasibleFlights_map))
+            thread_map[thread_cnt]=multiprocessing.Process(target=PNR_to_Feasible_Flights,args=(g,all_flights,PNR,PNR_to_FeasibleFlights_map,dp))
             thread_map[thread_cnt].start()
             thread_cnt+=1
 
@@ -74,7 +75,7 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
             #print(old_arrival_city)
             for city in proposed_arrival_cities:
 
-                thread_map[thread_cnt]=multiprocessing.Process(target=PNR_to_Feasible_Flights,args=(g,all_flights,PNR,PNR_to_FeasibleFlights_map,4,city[0]))
+                thread_map[thread_cnt]=multiprocessing.Process(target=PNR_to_Feasible_Flights,args=(g,all_flights,PNR,PNR_to_FeasibleFlights_map,dp,4,city[0]))
                 thread_map[thread_cnt].start()
                 thread_cnt+=1
 

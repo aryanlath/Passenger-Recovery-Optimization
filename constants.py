@@ -1,5 +1,5 @@
 pnr_data_file = 'Dataset/passenger_pnr_dataset.csv'
-flight_data_file = 'Dataset/flight_schedule_dataset.csv'
+# flight_data_file = 'Dataset/flight_schedule_dataset.csv'
 test_PNR_data_file = 'Dataset/Mphasis_Processed/Mock_PNR_Booking.csv'
 test_flight_data_file = 'Dataset/Mphasis_Processed/Mock_Flight_Inv.csv'
 airport_code_location_data_file = 'Dataset/airport-code-to-location.csv'
