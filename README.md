@@ -34,7 +34,7 @@ flight_mail_password = your_email_password (if using gmail, you need to generate
 ### Running the program
 Now, to run the script enter the following command in the terminal
 ```bash
-  streamlit run PNRScore.py
+  streamlit run PNR_Score.py
 ```
 
 
@@ -42,23 +42,28 @@ Now, to run the script enter the following command in the terminal
 
 Each file contains widgets to adjust various parameters along with some default values. On pressing the proceed button at the bottom of each page, all the values chosen are written into a python file as variables which can be imported for use in other programs.
 
- ### PNRScore.py
+ ### PNR_Score.py
 - Used to modify scores for PNR priority calculation parameters like PAX, loyalty, classes, MCT, MAXCT, ETD, etc
 - **writes to constants.py**
   
 ![PNR Scores](./assets/PNRScore_SS.png)
 
-### cabinAndClasses.py
+### Cabin_And_Classes.py
 - Used to allow/disallow class changes during flight allocation and upgrade/downgrade rules
 - **writes to classRules.py**
   
 ![Cabins and Classes](./assets/CabinClasses_SS.png)
 
-### flightScore.py
+### Flight_Score.py
 - Used to modify parameters used to rank the flight and allocate grades like arrival delay, STD and citypairs
 - **writes to flightScores.py**
   
 ![Flight Scores](./assets/FlightScores_SS.png)
+
+### Result_Visualisation.py
+- Used to display the new and optimal flight and class details of re-accomadated passengers
+
+![Result Visualisation](./assets/ResultVisualisation_SS.png)
 
 ## Glossary
 
