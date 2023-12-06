@@ -126,7 +126,8 @@ def Flow(PNR_list,flight_cabin_tuple):
 def Cabin_to_Class(Assignment_list):
     """
     Input: Assignment_list is the list of (PNR,Flight_tuple,Cabin_tuple)
-    Returns: A list of (PNR,Flight,Cabin,Class,passenger_number)
+    Returns: A dictionery , in which keys are PNR numbers and the values are list of  (PNR_Object,Flight_object,Cabin,Class, Passenger number)
+    and the list contains all possible flights of the PNR in order.
     """
     flow_map=defaultdict(list)
     for assignment in Assignment_list:
