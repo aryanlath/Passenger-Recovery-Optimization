@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import copy
 import pprint
 import multiprocessing
+import time
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -48,6 +49,7 @@ def Get_Impacted_passengers(all_flights,pnr_objects):
     Returns :- List of Impacted Parameters
 
     """
+    
     Impacted_flights=[]
     Impacted_PNR=[]
     for key,value in all_flights.items():
@@ -156,7 +158,7 @@ def custom_dfs(graph, source, destination, path, visited_edges, all_paths,k):
                 path.pop()
 
 
-def custom_dfs_iterative(graph, source, destination, k):
+def custom_dfs_iterative(graph, source, destination, k,dp):
     """
     Iterative DFS for finding all possible paths composed of distinct edges
     Input: Networkx graph, source, destination, max_number of hops (k)
@@ -164,6 +166,8 @@ def custom_dfs_iterative(graph, source, destination, k):
     """
     stack = [(source, [], set())]
     all_paths = []
+    if((source,destination,k) in dp):
+        return dp[(source,destination,k)]
 
     while stack:
         current_node, path_edges, visited_nodes = stack.pop()
@@ -185,10 +189,11 @@ def custom_dfs_iterative(graph, source, destination, k):
                     new_visited_nodes.add(neighbor)
                     stack.append((neighbor, new_path_edges, new_visited_nodes))
 
-    return all_paths
+    dp[(source,destination,k)]=all_paths
+    return dp[(source,destination,k)]
 
 
-def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_map,num_of_hops=4,new_arrival_city=None):
+def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_map,dp,num_of_hops=4,new_arrival_city=None):
     """
     Find flights from departure_city to arrival_city with exactly number_of_hops.
     Input : graph , current network graph
@@ -244,9 +249,12 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_
     
     if(new_arrival_city!=None):
         arrival_city=new_arrival_city
-    
-    all_paths=custom_dfs_iterative(graph,departure_city,arrival_city,num_of_hops-current_hops)
+    start=time.time()
+    all_paths=custom_dfs_iterative(graph,departure_city,arrival_city,num_of_hops-current_hops,dp)
+    end=time.time()
+    print(end-start)
     actual_valid_paths=copy.deepcopy(all_paths)
+    start=time.time()
     for path in all_paths:
         isFirst=True
         valid= True
@@ -282,4 +290,7 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_
                     PNR_to_FeasibleFlights_map[PNR_Object.pnr_number]=actual_valid_paths
             else:
                     PNR_to_FeasibleFlights_map[PNR_Object.pnr_number].extend(actual_valid_paths)
+    end=time.time()
+    print(end-start)
+    print("#"*5)
 
