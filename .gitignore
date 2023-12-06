@@ -3,3 +3,5 @@ __pycache__
 .git
 .DS_Store
 *.env
+assignments*.csv
+non_assignments*.csv
