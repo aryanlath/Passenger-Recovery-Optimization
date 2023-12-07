@@ -199,14 +199,14 @@ def quantum_optimize_flight_assignments(PNR_List):
                 for cabin in cabins_tuple:         
                     if solution[f'X_{i}'] == 0.0:
                         if PNR.pnr_number not in assigned_pnrs[idx] and PNR.pnr_number not in not_assigned_pnrs[idx]:
-                            result[idx]['Non Assignments'].append(PNR.pnr_number)
+                            result[idx]['Non Assignments'].append(PNR)
                             not_assigned_pnrs[idx].add(PNR.pnr_number)
                     i += 1
 
     for idx,solution in enumerate(Final_Top3_Quantum_Solutions):
         for PNR in PNR_List:
             if PNR.pnr_number not in assigned_pnrs[idx] and PNR.pnr_number not in not_assigned_pnrs[idx]:
-                result[idx]['Non Assignments'].append(PNR.pnr_number)
+                result[idx]['Non Assignments'].append(PNR)
                 
     # for idx, solution in enumerate(Final_Top3_Quantum_Solutions):
     #     df_assignments = pd.DataFrame(result[idx]['Assignments'], columns=['PNR_Number', 'PNR_Email','Flight', 'Cabin'])
