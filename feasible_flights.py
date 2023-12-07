@@ -7,14 +7,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import copy
 import pprint
-import multiprocessing
 import time
 
 pp = pprint.PrettyPrinter(indent=4)
 
-# Locks to handle synchronisation
-lock_thread=multiprocessing.Lock()
-lock=multiprocessing.Lock()
 
 def Get_All_Maps():
     """
@@ -167,7 +163,7 @@ def custom_dfs_iterative(graph, source, destination, k,dp):
     stack = [(source, [], set())]
     all_paths = []
     if((source,destination,k) in dp):
-        return dp[(source,destination,k)]
+        return dp[(source,destination,k)] #memoisation to reduce time
 
     while stack:
         current_node, path_edges, visited_nodes = stack.pop()
@@ -188,7 +184,6 @@ def custom_dfs_iterative(graph, source, destination, k,dp):
                     new_visited_nodes = visited_nodes.copy()
                     new_visited_nodes.add(neighbor)
                     stack.append((neighbor, new_path_edges, new_visited_nodes))
-
     dp[(source,destination,k)]=all_paths
     return dp[(source,destination,k)]
 
@@ -249,12 +244,8 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_
     
     if(new_arrival_city!=None):
         arrival_city=new_arrival_city
-    start=time.time()
     all_paths=custom_dfs_iterative(graph,departure_city,arrival_city,num_of_hops-current_hops,dp)
-    end=time.time()
-    print(end-start)
     actual_valid_paths=copy.deepcopy(all_paths)
-    start=time.time()
     for path in all_paths:
         isFirst=True
         valid= True
@@ -285,12 +276,8 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_
         PNR_to_FeasibleFlights_map[PNR_Object.pnr_number] =actual_valid_paths
 
     else:
-        with lock:
-            if(PNR_Object.pnr_number not in PNR_to_FeasibleFlights_map):
-                    PNR_to_FeasibleFlights_map[PNR_Object.pnr_number]=actual_valid_paths
-            else:
-                    PNR_to_FeasibleFlights_map[PNR_Object.pnr_number].extend(actual_valid_paths)
-    end=time.time()
-    print(end-start)
-    print("#"*5)
+        if(PNR_Object.pnr_number not in PNR_to_FeasibleFlights_map):
+                PNR_to_FeasibleFlights_map[PNR_Object.pnr_number]=actual_valid_paths
+        else:
+                PNR_to_FeasibleFlights_map[PNR_Object.pnr_number].extend(actual_valid_paths)
 
