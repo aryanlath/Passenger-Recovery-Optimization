@@ -2,7 +2,7 @@ from feasible_flights import *
 from constants import *
 from init_functions import *
 from gurobi_optimisation import *
-from Leap_Quantum2 import *
+from Leap_Quantum_Main import *
 import pprint
 import constants_immutable
 from mailer import *
