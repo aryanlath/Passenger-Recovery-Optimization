@@ -2,7 +2,7 @@ from feasible_flights import *
 from constants import *
 from init_functions import *
 from gurobi_optimisation import *
-from Leap_Quantum2 import *
+from Leap_Quantum_Main import *
 import pprint
 import constants_immutable
 from mailer import *
@@ -17,10 +17,9 @@ def Main_function():
 
     # global all_flights, pnr_objects,  pnr_flight_mapping, pnr_to_s2
     constants_immutable.all_flights, constants_immutable.pnr_objects, constants_immutable.pnr_flight_mapping, constants_immutable.pnr_to_s2 = Get_All_Maps()
-
     # finds the normalization factors for the cost function
     init_normalize_factors()
-
+    
 
 
     # Identify the impacted PNRs
@@ -31,21 +30,22 @@ def Main_function():
     pp.pprint(Impacted_PNR)
 
     # Classical part
-    start = time.time()
-    result = optimize_flight_assignments(Impacted_PNR)
-    end = time.time()
-    print("Total Classical Time:" , end-start)
-    print()
-    print("Total Reassigned: ",len(result['Assignments']))
-    pp.pprint(result['Assignments'])
-    print("Not Assigned PNRs: ")
-    pp.pprint(result['Non Assignments'])
-    print("#"*100)
-    print()
+    # start = time.time()
+    # result = optimize_flight_assignments(Impacted_PNR)
+    # end = time.time()
+    # print("Total Classical Time:" , end-start)
+    # print()
+    # print("Total Reassigned: ",len(result['Assignments']))
+    # print("Classical Optimal Cost",result['Total Cost'])
+    # pp.pprint(result['Assignments'])
+    # print("Not Assigned PNRs: ")
+    # pp.pprint(result['Non Assignments'])
+    # print("#"*100)
+    # print()
 
    # Quantum Pipeline
     start = time.time()
-    quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
+    quantum_result =quantum_optimize_flight_assignments(Impacted_PNR,QSol_count=4)
     end = time.time()
     print("Total Quantum Time:", end-start)
     print()

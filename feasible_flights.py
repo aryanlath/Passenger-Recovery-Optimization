@@ -271,7 +271,10 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_
 
         if not valid:
             actual_valid_paths.remove(path) 
-
+        else:
+            if(PNR_Object.next_leg is not None and PNR_Object.next_leg.timestamp()-path[-1].arrival_time.timestamp()<= MCT*60*60):
+                actual_valid_paths.remove(path)
+    
     if new_arrival_city is None:
         PNR_to_FeasibleFlights_map[PNR_Object.pnr_number] =actual_valid_paths
 

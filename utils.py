@@ -3,7 +3,10 @@ from constants import *
 from Models.PNR import *
 from Models.Flights import *
 from collections import defaultdict
+import constants_immutable 
 import copy
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
 
 def string_to_dict(string_dict):
     # Remove curly braces and split by commas
@@ -134,7 +137,7 @@ def extract_PNR_from_CSV(file_path):
     pnr_to_split_pnrs=defaultdict(list)
     all_flights=Get_Flight_Map()
     pnr_dict_cpy=copy.deepcopy(pnr_dict)
-    
+    next_time=[]
     for key,pnr_object in pnr_dict_cpy.items():
         start=0
         partitions=[]
@@ -144,8 +147,9 @@ def extract_PNR_from_CSV(file_path):
                 prev_arrival_time=all_flights[flight].arrival_time
                 start+=1
             else:
-                if(abs(all_flights[flight].departure_time.timestamp()-prev_arrival_time.timestamp())>ETD*60*60):
+                if(abs(all_flights[flight].departure_time.timestamp()-prev_arrival_time.timestamp())>MAXCT*60*60):
                     partitions.append(start)
+                    next_time.append(all_flights[flight].departure_time)
                 prev_arrival_time=all_flights[flight].arrival_time
                 start+=1
         if(len(partitions)==0):
@@ -160,7 +164,7 @@ def extract_PNR_from_CSV(file_path):
                 pnr_to_split_pnrs[key].append(key+"#"+str(num_of_partitions))
                 temp=copy.deepcopy(curr_list)
                 temp1=copy.deepcopy(curr_subclass)
-                pnr_dict[key+"#"+str(num_of_partitions)]=PNR(key+"#"+str(num_of_partitions),temp,temp1,special_requirements,pax,passenger_loyalty,email_id)
+                pnr_dict[key+"#"+str(num_of_partitions)]=PNR(key+"#"+str(num_of_partitions),temp,temp1,special_requirements,pax,passenger_loyalty,email_id,next_time[num_of_partitions])
                 curr_list.clear()
                 curr_subclass.clear()
                 curr_list.append(pnr_object.inv_list[curr_len])
@@ -179,7 +183,7 @@ def extract_PNR_from_CSV(file_path):
     
     for key,pnr_object in pnr_dict.items():
         pnr_objects.append(pnr_object)
-            
+    
     return pnr_objects,pnr_to_split_pnrs
 
 def convert_result_to_csv(result):
@@ -228,3 +232,48 @@ def find_airport_location(airport_code):
     return None, None
 
 
+
+def sort_solution_schemes(schemes_list, exceptions_handled):
+    """
+        Inputs:
+            schemes_list: List of schemes taken input from Leap_Quantum2.py/main
+                          each element of list is a dictionary of the form { 'Assignments' : [ (PNR,Flight,Cabin)] , 'Non Assignments' : [PNR]}
+        Outputs:
+            List of scores of every scheme based on the 4 metrics given in the solution ranking file;
+                1) No. of Unassigned Passengers
+                2) No. of PNRs handled in exception list
+                3) Mean Arrival Delay
+                4) 1-Multi
+    """
+    final_score = []
+    for idx,scheme in enumerate(schemes_list):
+        
+        score_1 = len(scheme['Non Assignments']) - exceptions_handled[idx]
+        score_2 = len(scheme['Non Assignments'])
+        score_3  = 0 
+        score_4 = 0
+        total_assigned = len(scheme['Assignments'])
+        
+
+        for assignment in scheme['Assignments']:
+            # Each assignment is of the form (PNR , Flight_Tuple , Cabin_Tuple)
+            initial_arrival_time = constants_immutable.all_flights[assignment[0].inv_list[-1]].arrival_time 
+            final_arrvial_time = assignment[1][-1].arrival_time
+            arr_delay = (abs((final_arrvial_time - initial_arrival_time)).total_seconds())/3600
+            score_3+=arr_delay
+
+            initial_count_flights = len(assignment[0].inv_list)
+            final_count_flights = len(assignment[1])
+            if(final_count_flights > initial_count_flights) :
+                score_4+=1 
+            elif(final_count_flights < initial_count_flights):
+                score_4-=1
+            
+        score_3/=total_assigned
+
+        final_score.append((score_1, score_2, score_3, score_4))
+
+    return final_score
+
+                
+            

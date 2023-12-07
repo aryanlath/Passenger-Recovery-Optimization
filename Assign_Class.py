@@ -24,6 +24,7 @@ def Flow(PNR_list,flight_cabin_tuple):
         PNR_to_OR_map[PNR.pnr_number]=int(c1)
         OR_to_PNR_map[int(c1)]=PNR
         c1+=1
+    total_avl=0
     Class_map={}
     Class_map_inv={}
     total_supply=0
@@ -41,6 +42,7 @@ def Flow(PNR_list,flight_cabin_tuple):
             total_supply+=PNR.PAX
         for key,value in flight_object.fc_class_dict.items():
             Flow.add_arc_with_capacity_and_unit_cost(Class_map[key],c1,value,0)
+            total_avl+=value
         # Solve the problem and print the solution
     elif(Cabin=="BC"):
         for key,value in flight_object.bc_class_dict.items():
@@ -56,6 +58,7 @@ def Flow(PNR_list,flight_cabin_tuple):
             total_supply+=PNR.PAX
         for key,value in flight_object.bc_class_dict.items():
             Flow.add_arc_with_capacity_and_unit_cost(Class_map[key],c1,value,0)
+            total_avl+=value
         # Solve the problem and print the solution
     elif(Cabin=="PC"):
         for key,value in flight_object.pc_class_dict.items():
@@ -71,22 +74,24 @@ def Flow(PNR_list,flight_cabin_tuple):
             total_supply+=PNR.PAX
         for key,value in flight_object.pc_class_dict.items():
             Flow.add_arc_with_capacity_and_unit_cost(Class_map[key],c1,value,0)
+            total_avl+=value
 
         # Solve the problem and print the solution
     else:
-        for PNR in PNR_list:
-            for key,value in flight_object.ec_class_dict.items():
+        for key,value in flight_object.ec_class_dict.items():
                 Class_map[key]=int(c1)
                 Class_map_inv[c1]=key
                 c1+=1
+        for PNR in PNR_list:
             for key,value in flight_object.ec_class_dict.items():
                 Flow.add_arc_with_capacity_and_unit_cost(PNR_to_OR_map[PNR.pnr_number],Class_map[key],1000,cabin_to_class_cost(PNR,key))
-        
+    
         for PNR in PNR_list:
             Flow.set_node_supply(PNR_to_OR_map[PNR.pnr_number], PNR.PAX)
             total_supply+=PNR.PAX
         for key,value in flight_object.ec_class_dict.items():
             Flow.add_arc_with_capacity_and_unit_cost(Class_map[key],c1,value,0)
+            total_avl+=value
        
     Flow.set_node_supply(c1,-total_supply)
     status = Flow.solve()
@@ -112,7 +117,8 @@ def Flow(PNR_list,flight_cabin_tuple):
                     assignments[pnr_object.pnr_number].append([final_tuple,order])
             
     elif status == Flow.INFEASIBLE:
-        print("The problem is infeasible.")
+    
+      print("The problem is infeasible.")
     elif status == Flow.UNBALANCED:
         print("The problem is unbalanced.")
     else:

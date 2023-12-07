@@ -3,7 +3,7 @@
 from constants import PNR_pax,PNR_SSR,loyalty
 
 class PNR:
-    def __init__(self, pnr_number,inv_list, sub_class_list, special_requirements,PAX, passenger_loyalty,email_id):
+    def __init__(self, pnr_number,inv_list, sub_class_list, special_requirements,PAX, passenger_loyalty,email_id,next_leg=None):
 
         # inv_list -> list of inventory ids for this pnr (all the connecting flights)
         # sub_class_list -> list of all the subclasses this PNR is travelling in for each leg of journey
@@ -14,6 +14,7 @@ class PNR:
         self.PAX = int(PAX)
         self.passenger_loyalty = passenger_loyalty
         self.email_id = email_id
+        self.next_leg=next_leg
 
     def __hash__(self) -> int:
         return hash(self.pnr_number)
@@ -22,7 +23,7 @@ class PNR:
         return isinstance(other, PNR) and self.pnr_number == other.pnr_number
     
     def __repr__(self):
-        return f"PNR('{self.pnr_number}', {self.inv_list}, {self.sub_class_list}, {self.PAX})"
+        return f"PNR('{self.pnr_number}', {self.inv_list}, {self.sub_class_list}, {self.PAX},{self.next_leg})"
     
     def get_cabin(self,sub_class):
         """
