@@ -12,6 +12,7 @@ from handle_city_pairs import *
 import multiprocessing
 import dimod
 from dwave.system import LeapHybridCQMSampler
+import dwave.inspector
 from dimod import ConstrainedQuadraticModel, BinaryQuadraticModel, QuadraticModel
 from dimod import Real
 all_flights =[]
@@ -133,21 +134,22 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
     start = time.time()
     CQM.set_objective(-1*CQM_obj)
     sampler = LeapHybridCQMSampler(token=dwave_token)    
-    sampleset = sampler.sample_cqm(CQM)
-    print("TYPE OF SAMPLESET IS " , type(sampleset) )  
+    sampleset = sampler.sample_cqm(CQM).aggregate()
     end_time_sampling = time.time()
     print("API CALL Time " ,end_time_sampling - start)     
     start_agg = time.time()
     feasible_sampleset = sampleset.filter(lambda row: row.is_feasible) 
     end_agg = time.time()
+    print("TYPE OF SAMPLESET IS " , type(sampleset) )  
+    # dwave.inspector.show_qmi(CQM,feasible_sampleset.first.sample)
     print("Total Filter time " , end_agg - start_agg)
     print("{} feasible solutions of {}.".format(len(feasible_sampleset), len(sampleset)))    
     best = feasible_sampleset.first.sample   
-    Aggregated_sampleset = feasible_sampleset.aggregate()
-    print("Total No. of Quantum Solutions are " , len(Aggregated_sampleset))
+    # Aggregated_sampleset = feasible_sampleset.aggregate()
+    print("Total No. of Quantum Solutions are " , len(feasible_sampleset))
     solution_count= 0 
     Final_Quantum_Solutions =[]
-    for idx,sample in enumerate(Aggregated_sampleset):
+    for idx,sample in enumerate(feasible_sampleset.truncate(QSol_count)):
         # print("NEXT SOLUTION\n") 
         if(idx >=QSol_count):
             break
