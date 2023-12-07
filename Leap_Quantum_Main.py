@@ -12,7 +12,7 @@ from handle_city_pairs import *
 import multiprocessing
 import dimod
 from dwave.system import LeapHybridCQMSampler
-import dwave.inspector
+# import dwave.inspector
 from dimod import ConstrainedQuadraticModel, BinaryQuadraticModel, QuadraticModel
 from dimod import Real
 all_flights =[]
