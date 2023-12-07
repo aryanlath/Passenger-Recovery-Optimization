@@ -6,7 +6,6 @@ import gurobipy as gp
 from gurobipy import GRB
 from collections import defaultdict
 import time
-import multiprocessing
 
 
 def get_flight_cabin_mappings(flights, current_mapping=None, flight_index=0):
@@ -53,34 +52,20 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
     X = {}
 
     variable_cnt=0
-    thread_map={}
-    thread_cnt=0
-    manager=multiprocessing.Manager()
-    PNR_to_FeasibleFlights_map=manager.dict()
+    PNR_to_FeasibleFlights_map={}
+    dp={}
     start = time.time()
     if not city_pairs:
         for PNR in PNR_List:
-            thread_map[thread_cnt]=multiprocessing.Process(target=PNR_to_Feasible_Flights,args=(g,all_flights,PNR,PNR_to_FeasibleFlights_map))
-            thread_map[thread_cnt].start()
-            thread_cnt+=1
-
-        for cnt in range(thread_cnt):
-            thread_map[cnt].join()
+            PNR_to_Feasible_Flights (g, all_flights, PNR, PNR_to_FeasibleFlights_map, dp)
 
     else:
         for PNR in PNR_List:
             old_arrival_city = all_flights[PNR.inv_list[-1]].arrival_city
             proposed_arrival_cities = get_city_pairs_cost(old_arrival_city)
-            #print(old_arrival_city)
             for city in proposed_arrival_cities:
+                PNR_to_Feasible_Flights(g,all_flights,PNR,PNR_to_FeasibleFlights_map,dp,4,city[0])
 
-                thread_map[thread_cnt]=multiprocessing.Process(target=PNR_to_Feasible_Flights,args=(g,all_flights,PNR,PNR_to_FeasibleFlights_map,4,city[0]))
-                thread_map[thread_cnt].start()
-                thread_cnt+=1
-
-        for i in range(thread_cnt):
-            thread_map[i].join()
-    
     end = time.time()
     print("Feasible Flights Time: ", end-start)
 
