@@ -26,7 +26,7 @@ Run the following command in the terminal
 Make a file named `.env` in the main folder, it's content should be:
 ```
 GMAPS_API_KEY=your_actual_api_key
-dwave_token=dwave_token
+DWAVE_TOKEN=dwave_token
 flight_mail = your_email_id
 flight_mail_password = your_email_password (if using gmail, you need to generate an app password)
 ```
