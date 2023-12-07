@@ -4,6 +4,8 @@ from Models.PNR import *
 from Models.Flights import *
 from collections import defaultdict
 import copy
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
 
 def string_to_dict(string_dict):
     # Remove curly braces and split by commas
@@ -134,7 +136,7 @@ def extract_PNR_from_CSV(file_path):
     pnr_to_split_pnrs=defaultdict(list)
     all_flights=Get_Flight_Map()
     pnr_dict_cpy=copy.deepcopy(pnr_dict)
-    
+    next_time=[]
     for key,pnr_object in pnr_dict_cpy.items():
         start=0
         partitions=[]
@@ -144,8 +146,9 @@ def extract_PNR_from_CSV(file_path):
                 prev_arrival_time=all_flights[flight].arrival_time
                 start+=1
             else:
-                if(abs(all_flights[flight].departure_time.timestamp()-prev_arrival_time.timestamp())>ETD*60*60):
+                if(abs(all_flights[flight].departure_time.timestamp()-prev_arrival_time.timestamp())>MAXCT*60*60):
                     partitions.append(start)
+                    next_time.append(all_flights[flight].departure_time)
                 prev_arrival_time=all_flights[flight].arrival_time
                 start+=1
         if(len(partitions)==0):
@@ -160,7 +163,7 @@ def extract_PNR_from_CSV(file_path):
                 pnr_to_split_pnrs[key].append(key+"#"+str(num_of_partitions))
                 temp=copy.deepcopy(curr_list)
                 temp1=copy.deepcopy(curr_subclass)
-                pnr_dict[key+"#"+str(num_of_partitions)]=PNR(key+"#"+str(num_of_partitions),temp,temp1,special_requirements,pax,passenger_loyalty,email_id)
+                pnr_dict[key+"#"+str(num_of_partitions)]=PNR(key+"#"+str(num_of_partitions),temp,temp1,special_requirements,pax,passenger_loyalty,email_id,next_time[num_of_partitions])
                 curr_list.clear()
                 curr_subclass.clear()
                 curr_list.append(pnr_object.inv_list[curr_len])
@@ -179,7 +182,7 @@ def extract_PNR_from_CSV(file_path):
     
     for key,pnr_object in pnr_dict.items():
         pnr_objects.append(pnr_object)
-            
+    
     return pnr_objects,pnr_to_split_pnrs
 
 def convert_result_to_csv(result):

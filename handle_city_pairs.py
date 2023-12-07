@@ -27,7 +27,7 @@ def city_pairs_cost_function(distance, time, alpha=2, beta=3, epsilon=0.001):
     return 1e15 / (distance**alpha + time**beta + epsilon)
 
 
-def get_city_pairs_cost(original_airport,departure_time=None):
+def get_city_pairs_cost(original_airport,dp1,departure_time=None):
     """
     A function to get the updated cost for considering different city pairs.
     Args:
@@ -38,6 +38,8 @@ def get_city_pairs_cost(original_airport,departure_time=None):
     float: The normalised score value depending on how near or far the new proposed arival location is
     """
     # Set up the API URL and parameters from distance matrix
+    if(original_airport in dp1):
+        return dp1[original_airport]
     (l1,l2) = find_airport_location(original_airport)
     nearest_airports = find_nearest_airports(original_airport)
     city_pairs_and_cost = []
@@ -59,6 +61,8 @@ def get_city_pairs_cost(original_airport,departure_time=None):
         if response.status_code == 200:
             # Request was successful
             data = response.json()
+
+
             # Extract distance and duration based on real life data
             duration_in_traffic_seconds = data['rows'][0]['elements'][0]['duration_in_traffic']['value']
             if(duration_in_traffic_seconds>=CITY_PAIR_THRESHOLD*60*60):
@@ -67,5 +71,5 @@ def get_city_pairs_cost(original_airport,departure_time=None):
             distance = float(distance_str.split()[0])
             priority_value = city_pairs_cost_function(distance, duration_in_traffic_seconds)
             city_pairs_and_cost.append((airport,float("{:.4f}".format(priority_value))))
-        
+    dp1[original_airport]=city_pairs_and_cost 
     return city_pairs_and_cost

@@ -54,6 +54,7 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
     variable_cnt=0
     PNR_to_FeasibleFlights_map={}
     dp={}
+    dp1={}
     start = time.time()
     if not city_pairs:
         for PNR in PNR_List:
@@ -62,9 +63,11 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
     else:
         for PNR in PNR_List:
             old_arrival_city = all_flights[PNR.inv_list[-1]].arrival_city
-            proposed_arrival_cities = get_city_pairs_cost(old_arrival_city)
+            proposed_arrival_cities = get_city_pairs_cost(old_arrival_city,dp1)
             for city in proposed_arrival_cities:
+                start=time.time()
                 PNR_to_Feasible_Flights(g,all_flights,PNR,PNR_to_FeasibleFlights_map,dp,4,city[0])
+                end=time.time()
 
     end = time.time()
     print("Feasible Flights Time: ", end-start)

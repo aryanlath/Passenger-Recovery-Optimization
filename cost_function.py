@@ -19,9 +19,9 @@ def cabin_to_class_cost(PNR,Curr_Subclass):
     for Class in subclass_list:
         feasible_classes.extend(classChange[Class])
     if(Curr_Subclass in feasible_classes):
-        return int(-PNR_Score(PNR)*constants_immutable.Class_change_cost)
+        return 1
     else:
-        return int(PNR_Score(PNR)*constants_immutable.Class_change_cost)
+        return 2
     
 
 
