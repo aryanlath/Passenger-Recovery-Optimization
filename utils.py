@@ -3,6 +3,7 @@ from constants import *
 from Models.PNR import *
 from Models.Flights import *
 from collections import defaultdict
+import constants_immutable 
 import copy
 
 def string_to_dict(string_dict):
@@ -228,3 +229,48 @@ def find_airport_location(airport_code):
     return None, None
 
 
+
+def sort_solution_schemes(schemes_list, exceptions_handled):
+    """
+        Inputs:
+            schemes_list: List of schemes taken input from Leap_Quantum2.py/main
+                          each element of list is a dictionary of the form { 'Assignments' : [ (PNR,Flight,Cabin)] , 'Non Assignments' : [PNR]}
+        Outputs:
+            List of scores of every scheme based on the 4 metrics given in the solution ranking file;
+                1) No. of Unassigned Passengers
+                2) No. of PNRs handled in exception list
+                3) Mean Arrival Delay
+                4) 1-Multi
+    """
+    final_score = []
+    for idx,scheme in enumerate(schemes_list):
+        
+        score_1 = len(scheme['Non Assignments']) - exceptions_handled[idx]
+        score_2 = len(scheme['Non Assignments'])
+        score_3  = 0 
+        score_4 = 0
+        total_assigned = len(scheme['Assignments'])
+        
+
+        for assignment in scheme['Assignments']:
+            # Each assignment is of the form (PNR , Flight_Tuple , Cabin_Tuple)
+            initial_arrival_time = constants_immutable.all_flights[assignment[0].inv_list[-1]].arrival_time 
+            final_arrvial_time = assignment[1][-1].arrival_time
+            arr_delay = (abs((final_arrvial_time - initial_arrival_time)).total_seconds())/3600
+            score_3+=arr_delay
+
+            initial_count_flights = len(assignment[0].inv_list)
+            final_count_flights = len(assignment[1])
+            if(final_count_flights > initial_count_flights) :
+                score_4+=1 
+            elif(final_count_flights < initial_count_flights):
+                score_4-=1
+            
+        score_3/=total_assigned
+
+        final_score.append((score_1, score_2, score_3, score_4))
+
+    return final_score
+
+                
+            
