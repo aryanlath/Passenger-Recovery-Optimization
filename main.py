@@ -2,7 +2,7 @@ from feasible_flights import *
 from constants import *
 from init_functions import *
 from gurobi_optimisation import *
-from Leap_Quantum2 import *
+from Leap_Quantum_Main import *
 import pprint
 import constants_immutable
 from mailer import *
@@ -30,30 +30,31 @@ def Main_function():
     pp.pprint(Impacted_PNR)
 
     # Classical part
-    start = time.time()
-    result = optimize_flight_assignments(Impacted_PNR)
-    end = time.time()
-    print("Total Classical Time:" , end-start)
-    print()
-    print("Total Reassigned: ",len(result['Assignments']))
-    pp.pprint(result['Assignments'])
-    print("Not Assigned PNRs: ")
-    pp.pprint(result['Non Assignments'])
-    print("#"*100)
-    print()
-
-   # Quantum Pipeline
     # start = time.time()
-    # quantum_result =quantum_optimize_flight_assignments(Impacted_PNR)
+    # result = optimize_flight_assignments(Impacted_PNR)
     # end = time.time()
-    # print("Total Quantum Time:", end-start)
+    # print("Total Classical Time:" , end-start)
     # print()
-    # print("Total Reassigned: ",len(quantum_result[0]['Assignments']))
-    # pp.pprint(quantum_result[0]['Assignments'])
+    # print("Total Reassigned: ",len(result['Assignments']))
+    # print("Classical Optimal Cost",result['Total Cost'])
+    # pp.pprint(result['Assignments'])
     # print("Not Assigned PNRs: ")
-    # pp.pprint(quantum_result[0]['Non Assignments'])
+    # pp.pprint(result['Non Assignments'])
     # print("#"*100)
     # print()
+
+   # Quantum Pipeline
+    start = time.time()
+    quantum_result =quantum_optimize_flight_assignments(Impacted_PNR,QSol_count=4)
+    end = time.time()
+    print("Total Quantum Time:", end-start)
+    print()
+    print("Total Reassigned: ",len(quantum_result[0]['Assignments']))
+    pp.pprint(quantum_result[0]['Assignments'])
+    print("Not Assigned PNRs: ")
+    pp.pprint(quantum_result[0]['Non Assignments'])
+    print("#"*100)
+    print()
 
 
     # # Constructing 3 CSVs corresponding to the top 3 quantum solutions
