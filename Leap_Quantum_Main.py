@@ -56,6 +56,7 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
     CQM_obj = 0
     X_PNR_Constraint = defaultdict(list)
     X_Flight_Capacity_Constraint = defaultdict(lambda: defaultdict(list))
+
     # PNR_to_FeasibleFlights_map=manager.dict()
     #
     # X_ijk = 1 if the ith PNR is assigned to the jth flight's kth class
@@ -66,10 +67,6 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
     PNR_to_FeasibleFlights_map={}
     my_dict = {}
     dp={}
-    i=0
-    thread_map={}
-    thread_cnt=0
-    # manager=multiprocessing.Manager()
     start = time.time()
     if not city_pairs:
         for PNR in PNR_List:
@@ -163,16 +160,16 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
         for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
             cabins_tuple = get_flight_cabin_mappings(FT)
             for cabin in cabins_tuple:
-                X_coeff = cost_function(PNR, FT, cabin)
                 for idx,solution in enumerate(Final_Quantum_Solutions):
                     if solution[f'X_{variable_cnt}'] == 1.0:
+                        X_coeff = cost_function(PNR, FT, cabin)
                         Objective_Value_List[idx] += X_coeff
                         is_PNR_assigned[idx] = True
                 variable_cnt += 1
         for idx,check_assigned in enumerate(is_PNR_assigned):
             if not is_PNR_assigned[idx]:
                 Non_assignment_Cost = cost_function(PNR, None, None)
-                Objective_Value_List[idx] += Non_assignment_Cost - Non_assignment_Cost * sum(X_PNR_Constraint[PNR])
+                Objective_Value_List[idx] += Non_assignment_Cost 
     end_cost_cal = time.time()
     print("Total Obj Function calculation time" , end_cost_cal - start_cost_cal)
     print(f"Objective Value List of top {QSol_count} quantum solutions is: \n", Objective_Value_List)    
