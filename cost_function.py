@@ -114,8 +114,8 @@ def flight_quality_score(PNR, flight_tuple):
     max_DelayScore = STD6h + arrDelay6h
     max_ConnectionScore = constants_immutable.connection_constant + 3
     min_ConnectionScore = constants_immutable.connection_constant - 3
-    return ((DelayScore-min_DelayScore)/(max_DelayScore - min_DelayScore)) * ((ConnectionScore-min_ConnectionScore)/(max_ConnectionScore-min_ConnectionScore))*10
-
+    return ((DelayScore-min_DelayScore)/(max_DelayScore - min_DelayScore)) * ((ConnectionScore-min_ConnectionScore)/(max_ConnectionScore-min_ConnectionScore))
+    
 def class_difference_score(PNR, cabin_Tuple):
     """
     Calculates the class difference score for each PNR to flight mapping.
