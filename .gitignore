@@ -5,3 +5,4 @@ __pycache__
 *.env
 assignments*.csv
 non_assignments*.csv
+output*.txt
