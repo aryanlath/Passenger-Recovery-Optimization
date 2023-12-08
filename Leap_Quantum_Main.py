@@ -8,6 +8,7 @@ from feasible_flights import *
 from cost_function import *
 import time
 import os
+from dwave.preprocessing.presolve import Presolver
 from handle_city_pairs import *
 import multiprocessing
 import dimod
@@ -130,8 +131,11 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
 
     start = time.time()
     CQM.set_objective(-1*CQM_obj)
+    presolve = Presolver(CQM)
+    presolve.apply()
+    reduced_cqm = presolve.detach_model()
     sampler = LeapHybridCQMSampler(token=dwave_token)    
-    sampleset = sampler.sample_cqm(CQM).aggregate()
+    sampleset = sampler.sample_cqm(reduced_cqm).aggregate()
     end_time_sampling = time.time()
     print("API CALL Time " ,end_time_sampling - start)     
     start_agg = time.time()

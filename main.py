@@ -31,7 +31,7 @@ def Main_function():
 
     # Classical part
     start = time.time()
-    result = optimize_flight_assignments(Impacted_PNR)
+    result = optimize_flight_assignments(Impacted_PNR,False)
     end = time.time()
     print("Total Classical Time:" , end-start)
     print()
@@ -42,24 +42,25 @@ def Main_function():
     pp.pprint(result['Non Assignments'])
     print("#"*100)
     print()
-
+    print(AssignmentsToJSON(Cabin_to_Class(result["Assignments"])))
    # Quantum Pipeline
-    start = time.time()
-    quantum_result =quantum_optimize_flight_assignments(Impacted_PNR,QSol_count=4)
-    end = time.time()
-    print("Total Quantum Time:", end-start)
-    print()
-    print("Total Reassigned: ",len(quantum_result[0]['Assignments']))
-    pp.pprint(quantum_result[0]['Assignments'])
-    print("Not Assigned PNRs: ")
-    pp.pprint(quantum_result[0]['Non Assignments'])
-    print("#"*100)
-    print()
+    # start = time.time()
+    # quantum_result =quantum_optimize_flight_assignments(Impacted_PNR,QSol_count=4)
+    # end = time.time()
+    # print("Total Quantum Time:", end-start)
+    # print()
+    # print("Total Reassigned: ",len(quantum_result[0]['Assignments']))
+    # pp.pprint(quantum_result[0]['Assignments'])
+    # print("Not Assigned PNRs: ")
+    # pp.pprint(quantum_result[0]['Non Assignments'])
+    # print("#"*100)
+    # print()
 
 
-    # # Constructing 3 CSVs corresponding to the top 3 quantum solutions
+    # Constructing 3 CSVs corresponding to the top 3 quantum solutions
     # for idx in range(0,len(quantum_result)):
     #     result_new=Cabin_to_Class(quantum_result[idx]["Assignments"])
+    #     my_dict = AssignmentsToJSON(result_new)
     #     result_new_modified = []
     #     for T in result_new :
     #         Cancelled_Flights = []
@@ -77,32 +78,32 @@ def Main_function():
     
     
     
-    # Network flow pipeline
-    start=time.time()
-    final_result = Cabin_to_Class(result["Assignments"])
-    end=time.time()
-    print("Network Flow time :",end-start)
-    print()
-    pp.pprint(final_result)
-    print("#"*100)
-    print()
+    # # Network flow pipeline
+    # start=time.time()
+    # final_result = Cabin_to_Class(quantum_result[0]["Assignments"])
+    # end=time.time()
+    # print("Network Flow time :",end-start)
+    # print()
+    # pp.pprint(final_result)
+    # print("#"*100)
+    # print()
 
-    # Exception List Handling
-    start=time.time()
-    city_pairs_result = optimize_flight_assignments(result['Non Assignments'],True)
-    end=time.time()
-    print("Exception Handling time: ",end-start)
-    print()
-    print("Total Assignments with different City-Pairs: ", len(city_pairs_result['Assignments']))
-    pp.pprint(city_pairs_result['Assignments'])
-    print("Not Assigned PNRs: ")
-    pp.pprint(city_pairs_result['Non Assignments'])
-    print("#"*100)
-    print()
+    # # Exception List Handling
+    # start=time.time()
+    # city_pairs_result = optimize_flight_assignments(quantum_result[0]['Non Assignments'],True)
+    # end=time.time()
+    # print("Exception Handling time: ",end-start)
+    # print()
+    # print("Total Assignments with different City-Pairs: ", len(city_pairs_result['Assignments']))
+    # pp.pprint(city_pairs_result['Assignments'])
+    # print("Not Assigned PNRs: ")
+    # pp.pprint(city_pairs_result['Non Assignments'])
+    # print("#"*100)
+    # print()
     
 
     # send emails
-    #send_mail("Results/assignments.csv")
+    # send_mail("Results/assignments.csv")
 
 if __name__==  "__main__":
     Main_function()

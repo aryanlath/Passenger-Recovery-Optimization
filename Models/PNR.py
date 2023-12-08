@@ -53,6 +53,20 @@ class PNR:
             return PNR_SSR["grade1"]
         elif (self.special_requirements=="Grade2"):
             return PNR_SSR["grade2"]
+
+    def min_max_ssr_score(self):
+        """
+            Returns the maximum and minimum score associated with the SSR string
+        """
+        
+        return min(PNR_SSR.values()),max(PNR_SSR.values())
+    
+    def min_max_loyalty_score(self):
+        """
+            Returns the maximum and minimum score associated with the loyalty string
+        """
+        
+        return min(loyalty.values()),max(loyalty.values())
     
     def get_pnr_score(self):
         """
@@ -66,4 +80,13 @@ class PNR:
         s1 = self.get_ssr_score()
         s2 = self.get_loyalty_score()
         s3 = self.PAX * PNR_pax
-        return s1 + s2 + s3
+        min_s1, max_s1 = self.min_max_ssr_score()
+        min_s2, max_s2 = self.min_max_loyalty_score()
+        min_s3 = self.PAX
+        max_s3 = self.PAX*9
+        s1 = (s1-min_s1)/(max_s1-min_s1)
+        s2 = (s2-min_s2)/(max_s2-min_s2)
+        s3 = (s3-min_s3)/(max_s3-min_s3)
+        s4 = s1+s2
+        s4 = s4/2
+        return s3 + s4

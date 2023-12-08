@@ -12,6 +12,14 @@ lock=threading.Lock()
 total_cost=0
 
 def Flow(PNR_list,flight_cabin_tuple):
+    """
+    Assigns passengers from a Passenger Name Record (PNR) list to available flight classes based on their preferences.
+    It constructs a minimum-cost flow graph using the SimpleMinCostFlow class and assigns passengers accordingly.
+    Input:
+    - PNR_list (list): A list of Passenger Name Record objects.
+    - flight_cabin_tuple (tuple): A tuple containing flight object, cabin type.
+    Returns: None
+    """
     global total_cost
     Flow = min_cost_flow.SimpleMinCostFlow()
     flight_object = flight_cabin_tuple[0]
