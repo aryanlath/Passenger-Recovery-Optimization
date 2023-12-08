@@ -31,7 +31,7 @@ def Main_function():
 
     # Classical part
     start = time.time()
-    result = optimize_flight_assignments(Impacted_PNR)
+    result = optimize_flight_assignments(Impacted_PNR,False)
     end = time.time()
     print("Total Classical Time:" , end-start)
     print()
@@ -42,37 +42,38 @@ def Main_function():
     pp.pprint(result['Non Assignments'])
     print("#"*100)
     print()
-
+    print(AssignmentsToJSON(Cabin_to_Class(result["Assignments"])))
    # Quantum Pipeline
-    start = time.time()
-    quantum_result =quantum_optimize_flight_assignments(Impacted_PNR,QSol_count=4)
-    end = time.time()
-    print("Total Quantum Time:", end-start)
-    print()
-    print("Total Reassigned: ",len(quantum_result[0]['Assignments']))
-    pp.pprint(quantum_result[0]['Assignments'])
-    print("Not Assigned PNRs: ")
-    pp.pprint(quantum_result[0]['Non Assignments'])
-    print("#"*100)
-    print()
+    # start = time.time()
+    # quantum_result =quantum_optimize_flight_assignments(Impacted_PNR,QSol_count=4)
+    # end = time.time()
+    # print("Total Quantum Time:", end-start)
+    # print()
+    # print("Total Reassigned: ",len(quantum_result[0]['Assignments']))
+    # pp.pprint(quantum_result[0]['Assignments'])
+    # print("Not Assigned PNRs: ")
+    # pp.pprint(quantum_result[0]['Non Assignments'])
+    # print("#"*100)
+    # print()
 
 
     # Constructing 3 CSVs corresponding to the top 3 quantum solutions
-    for idx in range(0,len(quantum_result)):
-        result_new=Cabin_to_Class(quantum_result[idx]["Assignments"])
-        result_new_modified = []
-        for T in result_new :
-            Cancelled_Flights = []
-            for inv in T[0].inv_list:
-                if(constants_immutable.all_flights[inv].status=="cancelled"):
-                    Cancelled_Flights.append(constants_immutable.all_flights[inv])
+    # for idx in range(0,len(quantum_result)):
+    #     result_new=Cabin_to_Class(quantum_result[idx]["Assignments"])
+    #     my_dict = AssignmentsToJSON(result_new)
+    #     result_new_modified = []
+    #     for T in result_new :
+    #         Cancelled_Flights = []
+    #         for inv in T[0].inv_list:
+    #             if(constants_immutable.all_flights[inv].status=="cancelled"):
+    #                 Cancelled_Flights.append(constants_immutable.all_flights[inv])
                     
-            result_new_modified.append((T[0].pnr_number,T[0].email_id,T[1],T[2],T[3],Cancelled_Flights))
-        df_assignments = pd.DataFrame(result_new_modified, columns=['PNR_Number', 'PNR_Email','Flight', 'Cabin','Class','Cancelled Flights'])
-        df_non_assignments = pd.DataFrame(quantum_result[idx]['Non Assignments'], columns=['PNR_Number'])
+    #         result_new_modified.append((T[0].pnr_number,T[0].email_id,T[1],T[2],T[3],Cancelled_Flights))
+    #     df_assignments = pd.DataFrame(result_new_modified, columns=['PNR_Number', 'PNR_Email','Flight', 'Cabin','Class','Cancelled Flights'])
+    #     df_non_assignments = pd.DataFrame(quantum_result[idx]['Non Assignments'], columns=['PNR_Number'])
 
-        df_assignments.to_csv(f"Results/assignments_{idx}.csv")
-        df_non_assignments.to_csv(f"Results/non_assignments_{idx}.csv")
+    #     df_assignments.to_csv(f"Results/assignments_{idx}.csv")
+    #     df_non_assignments.to_csv(f"Results/non_assignments_{idx}.csv")
     
     
     

@@ -6,6 +6,7 @@ from collections import defaultdict
 import constants_immutable 
 import copy
 import pprint
+import json
 pp = pprint.PrettyPrinter(indent=4)
 
 def string_to_dict(string_dict):
@@ -276,4 +277,55 @@ def sort_solution_schemes(schemes_list, exceptions_handled):
     return final_score
 
                 
+def AssignmentsToJSON( Cabin_Class_Assignments) :
+    """ 
+        Output : Returns JSON of this structure;
+            Structure->
+
+                { "PNR Number" : {
+                            "Original" : {
+                                [
+                                    [
+                                        INV_ID_1 , CABIN_1 , [Sub_Class List_1]
+                                    ],
+                                    [
+                                        INV_ID_2 , CABIN_2 , [Sub_Class List_2]
+                                    ],
+                                    ...
+                                ]
+                            }
+                            "Proposed" :{
+                                similar to original
+                            }
+                    }
+                }
+    """
+    final_ans = {}
+    for pnr_number , val in  Cabin_Class_Assignments.items():
+        final_ans[pnr_number]={} 
+        final_ans[pnr_number]["Original"] =[]
+        final_ans[pnr_number]["Proposed"]=[]
+        My_Pnr_obj = constants_immutable.pnr_objects[pnr_number]
+        final_ans[pnr_number]["Email"] = My_Pnr_obj.email_id
+        Orig_inv_list=  My_Pnr_obj.inv_list
+        Orig_subclass_list = My_Pnr_obj.sub_class_list
+        for idx, val1 in enumerate(Orig_inv_list):
+            temp_list =[]
+            temp_list.append(val1)
+            temp_list.append(constants_immutable.pnr_objects[pnr_number].get_cabin(Orig_subclass_list[0]))
+            temp_list_2 = [Orig_subclass_list[idx]]*(My_Pnr_obj.PAX)
+            temp_list.append(temp_list_2)
+            final_ans[pnr_number]["Original"].append(temp_list)
+        
+        num_of_proposed_flights = int(len(val)/My_Pnr_obj.PAX)
+        
+        for i in range(num_of_proposed_flights):
+            temp_sub_class_list = []
+            temp_list=[val[i*My_Pnr_obj.PAX][1].inventory_id , val[i*My_Pnr_obj.PAX][2]]
+            for j in range(i*My_Pnr_obj.PAX, (i+1)*My_Pnr_obj.PAX):
+                temp_sub_class_list.append(val[j][3])
+            temp_list.append(temp_sub_class_list)
             
+            final_ans[pnr_number]["Proposed"].append(temp_list)
+                
+    return json.dumps(final_ans)
