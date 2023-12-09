@@ -7,12 +7,11 @@ st.title("Class to Class Mapping")
 #add empty space
 st.write("")
 
-#list of all possible classes
-flightClassOptions=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
 
 #dictionary to store class as key and list of alternate classes as value
 classChange={}
 
+subClassFirst=['F','P']
 
 st.subheader("First Class")
 
@@ -21,24 +20,26 @@ col1,col2=st.columns(2)
 with col1:
     
     #list of classes where passengers of class F can be allocated to
-    classChange['F'] = st.multiselect('Proposed Class for Class F',[subclass for subclass in flightClassOptions if subclass!='F'],default=['P','C'])
+    classChange['F'] = st.multiselect('Proposed Class for Class F',subClassFirst,default=subClassFirst)
 with col2:
     #list of classes where passengers of class P can be allocated to
-    classChange['P'] = st.multiselect('Proposed Class for Class P',[subclass for subclass in flightClassOptions if subclass!='P'],default=['C','F'])
+    classChange['P'] = st.multiselect('Proposed Class for Class P',subClassFirst,default=subClassFirst)
     
+subClassBusiness=['C','J','Z']
 
 st.subheader("Business Class")
 col1,col2=st.columns(2)
 with col1:
     #list of classes where passengers of class C can be allocated to
-    classChange['C'] = st.multiselect('Proposed Class for Class C',[subclass for subclass in flightClassOptions if subclass!='C'],default=['Z','J','P'])
+    classChange['C'] = st.multiselect('Proposed Class for Class C',subClassBusiness,default=subClassBusiness)
     
     #list of classes where passengers of class Z can be allocated to
-    classChange['Z'] = st.multiselect('Proposed Class for Class Z',[subclass for subclass in flightClassOptions if subclass!='Z'],default=['C','J','P'])
+    classChange['Z'] = st.multiselect('Proposed Class for Class Z',subClassBusiness,default=subClassBusiness)
 with col2:
     #list of classes where passengers of class J can be allocated to
-    classChange['J'] = st.multiselect('Proposed Class for Class J',[subclass for subclass in flightClassOptions if subclass!='J'],default=['Z','C','P'])
+    classChange['J'] = st.multiselect('Proposed Class for Class J',subClassBusiness,default=subClassBusiness)
     
+subClassPremium=['Q','R','S','T','H','M']
 
 st.subheader("Premium Economy Class")
 
@@ -46,28 +47,28 @@ col1,col2=st.columns(2)
 with col1:
     
     #list of classes where passengers of class R can be allocated to
-    classChange['R'] = st.multiselect('Proposed Class for Class R',[subclass for subclass in flightClassOptions if subclass!='R'],default=['Q','M','T'])
+    classChange['R'] = st.multiselect('Proposed Class for Class R',subClassPremium,default=['Q','R','H','M'])
 
     
     #list of classes where passengers of class T can be allocated to
-    classChange['T'] = st.multiselect('Proposed Class for Class T',[subclass for subclass in flightClassOptions if subclass!='T'],default=['Q','M','R'])
+    classChange['T'] = st.multiselect('Proposed Class for Class T',subClassPremium,default=['Q'])
 
 
     #list of classes where passengers of class M can be allocated to
-    classChange['M'] = st.multiselect('Proposed Class for Class M',[subclass for subclass in flightClassOptions if subclass!='M'],default=['Q','R','T'])
+    classChange['M'] = st.multiselect('Proposed Class for Class M',subClassPremium,default=['Q','H','M'])
 with col2:
     
     #list of classes where passengers of class Q can be allocated to
-    classChange['Q'] = st.multiselect('Proposed Class for Class Q',[subclass for subclass in flightClassOptions if subclass!='Q'],default=['R','M','T'])
+    classChange['Q'] = st.multiselect('Proposed Class for Class Q',subClassPremium,default=[])
     
     
     #list of classes where passengers of class S can be allocated to
-    classChange['S'] = st.multiselect('Proposed Class for Class S',[subclass for subclass in flightClassOptions if subclass!='S'],default=['Q','M','T'])
+    classChange['S'] = st.multiselect('Proposed Class for Class S',subClassPremium,default=['S','T','H'])
 
     #list of classes where passengers of class H can be allocated to
-    classChange['H'] = st.multiselect('Proposed Class for Class H',[subclass for subclass in flightClassOptions if subclass!='H'],default=['Q','M','T'])
+    classChange['H'] = st.multiselect('Proposed Class for Class H',subClassPremium,default=['Q','M'])
 
-
+subClassEconomy=['Y','A','B','D','E','G','I','K','L','N','O','U','V','W','X']
 
 st.subheader("Economy Class")
 col1,col2=st.columns(2)
@@ -75,29 +76,29 @@ with col1:
     
     
     #list of classes where passengers of class A can be allocated to
-    classChange['A'] = st.multiselect('Proposed Class for Class A',[subclass for subclass in flightClassOptions if subclass!='A'],default=['D','L','X'])
+    classChange['A'] = st.multiselect('Proposed Class for Class A',subClassEconomy,default=['Y','A'])
 
     #list of classes where passengers of class D can be allocated to
-    classChange['D'] = st.multiselect('Proposed Class for Class D',[subclass for subclass in flightClassOptions if subclass!='D'],default=['A','X'])
+    classChange['D'] = st.multiselect('Proposed Class for Class D',subClassEconomy,default=['D','E','G'])
 
     #list of classes where passengers of class L can be allocated to
-    classChange['L'] = st.multiselect('Proposed Class for Class L',[subclass for subclass in flightClassOptions if subclass!='L'],default=['O','V','X'])
+    classChange['L'] = st.multiselect('Proposed Class for Class L',subClassEconomy,default=['W','X'])
 
     #list of classes where passengers of class O can be allocated to
-    classChange['O'] = st.multiselect('Proposed Class for Class O',[subclass for subclass in flightClassOptions if subclass!='O'],default=['A','D','X'])
+    classChange['O'] = st.multiselect('Proposed Class for Class O',subClassEconomy,default=['K','L'])
     
     #list of classes where passengers of class V can be allocated to
-    classChange['V'] = st.multiselect('Proposed Class for Class V',[subclass for subclass in flightClassOptions if subclass!='V'],default=['A','D','O','X'])
+    classChange['V'] = st.multiselect('Proposed Class for Class V',subClassEconomy,default=['O'])
     
     #list of classes where passengers of class X can be allocated to
-    classChange['X'] = st.multiselect('Proposed Class for Class X',[subclass for subclass in flightClassOptions if subclass!='X'],default=['A','D','V'])
+    classChange['X'] = st.multiselect('Proposed Class for Class X',subClassEconomy,default=['D','E'])
     
     #list of classes where passengers of class G can be allocated to
-    classChange['G'] = st.multiselect('Proposed Class for Class G',[subclass for subclass in flightClassOptions if subclass!='G'],default=['A','O'])
+    classChange['G'] = st.multiselect('Proposed Class for Class G',subClassEconomy,default=['V','W','X'])
     
 
     #list of classes where passengers of class K can be allocated to
-    classChange['K'] = st.multiselect('Proposed Class for Class K',[subclass for subclass in flightClassOptions if subclass!='K'],default=['A','O'])
+    classChange['K'] = st.multiselect('Proposed Class for Class K',subClassEconomy,default=['K'])
         
 
     
@@ -105,28 +106,28 @@ with col1:
 with col2:
 
     #list of classes where passengers of class Y can be allocated to
-    classChange['Y'] = st.multiselect('Proposed Class for Class Y',[subclass for subclass in flightClassOptions if subclass!='Y'],default=['A','V','X'])
+    classChange['Y'] = st.multiselect('Proposed Class for Class Y',subClassEconomy,default=['K','E'])
     
     #list of classes where passengers of class B can be allocated to
-    classChange['B'] = st.multiselect('Proposed Class for Class B',[subclass for subclass in flightClassOptions if subclass!='B'],default=['O','V','X'])
+    classChange['B'] = st.multiselect('Proposed Class for Class B',subClassEconomy,default=['G','Y'])
 
     #list of classes where passengers of class E can be allocated to
-    classChange['E'] = st.multiselect('Proposed Class for Class E',[subclass for subclass in flightClassOptions if subclass!='E'],default=['A','D','L'])
+    classChange['E'] = st.multiselect('Proposed Class for Class E',subClassEconomy,default=['U','I','W'])
 
 
     #list of classes where passengers of class N can be allocated to
-    classChange['N'] = st.multiselect('Proposed Class for Class N',[subclass for subclass in flightClassOptions if subclass!='N'],default=['A','D','L','O'])
+    classChange['N'] = st.multiselect('Proposed Class for Class N',subClassEconomy,default=['V','W'])
 
     
     #list of classes where passengers of class U can be allocated to
-    classChange['U'] = st.multiselect('Proposed Class for Class U',[subclass for subclass in flightClassOptions if subclass!='U'],default=['A','D','L','X'])
+    classChange['U'] = st.multiselect('Proposed Class for Class U',subClassEconomy,default=['I'])
     
     
     #list of classes where passengers of class W can be allocated to
-    classChange['W'] = st.multiselect('Proposed Class for Class W',[subclass for subclass in flightClassOptions if subclass!='W'],default=['L','O'])
+    classChange['W'] = st.multiselect('Proposed Class for Class W',subClassEconomy,default=['I'])
         
     #list of classes where passengers of class I can be allocated to
-    classChange['I'] = st.multiselect('Proposed Class for Class I',[subclass for subclass in flightClassOptions if subclass!='I'],default=['A','D'])
+    classChange['I'] = st.multiselect('Proposed Class for Class I',subClassEconomy,default=['U','D'])
         
 
     

@@ -11,6 +11,15 @@ tree = KDTree(coordinates)
 
 # Function to find k nearest airports
 def find_nearest_airports(iata_code, k=3):
+    """
+    Finds the k nearest airports to a given airport.
+    Parameters:
+    - iata_code (str): The IATA code of the airport for which nearest airports need to be found.
+    - k (int): The number of nearest airports to be retrieved (default is 3).
+    Returns:
+    - list or str: If the 'iata_code' is found in the airports data, returns a list of k nearest airport IATA codes.
+                   If 'iata_code' is not found, returns "Airport code not found."
+    """
     if iata_code not in airports:
         return "Airport code not found."
 
