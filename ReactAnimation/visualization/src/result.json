@@ -1,0 +1,557 @@
+{
+    "PNR00019": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "BC",
+                [
+                    "J"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "FC",
+                [
+                    "P"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00036": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "PC",
+                [
+                    "R"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "FC",
+                [
+                    "P"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00041": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "PC",
+                [
+                    "T"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "FC",
+                [
+                    "F"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00050": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "PC",
+                [
+                    "M"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "FC",
+                [
+                    "F"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00038": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "PC",
+                [
+                    "S",
+                    "S"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-6126689",
+                "BC",
+                [
+                    "Z",
+                    "Z"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00053": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "Y",
+                    "Y"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-6126689",
+                "BC",
+                [
+                    "C",
+                    "J"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00074": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "U",
+                    "U"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-6126689",
+                "BC",
+                [
+                    "Z",
+                    "Z"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00256": {
+        "Original": [
+            [
+                "INV-ZZ-1373383",
+                "EC",
+                [
+                    "Y",
+                    "Y"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-6126689",
+                "BC",
+                [
+                    "C",
+                    "C"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00040": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "PC",
+                [
+                    "S"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "BC",
+                [
+                    "C"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00048": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "PC",
+                [
+                    "H",
+                    "H"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "BC",
+                [
+                    "J",
+                    "Z"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00058": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "A"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "BC",
+                [
+                    "J"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00067": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "G"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "BC",
+                [
+                    "C"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00085": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "Y",
+                    "Y"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "BC",
+                [
+                    "C",
+                    "C"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00086": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "Y",
+                    "Y"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "BC",
+                [
+                    "C",
+                    "C"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00051": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "Y",
+                    "Y"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "PC",
+                [
+                    "R",
+                    "R"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00054": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "Y"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "PC",
+                [
+                    "R"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00057": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "A",
+                    "A"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "PC",
+                [
+                    "R",
+                    "R"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00069": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "K",
+                    "K"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "PC",
+                [
+                    "Q",
+                    "S"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00070": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "K",
+                    "K"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "PC",
+                [
+                    "S",
+                    "S"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00071": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "K"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "PC",
+                [
+                    "S"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00075": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "U"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "PC",
+                [
+                    "S"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00083": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "Y",
+                    "Y"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "PC",
+                [
+                    "S",
+                    "S"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00052": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "Y",
+                    "Y"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "Y",
+                    "Y"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00055": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "A",
+                    "A"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "Y",
+                    "Y"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    },
+    "PNR00056": {
+        "Original": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "A",
+                    "A"
+                ]
+            ]
+        ],
+        "Proposed": [
+            [
+                "INV-ZZ-4889368",
+                "EC",
+                [
+                    "Y",
+                    "Y"
+                ]
+            ]
+        ],
+        "Email": "g-s01@outlook.com"
+    }
+}
