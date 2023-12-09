@@ -1,9 +1,9 @@
 pnr_data_file = 'Dataset/passenger_pnr_dataset.csv'
 # flight_data_file = 'Dataset/flight_schedule_dataset.csv'
 # test_PNR_data_file = 'Dataset/Mphasis_Processed/Mock_PNR_Booking.csv'
-test_flight_data_file = 'Dataset/Mphasis_Processed/fake_flights_data_2.csv'
+test_flight_data_file = 'Dataset/Mphasis_Processed/Mareja.csv'
 airport_code_location_data_file = 'Dataset/airport-code-to-location.csv'
-test_PNR_data_file = 'Dataset/Manual/Double_leg.csv'
+test_PNR_data_file = 'Dataset/Mphasis_Processed/Saundarya_PNR.csv'
 # test_flight_data_file = 'Dataset/test_data/flight_test.csv'
 n_cabin=2
 ETD=72
