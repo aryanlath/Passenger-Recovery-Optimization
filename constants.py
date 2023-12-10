@@ -1,12 +1,15 @@
-pnr_data_file = 'Dataset/passenger_pnr_dataset.csv'
-# flight_data_file = 'Dataset/flight_schedule_dataset.csv'
-# test_PNR_data_file = 'Dataset/Mphasis_Processed/Mock_PNR_Booking.csv'
-test_flight_data_file = 'Dataset/Mphasis_Processed/Mareja.csv'
 airport_code_location_data_file = 'Dataset/airport-code-to-location.csv'
-test_PNR_data_file = 'Dataset/Mphasis_Processed/Saundarya_PNR.csv'
-# test_flight_data_file = 'Dataset/Mphasis_Processed/Mock_Flight_Inv.csv'
-# test_flight_data_file = 'Dataset/test_data/flight_test.csv'
+test_medium_flight = 'Dataset/Medium/fake_flights_2.csv'
+test_medium_PNR = 'Dataset/Medium/Double_leg.csv'
+test_small_flight = 'Dataset/Small/Mock_Flight_Inv.csv'
+test_small_PNR = 'Dataset/Small/Double_leg.csv'
+test_large_PNR = 'Dataset/Large/large_PNR.csv'
+test_large_flight = 'Dataset/Large/large_Flights.csv'
+# Change the path of test_flight_data_file and test_PNR_data_file according to the size of data_file
+test_flight_data_file = test_medium_flight 
+test_PNR_data_file = test_medium_PNR
 n_cabin=2
+
 ETD=72
 cabinScoreFirst=1950
 cabinScoreBusiness=1800
