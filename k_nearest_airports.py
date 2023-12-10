@@ -6,8 +6,8 @@ iata_codes = get_all_airports(test_flight_data_file)
 airports = {code: find_airport_location(code) for code in iata_codes}
 
 # Extracting the coordinates and creating a KDTree
-coordinates = list(airports.values())
-tree = KDTree(coordinates)
+# coordinates = list(airports.values())
+# tree = KDTree(coordinates)
 
 # Function to find k nearest airports
 def find_nearest_airports(iata_code, k=3):
@@ -20,6 +20,9 @@ def find_nearest_airports(iata_code, k=3):
     - list or str: If the 'iata_code' is found in the airports data, returns a list of k nearest airport IATA codes.
                    If 'iata_code' is not found, returns "Airport code not found."
     """
+    # Extracting the coordinates and creating a KDTree
+    coordinates = list(airports.values())
+    tree = KDTree(coordinates)
     if iata_code not in airports:
         return "Airport code not found."
 

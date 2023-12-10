@@ -3,15 +3,15 @@
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import ssl
-import pandas as pd
+
 import smtplib
 import time
 from string import Template
-from collections import defaultdict
+
 from feasible_flights import Get_All_Maps
 from dotenv import load_dotenv
 import os
-
+import json
 load_dotenv()
 
 def read_template(filename):
@@ -40,36 +40,39 @@ def send_mail(assignment_0,assignment_1,assignment_2):
     schema_1_link = 'https://forms.gle/q3QrqN8fSHPnkRcq6'
     schema_2_link = 'https://forms.gle/bAot7r4sMkporCvt9'
     cancellation_link = 'https://forms.gle/1c94gcb9sMeDU4v96'
+    
+
+
+    # Read the JSON file
+    with open(assignment_0, 'r') as file:
+        schema1 = json.load(file)
+        
+
+    with open(assignment_1, 'r') as file:
+        schema2 = json.load(file)
+        
+
+
+    with open(assignment_2, 'r') as file:
+        schema3 = json.load(file)
+
+
+
 
     # Read the template txt file
     message_template = read_template('message.txt')
 
-    # Read the csv file
-    pd_assignment_0 = pd.read_csv(assignment_0)
-    pd_assignment_1 = pd.read_csv(assignment_1)
-    pd_assignment_2 = pd.read_csv(assignment_2)
-    
-    assignment_0_dict = defaultdict(list)
-    assignment_1_dict = defaultdict(list)
-    assignment_2_dict = defaultdict(list)
 
-    for _,row in pd_assignment_0.iterrows():
-        assignment_list = [row['PNR_Email'],row['Flight'],row['Cabin'],row['Class'],row['Cancelled Flights']]
-        assignment_0_dict[row['PNR_Number']] = assignment_list 
     
-    for _,row in pd_assignment_1.iterrows():
-        assignment_list = [row['PNR_Email'],row['Flight'],row['Cabin'],row['Class'],row['Cancelled Flights']]
-        assignment_1_dict[row['PNR_Number']] = assignment_list 
-        
-    for _,row in pd_assignment_2.iterrows():
-        assignment_list = [row['PNR_Email'],row['Flight'],row['Cabin'],row['Class'],row['Cancelled Flights']]
-        assignment_2_dict[row['PNR_Number']] = assignment_list 
-        
         
     assigned_pnr_set = set()
-    assigned_pnr_set.update(list(assignment_0_dict.keys()))
-    assigned_pnr_set.update(list(assignment_1_dict.keys()))
-    assigned_pnr_set.update(list(assignment_2_dict.keys()))
+    for pnr in schema1:
+        assigned_pnr_set.add(pnr)
+    for pnr in schema2:
+        assigned_pnr_set.add(pnr)
+    for pnr in schema3:
+        assigned_pnr_set.add(pnr)
+   
     all_flights,_,_,_ = Get_All_Maps()
     # Connect to the Gmail SMTP server
     server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
@@ -77,94 +80,148 @@ def send_mail(assignment_0,assignment_1,assignment_2):
     server.login(email,pwd)
     print('Connected to Gmail SMTP server of ', email)
     for pnr in assigned_pnr_set:
-    #     msg = """
-    # <html>
-    # <body>
-    # <div>
+        index = -1
+        if pnr in schema1:
+            email_pnr = schema1[pnr]['Email']
+            index = 1
+        if pnr in schema2:
+            email_pnr = schema2[pnr]['Email']
+            index = 2
+        if pnr in schema3:
+            email_pnr = schema3[pnr]['Email']
+            index = 3
 
-    # <p>Dear Sir/Ma'am,</p>
-    # <p>Thank you for choosing """+name+""".</p>
-    # <br>
-    # <p>Unfortunately, your flight has been cancelled, please find alternate flight details below.</p>
-    # <br>
-    # <p>Flight Details:</p>
-    # <p>Your PNR is """+data['PNR_Number'][i]+""".</p>
-    # <p>Your rescheduled flight is \n"""+data['Flight'][i]+""".</p>
-    # <p>Your cabin is """+data['Cabin'][i]+""".</p>
-    # <br>
-    # <p>Have a safe journey.</p>
-    # <br>
-    # <p>Regards,</p>
-    # <p>"""+name+"""</p>
-
-    # </div>
-    # </body>
-    # </html>
-    #     """.format(data['PNR_Number'][i],data['Flight'][i],data['Cabin'][i],name)
-
-        # Add in the actual person name to the message template
         
-        if len(assignment_0_dict[pnr]) != 0:
-            email_pnr = assignment_0_dict[pnr][0]
-        if len(assignment_1_dict[pnr]) != 0:
-            email_pnr = assignment_1_dict[pnr][0]
-        if len(assignment_2_dict[pnr]) != 0:
-            email_pnr = assignment_2_dict[pnr][0]
+ 
         
         cancelled_flight_string = 'Cancelled Flight Details - \n'
-        if assignment_0_dict[pnr]:
-            temp_var = (assignment_0_dict[pnr][4].split(','))
-        if assignment_1_dict[pnr]:
-            temp_var = (assignment_1_dict[pnr][4].split(','))
-        if assignment_2_dict[pnr]:
-            temp_var = (assignment_2_dict[pnr][4].split(','))
-        inventory_id = temp_var[0].split(':')[1].strip()
-        flight_number = all_flights[inventory_id].flight_number
-        cancelled_flight_string += temp_var[0][9:] + '\n' + temp_var[1].strip() + '\n' + temp_var[2].strip()[:-1] +'\n'
-        cancelled_flight_string += 'Flight Number: ' + str(flight_number) + '\n'
+        if index == 1:
+            for x in schema1[pnr]['Original']:
+                inventory_id = str(x[0])
+                cabin = str(x[1])
+                pnr_class = x[2]
+                pnr_class_string = ', '.join(pnr_class)
+                arrival_city = all_flights(inventory_id).arrival_city
+                departure_city = all_flights(inventory_id).departure_city
+                flight_number = all_flights(inventory_id).flight_number
+                
+                cancelled_flight_string = cancelled_flight_string +  'Inventory ID : ' + inventory_id + '\n' 
+                cancelled_flight_string += 'Cabin : ' + cabin + '\n'
+                cancelled_flight_string += 'Classes : ' + pnr_class_string + '\n'
+                cancelled_flight_string += 'Arrival City : ' + arrival_city + '\n'
+                cancelled_flight_string += 'Departure City : ' + departure_city + '\n'
+                cancelled_flight_string += 'Flight Number : ' + flight_number + '\n'
+                cancelled_flight_string += '\n\n'
+        elif index == 2:
+            for x in schema2[pnr]['Original']:
+                inventory_id = str(x[0])
+                cabin = str(x[1])
+                pnr_class =x[2]
+                pnr_class_string = ', '.join(pnr_class)
+                arrival_city =all_flights(inventory_id).arrival_city
+                departure_city =all_flights(inventory_id).departure_city
+                flight_number = all_flights(inventory_id).flight_number
+                
+                cancelled_flight_string  = cancelled_flight_string + 'Inventory ID : ' + inventory_id + '\n' 
+                cancelled_flight_string += 'Cabin : ' + cabin + '\n'
+                cancelled_flight_string += 'Classes : ' + pnr_class_string + '\n'
+                cancelled_flight_string += 'Arrival City : ' + arrival_city + '\n'
+                cancelled_flight_string += 'Departure City : ' + departure_city + '\n'
+                cancelled_flight_string += 'Flight Number : ' + flight_number + '\n'
+                cancelled_flight_string += '\n' + '\n'
+        else :
+            for x in schema3[pnr]['Original']:
+                inventory_id = str(x[0])
+                cabin = str(x[1])
+                pnr_class = x[2]
+                pnr_class_string = ', '.join(pnr_class)
+                arrival_city =all_flights(inventory_id).arrival_city
+                departure_city = all_flights(inventory_id).departure_city
+                flight_number = all_flights(inventory_id).flight_number
+                
+                cancelled_flight_string =  cancelled_flight_string +  'Inventory ID : ' + inventory_id + '\n' 
+                cancelled_flight_string += 'Cabin : ' + cabin + '\n'
+                cancelled_flight_string += 'Classes : ' + pnr_class_string + '\n'
+                cancelled_flight_string += 'Arrival City : ' + arrival_city + '\n'
+                cancelled_flight_string += 'Departure City : ' + departure_city + '\n'
+                cancelled_flight_string += 'Flight Number : ' + str(flight_number)
+                                                                
+        
+        
+        
+        
         alt_flight0_string = ''
-        if assignment_0_dict[pnr]:
-            assignment_list = assignment_0_dict[pnr]
-            temp_var = assignment_list[1].split(',')
-            inventory_id = temp_var[0][8:].split(':')[1].strip()
-            flight_number = all_flights[inventory_id].flight_number
-            alt_flight0_string += 'Alternate Flight Choice - \n'
-            alt_flight0_string += (temp_var[0][8:] + '\n'+  temp_var[1].strip() + '\n' + temp_var[2].strip() + '\n')
-            alt_flight0_string += 'Flight Number: ' + str(flight_number) + '\n'
-            alt_flight0_string += ('Cabin : ' + assignment_list[2] + '\n' )
-            alt_flight0_string += ('Class : ' + assignment_list[3] + '\n' )
+        if pnr in schema1:
+            alt_flight0_string = alt_flight0_string + 'Alternate Flight Choice \n'
+            for x in schema1[pnr]['Proposed']:
+                inventory_id = str(x[0])
+                cabin = str(x[1])
+                pnr_class = x[2]
+                pnr_class_string = ', '.join(pnr_class)
+                arrival_city = all_flights(inventory_id).arrival_city
+                departure_city =all_flights(inventory_id).departure_city
+                flight_number =all_flights(inventory_id).flight_number
+                
+                alt_flight0_string = alt_flight0_string + 'Inventory ID : ' + inventory_id + '\n' 
+                alt_flight0_string += 'Cabin : ' + cabin + '\n'
+                alt_flight0_string += 'Classes : ' + pnr_class_string + '\n'
+                alt_flight0_string += 'Arrival City : ' + arrival_city + '\n'
+                alt_flight0_string += 'Departure City : ' + departure_city + '\n'
+                alt_flight0_string += 'Flight Number : ' + str(flight_number) + '\n'
+                alt_flight0_string += '\n'   
             alt_flight0_string += 'Please click the link given below to choose this flight -\n'
-            alt_flight0_string += schema_0_link
-            
-            
+            alt_flight0_string += schema_0_link 
+
+
+                                       
+                
+                
         alt_flight1_string = ''
-        if assignment_1_dict[pnr]:
-            assignment_list = assignment_1_dict[pnr]
-            temp_var = assignment_list[1].split(',')
-            inventory_id = temp_var[0][8:].split(':')[1].strip()
-            flight_number = all_flights[inventory_id].flight_number
-            alt_flight1_string += 'Alternate Flight Choice - \n'
-            alt_flight1_string +=  (temp_var[0][8:] + '\n' + temp_var[1].strip() + '\n' + temp_var[2].strip() + '\n')
-            alt_flight1_string += 'Flight Number: ' + str(flight_number) + '\n'
-            alt_flight1_string += ('Cabin : ' + assignment_list[2] + '\n' )
-            alt_flight1_string += ('Class : ' + assignment_list[3] + '\n' )
+        if pnr in schema2:
+            alt_flight1_string = alt_flight1_string + 'Alternate Flight Choice \n'
+            for x in schema2[pnr]['Proposed']:
+                inventory_id = str(x[0])
+                cabin = str(x[1])
+                pnr_class = x[2]
+                pnr_class_string = ', '.join(pnr_class)
+                arrival_city = all_flights(inventory_id).arrival_city
+                departure_city = all_flights(inventory_id).departure_city
+                flight_number = all_flights(inventory_id).flight_number
+                
+                alt_flight1_string = alt_flight1_string + 'Inventory ID : ' + inventory_id + '\n' 
+                alt_flight1_string += 'Cabin : ' + cabin + '\n'
+                alt_flight1_string += 'Classes : ' + pnr_class_string + '\n'
+                alt_flight1_string += 'Arrival City : ' + arrival_city + '\n'
+                alt_flight1_string += 'Departure City : ' + departure_city + '\n'
+                alt_flight1_string += 'Flight Number : ' + str(flight_number) + '\n'
+                alt_flight1_string += '\n'   
             alt_flight1_string += 'Please click the link given below to choose this flight -\n'
-            alt_flight1_string += schema_1_link
+            alt_flight1_string += schema_1_link 
+
         
         
         alt_flight2_string = ''
-        if assignment_2_dict[pnr]:
-            assignment_list = assignment_2_dict[pnr]
-            temp_var = assignment_list[1].split(',')
-            inventory_id = temp_var[0][8:].split(':')[1].strip()
-            flight_number = all_flights[inventory_id].flight_number
-            alt_flight2_string += 'Alternate Flight Choice - \n'
-            alt_flight2_string += (temp_var[0][8:] + '\n' + temp_var[1].strip() + '\n' + temp_var[2].strip() + '\n')
-            alt_flight2_string += 'Flight Number: ' + str(flight_number) + '\n'
-            alt_flight2_string += ('Cabin : ' + assignment_list[2] + '\n' )
-            alt_flight2_string += ('Class : ' + assignment_list[3] + '\n' )
+        if pnr in schema3:
+            alt_flight2_string = alt_flight2_string + 'Alternate Flight Choice \n'
+            for x in schema3[pnr]['Proposed']:
+                inventory_id = str(x[0])
+                cabin = str(x[1])
+                pnr_class = x[2]
+                pnr_class_string = ', '.join(pnr_class)
+                arrival_city = all_flights(inventory_id).arrival_city
+                departure_city = all_flights(inventory_id).departure_city
+                flight_number = all_flights(inventory_id).flight_number
+                
+                alt_flight2_string = alt_flight2_string + 'Inventory ID : ' + inventory_id + '\n' 
+                alt_flight2_string += 'Cabin : ' + cabin + '\n'
+                alt_flight2_string += 'Classes : ' + pnr_class_string + '\n'
+                alt_flight2_string += 'Arrival City : ' + arrival_city + '\n'
+                alt_flight2_string += 'Departure City : ' + departure_city + '\n'
+                alt_flight2_string += 'Flight Number : ' + str(flight_number) + '\n'
+                alt_flight2_string += '\n'   
             alt_flight2_string += 'Please click the link given below to choose this flight -\n'
-            alt_flight2_string += schema_2_link
+            alt_flight2_string += schema_2_link 
+
             
             
         
@@ -197,7 +254,12 @@ def send_mail(assignment_0,assignment_1,assignment_2):
     
 
 
-#send_mail('Results/assignments_0.csv','Results/assignments_1.csv','Results/assignments_2.csv')
+#send_mail('result1.json','result2.json','result3.json')
+
+
+
+
+
 
 
 

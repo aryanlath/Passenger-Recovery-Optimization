@@ -1,3 +1,3 @@
-upgrade=True
-downgrade=True
+upgrade=False
+downgrade=False
 classChange={'F':['F', 'P'],'P':['F', 'P'],'C':['C'],'Z':['C', 'J', 'Z'],'J':['J', 'C'],'R':['Q', 'R', 'H', 'M'],'T':['Q', 'H'],'M':['Q', 'H', 'M'],'Q':['R', 'S', 'T'],'S':['S', 'T', 'H'],'H':['Q', 'M'],'A':['Y', 'A'],'D':['D', 'E', 'G'],'L':['W', 'X'],'O':['K', 'L'],'V':['O'],'X':['D', 'E'],'G':['V', 'W', 'X'],'K':['K'],'Y':['K', 'E'],'B':['G', 'Y'],'E':['U', 'I', 'W'],'N':['V', 'W'],'U':['I'],'W':['I'],'I':['U', 'D']}
