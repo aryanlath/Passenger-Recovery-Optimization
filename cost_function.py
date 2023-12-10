@@ -7,6 +7,12 @@ from flightScores import *
 import constants_immutable
 from classRules import *
 
+
+import math
+
+def sigmoid(x):
+  return 1 / (1 + math.exp(-x))
+
 ## Customizable
 def cabin_to_class_cost(PNR,Curr_Subclass):
     """
@@ -35,10 +41,10 @@ def cost_function(PNR,flight_tuple, cabin_tuple):
            s3 = class difference score
     """
     if(flight_tuple is None):
-        return -NON_ASSIGNMENT_COST*PNR_Score(PNR)
-    s1 = flight_quality_score(PNR, flight_tuple)
-    s2 = PNR_Score(PNR)/constants_immutable.pnr_normalize_factor
-    s3 = class_difference_score(PNR,cabin_tuple)
+        return -NON_ASSIGNMENT_COST*PNR_Score(PNR)*2
+    s1 = flight_quality_score(PNR, flight_tuple) + 100
+    s2 = PNR_Score(PNR) + 100
+    s3 = sigmoid(class_difference_score(PNR,cabin_tuple)) + 100
     if(s3==0):
         return - 100*NON_ASSIGNMENT_COST*PNR_Score(PNR)
     cost = weight_flight_map*math.log(s1) + weight_pnr_map*math.log(s2) + weight_cabin_map*math.log(s3)
@@ -52,7 +58,7 @@ def PNR_Score(PNR):
            s2 = PNR_loyalty
            s3 = PNR_pax
     """
-    return PNR.get_pnr_score()
+    return sigmoid(PNR.get_pnr_score())
 
 def flight_quality_score(PNR, flight_tuple):
     """
@@ -114,8 +120,9 @@ def flight_quality_score(PNR, flight_tuple):
     max_DelayScore = STD6h + arrDelay6h
     max_ConnectionScore = constants_immutable.connection_constant + 3
     min_ConnectionScore = constants_immutable.connection_constant - 3
-    return ((DelayScore-min_DelayScore)/(max_DelayScore - min_DelayScore)) * ((ConnectionScore-min_ConnectionScore)/(max_ConnectionScore-min_ConnectionScore))
-    
+    # return ((DelayScore-min_DelayScore)/(max_DelayScore - min_DelayScore)) * ((ConnectionScore-min_ConnectionScore)/(max_ConnectionScore-min_ConnectionScore))
+    return sigmoid(DelayScore*ConnectionScore)
+
 def class_difference_score(PNR, cabin_Tuple):
     """
     Calculates the class difference score for each PNR to flight mapping.
