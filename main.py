@@ -93,18 +93,30 @@ def Main_function():
     print()
 
     # Exception List Handling
-    # start=time.time()
-    # city_pairs_result = optimize_flight_assignments(quantum_result[0]['Non Assignments'],True)
-    # end=time.time()
-    # print("Exception Handling time: ",end-start)
-    # print()
-    # print("Total Assignments with different City-Pairs: ", len(city_pairs_result['Assignments']))
-    # pp.pprint(city_pairs_result['Assignments'])
-    # print("Not Assigned PNRs: ")
-    # pp.pprint(city_pairs_result['Non Assignments'])
-    # print("#"*100)
-    # print()
+    start=time.time()
+    city_pairs_result = optimize_flight_assignments(quantum_result[0]['Non Assignments'],True)
+    end=time.time()
+    print("Exception Handling time: ",end-start)
+    print()
+    print("Total Assignments with different City-Pairs: ", len(city_pairs_result['Assignments']))
+    pp.pprint(city_pairs_result['Assignments'])
+    print("Not Assigned PNRs: ")
+    pp.pprint(city_pairs_result['Non Assignments'])
+    print("#"*100)
+    print()
     
+    # Network flow pipeline
+    start=time.time()
+    final_result = Cabin_to_Class(city_pairs_result["Assignments"])
+    end=time.time()
+    print("Network Flow time :",end-start)
+    print()
+    print("Final Assignments")
+    pp.pprint(final_result)
+    print("#"*100)
+    print()
+
+    # TODO: Integrate email sending and mockup simulation of choosing of a scheme
 
     # send emails
     # send_mail("Results/assignments.csv")

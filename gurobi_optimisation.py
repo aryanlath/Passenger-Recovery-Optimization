@@ -130,7 +130,7 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
         # Populating the result dictionary
         for PNR in PNR_List:
             Assigned = False
-            for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
+            for FT in PNR_to_FeasibleFlights_map.get(PNR.pnr_number,[]):
                 cabins_tuple = get_flight_cabin_mappings(FT)
                 for cabin in cabins_tuple:
                     # cabin is a tuple Eg: ('FC', 'PC')
