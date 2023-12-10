@@ -315,6 +315,8 @@ def AssignmentsToJSON( Cabin_Class_Assignments) :
             temp_list.append(constants_immutable.pnr_objects[pnr_number].get_cabin(Orig_subclass_list[0]))
             temp_list_2 = [Orig_subclass_list[idx]]*(My_Pnr_obj.PAX)
             temp_list.append(temp_list_2)
+            temp_list.append(str(constants_immutable.all_flights[val1].departure_time))
+            temp_list.append(str(constants_immutable.all_flights[val1].arrival_time))
             final_ans[pnr_number]["Original"].append(temp_list)
         
         num_of_proposed_flights = int(len(val)/My_Pnr_obj.PAX)
@@ -325,7 +327,8 @@ def AssignmentsToJSON( Cabin_Class_Assignments) :
             for j in range(i*My_Pnr_obj.PAX, (i+1)*My_Pnr_obj.PAX):
                 temp_sub_class_list.append(val[j][3])
             temp_list.append(temp_sub_class_list)
-            
+            temp_list.append(str(constants_immutable.all_flights[val[i*My_Pnr_obj.PAX][1].inventory_id].departure_time))
+            temp_list.append(str(constants_immutable.all_flights[val[i*My_Pnr_obj.PAX][1].inventory_id].arrival_time))
             final_ans[pnr_number]["Proposed"].append(temp_list)
                 
     return json.dumps(final_ans,indent=4)
