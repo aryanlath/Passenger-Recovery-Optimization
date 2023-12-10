@@ -1,17 +1,10 @@
 pnr_data_file = 'Dataset/passenger_pnr_dataset.csv'
-<<<<<<< HEAD
 # flight_data_file = 'Dataset/flight_schedule_dataset.csv'
 # test_PNR_data_file = 'Dataset/Mphasis_Processed/Mock_PNR_Booking.csv'
 test_flight_data_file = 'Dataset/Mphasis_Processed/Mareja.csv'
 airport_code_location_data_file = 'Dataset/airport-code-to-location.csv'
 test_PNR_data_file = 'Dataset/Mphasis_Processed/Saundarya_PNR.csv'
-=======
-flight_data_file = 'Dataset/flight_schedule_dataset.csv'
-test_PNR_data_file = 'Dataset/Mphasis_Processed/Mock_PNR_Booking.csv'
-test_flight_data_file = 'Dataset/Mphasis_Processed/Mock_Flight_Inv.csv'
-airport_code_location_data_file = 'Dataset/airport-code-to-location.csv'
-# test_PNR_data_file = 'Dataset/test_data/PNR_Test.csv'
->>>>>>> 174cf984a5ea3f8c118a260fd818610940f52e61
+# test_flight_data_file = 'Dataset/Mphasis_Processed/Mock_Flight_Inv.csv'
 # test_flight_data_file = 'Dataset/test_data/flight_test.csv'
 n_cabin=2
 ETD=72

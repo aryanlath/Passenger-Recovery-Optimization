@@ -328,4 +328,4 @@ def AssignmentsToJSON( Cabin_Class_Assignments) :
             
             final_ans[pnr_number]["Proposed"].append(temp_list)
                 
-    return json.dumps(final_ans)
+    return json.dumps(final_ans,indent=4)

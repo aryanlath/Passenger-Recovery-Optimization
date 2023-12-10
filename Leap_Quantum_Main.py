@@ -138,7 +138,7 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
     # presolve.apply()
     # reduced_cqm = presolve.detach_model()
     sampler = LeapHybridCQMSampler(token=dwave_token)    
-    print(sampler.min_time_limit(CQM))
+    print("Sampler Min Time: ",sampler.min_time_limit(CQM))
     sampleset = sampler.sample_cqm(CQM).aggregate()
     # dwave.inspector.show(sampleset, block=dwave.inspector.Block.FOREVER)
     end_time_sampling = time.time()
