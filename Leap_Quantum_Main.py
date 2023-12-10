@@ -194,8 +194,15 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
                 cabins_tuple = get_flight_cabin_mappings(FT)
                 for cabin in cabins_tuple:
                     if solution[f'X_{variable_cnt}'] == 1.0:
-                        # print("THIS IS IDX " , idx)
-                        # print(len(result[idx]['Assignments']))
+                        for index, flights in enumerate(FT):
+                            if cabin[index] == 'FC':
+                                flights.fc_available_inventory-=PNR.PAX
+                            elif cabin[index] == 'PC':
+                                flights.pc_available_inventory-=PNR.PAX
+                            elif cabin[index] == 'EC':
+                                flights.ec_available_inventory-=PNR.PAX
+                            else:
+                                flights.bc_available_inventory-= PNR.PAX
                         temp_result['Assignments'].append((PNR, FT, cabin))
                         # assigned_pnrs[idx].add(PNR.pnr_number)
                         Assigned= True

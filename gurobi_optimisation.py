@@ -135,6 +135,16 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
                 for cabin in cabins_tuple:
                     # cabin is a tuple Eg: ('FC', 'PC')
                     if X[(PNR, FT, cabin)].x == 1:
+                        # Changing the capacity
+                        for index, flights in enumerate(FT):
+                            if cabin[index] == 'FC':
+                                flights.fc_available_inventory-=PNR.PAX
+                            elif cabin[index] == 'PC':
+                                flights.pc_available_inventory-=PNR.PAX
+                            elif cabin[index] == 'EC':
+                                flights.ec_available_inventory-=PNR.PAX
+                            else:
+                                flights.bc_available_inventory-= PNR.PAX
                         result['Assignments'].append((PNR, FT, cabin))
                         Assigned = True
             if not Assigned:
