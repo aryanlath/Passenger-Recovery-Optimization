@@ -58,7 +58,7 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
     start = time.time()
     if not city_pairs:
         for PNR in PNR_List:
-            PNR_to_Feasible_Flights (g, all_flights, PNR, PNR_to_FeasibleFlights_map, dp)
+            PNR_to_Feasible_Flights(g, all_flights, PNR, PNR_to_FeasibleFlights_map, dp)
 
     else:
         for PNR in PNR_List:
@@ -75,7 +75,7 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
     result = {'Assignments': [],'Non Assignments':[]}
     start = time.time()
     for PNR in PNR_List:
-        for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
+        for FT in PNR_to_FeasibleFlights_map.get(PNR.pnr_number,[]):
             cabins_tuple = list(get_flight_cabin_mappings(FT))
             for cabin in cabins_tuple:
                 # cabin is a tuple Eg: ('FC','PC')
@@ -108,7 +108,7 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
     print("Adding Constraints time: ", end-start)
 
     for PNR in PNR_List:
-        for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
+        for FT in PNR_to_FeasibleFlights_map.get(PNR.pnr_number,[]):
             cabins_tuple = get_flight_cabin_mappings(FT)
             for cabin in cabins_tuple:
                 # cabin is a tuple Eg: ('FC', 'PC')
@@ -130,11 +130,21 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
         # Populating the result dictionary
         for PNR in PNR_List:
             Assigned = False
-            for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
+            for FT in PNR_to_FeasibleFlights_map.get(PNR.pnr_number,[]):
                 cabins_tuple = get_flight_cabin_mappings(FT)
                 for cabin in cabins_tuple:
                     # cabin is a tuple Eg: ('FC', 'PC')
                     if X[(PNR, FT, cabin)].x == 1:
+                        # Changing the capacity
+                        for index, flights in enumerate(FT):
+                            if cabin[index] == 'FC':
+                                flights.fc_available_inventory-=PNR.PAX
+                            elif cabin[index] == 'PC':
+                                flights.pc_available_inventory-=PNR.PAX
+                            elif cabin[index] == 'EC':
+                                flights.ec_available_inventory-=PNR.PAX
+                            else:
+                                flights.bc_available_inventory-= PNR.PAX
                         result['Assignments'].append((PNR, FT, cabin))
                         Assigned = True
             if not Assigned:

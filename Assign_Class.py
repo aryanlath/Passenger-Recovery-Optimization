@@ -7,10 +7,10 @@ from ortools.graph.python import min_cost_flow
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
+
 assignments=defaultdict(list)
 lock=threading.Lock() 
 total_cost=0
-
 def Flow(PNR_list,flight_cabin_tuple):
     """
     Assigns passengers from a Passenger Name Record (PNR) list to available flight classes based on their preferences.
@@ -180,7 +180,9 @@ def Cabin_to_Class(Assignment_list):
 
         
     #pp.pprint(assignments)
-    return assignments
+    final_assignments=copy.deepcopy(assignments)
+    assignments.clear()
+    return  final_assignments
 
 
     
