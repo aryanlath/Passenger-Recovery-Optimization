@@ -16,6 +16,7 @@ from dwave.system import LeapHybridCQMSampler
 # import dwave.inspector
 from dimod import ConstrainedQuadraticModel, BinaryQuadraticModel, QuadraticModel
 from dimod import Real
+import dwave.inspector
 all_flights =[]
 from dotenv import load_dotenv
 
@@ -24,6 +25,7 @@ load_dotenv()
 
 # Access the API key
 dwave_token = os.getenv('DWAVE_TOKEN')
+
 
 def get_flight_cabin_mappings(flights, current_mapping=None, flight_index=0):
     """
@@ -131,11 +133,14 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
 
     start = time.time()
     CQM.set_objective(-1*CQM_obj)
-    presolve = Presolver(CQM)
-    presolve.apply()
-    reduced_cqm = presolve.detach_model()
+    cqm_file = CQM.to_file()
+    # presolve = Presolver(CQM)
+    # presolve.apply()
+    # reduced_cqm = presolve.detach_model()
     sampler = LeapHybridCQMSampler(token=dwave_token)    
-    sampleset = sampler.sample_cqm(reduced_cqm).aggregate()
+    print(sampler.min_time_limit(CQM))
+    sampleset = sampler.sample_cqm(CQM).aggregate()
+    # dwave.inspector.show(sampleset, block=dwave.inspector.Block.FOREVER)
     end_time_sampling = time.time()
     print("API CALL Time " ,end_time_sampling - start)     
     start_agg = time.time()

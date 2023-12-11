@@ -249,8 +249,12 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_
     for path in all_paths:
         isFirst=True
         valid= True
-
+        visited=set()
         for flight in path:
+            if flight.departure_city in visited:
+                valid = False
+                break
+            visited.add(flight.departure_city)
             if isFirst:
                 if(arrival_time==None):
                     if(abs(flight.departure_time.timestamp()-departure_time.timestamp())>=ETD*60*60):
