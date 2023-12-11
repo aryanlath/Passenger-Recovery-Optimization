@@ -12,6 +12,5 @@ citypairsDifferent=20
 gradeA=200
 gradeB=180
 gradeC=150
-stopOver=-20
 equipmentScore=50
 maxDepartDelay=20

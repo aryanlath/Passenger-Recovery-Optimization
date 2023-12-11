@@ -8,8 +8,8 @@ iframe_html = """
         }
         
         iframe {
-            width: 1200px;
-            height: 900px;
+            width: 1300px;
+            height: 800px;
             
         }
     </style>
