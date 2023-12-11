@@ -1,20 +1,65 @@
-Dear Sir/Ma'am,
-Thank you for choosing $Airlines_Name.
-Unfortunately, your flight has been cancelled, please find alternate flight details below.
-PNR Number  - $PNR_Number
-$Cancelled_Flight
+<html>
+<head>
+<style>
+.main_heading {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+}
+
+.container {
+    
+    color: #000000;
+    border: thick solid #400606; /* Updated border style with red color */
+    padding: 10px; /* Added padding for better visibility */
+    margin: 10px; /* Added margin for better spacing */
+}
+
+.container1 {
+    
+    border: thick solid #400606; /* Updated border style with red color */
+    padding: 10px; /* Added padding for better visibility */
+    margin: 10px; /* Added margin for better spacing */
+     color: #000000;
+}
 
 
-$Schema_0
 
-$Schema_1
+</style>
+</head>
+<body>
 
-$Schema_2
+<div class="main_heading">
+    <h2>
+        Dear Sir/Ma'am,
+        Thank you for choosing $Airlines_Name.
+        Unfortunately, your flight has been cancelled, please find alternate flight details below.
+    </h2>
+    <h3>PNR Number - $PNR_Number</h3>
+</div>
+<br>
+<div class="container">
+    $Cancelled_Flight
+</div>
 
-If you dont wish to choose any of the alternate flights, you may cancel your flight using the link below -
-$Cancellation_link
-
-Have a safe journey.
-
-Regards,
-$Airlines_Name
+<div class="container1">
+    $Schema_0
+</div>
+<div class="container1">
+    $Schema_1
+</div>
+<div class="container1">
+    $Schema_2
+</div>
+<div class="container3">
+    <br><br>
+    If you don't wish to choose any of the alternate flights, you may cancel your flight using the link below - <br>
+    $Cancellation_link
+    <br>
+    Have a safe journey.
+    <br>
+    Regards,<br>
+    $Airlines_Name
+</div>
+</body>
+</html>
