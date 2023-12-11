@@ -8,3 +8,4 @@ dimod
 dwave-system
 python-dotenv
 scipy
+dwave-inspector
