@@ -122,4 +122,4 @@ def Main_function():
     # send_mail("Results/assignments.csv")
 
 if __name__==  "__main__":
-    print(1)
+    Main_function()
