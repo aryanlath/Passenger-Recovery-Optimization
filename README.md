@@ -60,10 +60,14 @@ Each file contains widgets to adjust various parameters along with some default 
   
 ![Flight Scores](./assets/FlightScores_SS.png)
 
-### Result_Visualisation.py
-- Used to display the new and optimal flight and class details of re-accomadated passengers
+### Visualisation_Animation.py
+- Used to display the new and optimal flight and class details of re-accomadated passengers.
+To run this page, open a separate terminal in the ReactAnimation/visualization folder and run the following command 
+```
+    npm start
+```
 
-![Result Visualisation](./assets/ResultVisualisation_SS.png)
+![Visualisation Animation](./assets/ResultVisualisation_SS.png)
 
 ## Glossary
 
