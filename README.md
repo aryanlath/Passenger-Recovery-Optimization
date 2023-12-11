@@ -30,7 +30,9 @@ DWAVE_TOKEN=dwave_token
 flight_mail = your_email_id
 flight_mail_password = your_email_password (if using gmail, you need to generate an app password)
 ```
-PS: `GMAPS_API_KEY` can be obtained from https://distancematrix.ai/
+`GMAPS_API_KEY` can be obtained from the `First Distancematrix accurate application` API of [Distance Matrix](https://distancematrix.ai/)
+
+`DWAVE_TOKEN` can be obtained from [here](https://cloud.dwavesys.com/leap/)
 ### Running the program
 Now, to run the script enter the following command in the terminal
 ```bash
