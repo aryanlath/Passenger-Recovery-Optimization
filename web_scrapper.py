@@ -45,10 +45,23 @@ def extract_responses(url):
             
     return list(zip(l1[2:],l2[2:]))
 
+def pnr_choices(schema0_spreadsheet,schema1_spreadsheet,schema2_spreadsheet,cancellation_spreadsheet):
+    schema0 = extract_responses(schema0_spreadsheet)
+    schema1 = extract_responses(schema1_spreadsheet)
+    schema2 = extract_responses(schema2_spreadsheet)
+    cancellation = extract_responses(cancellation_spreadsheet)
+    
+    pnr_dict = {}
+    for x in schema0:
+        pnr_dict[x[1]] = [x[0],'Schema 0']
+    for x in schema1:
+        pnr_dict[x[1]] = [x[0],'Schema 1']
+    for x in schema2:
+        pnr_dict[x[1]] = [x[0],'Schema 2']
+    for x in cancellation:
+        pnr_dict[x[1]] = [x[0],'Cancelled']    
+    return pnr_dict
 
 
 
-
-#a = extract_responses(schema0_spreadsheet)
-#print(a)
-
+print(pnr_choices(schema0_spreadsheet, schema1_spreadsheet, schema2_spreadsheet,cancellation_spreadsheet))
