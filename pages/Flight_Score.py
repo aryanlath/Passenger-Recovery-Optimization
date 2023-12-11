@@ -80,15 +80,11 @@ with col3:
 st.subheader("Others")
 
 #divide into 3 columns
-col1,col2,col3=st.columns(3)
+col1,col2=st.columns(2)
 with col1:
-    #score when stopover is present
-    stopOver=st.number_input("Stopover",value=-20)
-    
-with col2:
     #score to add when equipment number matches
-    equipmentScore=st.number_input("Matching Equipment number",value=50)
-with col3:
+    equipmentScore=st.number_input("Matching Equipment number",value=50)    
+with col2:
     #score for maximum departure delay
     maxDepartDelay=st.number_input("Maximum departure delay",value=20,min_value=0)
 
@@ -135,9 +131,7 @@ with col3:
         f.write("gradeB="+str(gradeB)+"\n")
         f.write("gradeC="+str(gradeC)+"\n")
         
-        #adding score for stopover
-        f.write("stopOver="+str(stopOver)+"\n")
-        
+      
         #adding score for equipment match
         f.write("equipmentScore="+str(equipmentScore)+"\n")
         

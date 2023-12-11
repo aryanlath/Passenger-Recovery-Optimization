@@ -1,45 +1,54 @@
-// App.js
-import result from './result (1).json'
 import React, { useState, useEffect } from 'react';
-import file1 from './file1.json';
-import file2 from './file2.json';
-import './styles.css'; // Import the CSS file
-import icon from './icon2.jpeg'
-import plane from './plane.png'
-
-const convertNewFormat = (data) => {
-  const entries = Object.keys(data).map((key) => {
-    const entry = data[key];
+import result from './result_quantum_0.json' // JSON file having PNRs which were cancelled
+import file2 from './file2.json';            // JSON file having PNRS which are not cancelled
+import './styles.css';                       // CSS file
+import icon from './icon6.png'              // Passenger icon
+import plane from './plane.png'              // Flight icon
 
 
-    let ids=[];
-    let hops=data[key].Proposed.length;
+const convertNewFormat = (data) => {                    //Make flight object from JSON
+  const entries = Object.keys(data).map((key) => {    
+
+    const entry = data[key];                            //key == PNR Number
+    let ids=[];                                         //Store inventory IDs
+    let proparrivaltime=[];                             //Store Proposed Arrival Times
+    let propdeparturetime=[];                           //Store Proposed Departure Times
+    let hops=data[key].Proposed.length;                 //Get number of connecting flights
+    
     for (let i=0;i<hops;i++)
     {
-      ids.push(data[key].Proposed[i][0]);
+      ids.push(data[key].Proposed[i][0]);               //appending all inventory IDs to list
     }
     let propclass=[];
     for (let i=0;i<hops;i++)
     {
-      propclass.push(data[key].Proposed[i][1]);
+      propclass.push(data[key].Proposed[i][1]);         //appending all cabins to list
     }
     let propsubclass=[];
     for (let i=0;i<hops;i++)
     {
-      propsubclass.push(data[key].Proposed[i][2]);
+      propsubclass.push(data[key].Proposed[i][2]);      //appending all classes to list
       if (i!=hops-1)
       {
         propsubclass.push("#");
      }
     }
-
+    for (let i=0;i<hops;i++)
+    {
+      proparrivaltime.push(data[key].Proposed[i][3]);   //appending all arrival times to list
+      propdeparturetime.push(data[key].Proposed[i][4]); //appending all departure times to list
+    }
     
 
-    entry.ProposedID=ids;
+    entry.ProposedID=ids;                               //Setting as attribute
     entry.ProposedClass=propclass;
     entry.ProposedSubClass=propsubclass;
+    entry.ProposedArrivalTime=proparrivaltime;
+    entry.ProposedDepartureTime=propdeparturetime;
 
-    let oids=[];
+    let oids=[];                                        //Repeating for original flight schedule
+    let oproparrivaltime=[];
+    let opropdeparturetime=[];
     hops=data[key].Original.length;
     for (let i=0;i<hops;i++)
     {
@@ -59,95 +68,110 @@ const convertNewFormat = (data) => {
         opropsubclass.push("#");
      }
     }
+    for (let i=0;i<hops;i++)
+    {
+      oproparrivaltime.push(data[key].Original[i][3]);
+      opropdeparturetime.push(data[key].Original[i][4]);
+    }
     
     entry.OriginalID=oids;
     entry.OriginalClass=opropclass;
     entry.OriginalSubClass=opropsubclass;
+    entry.OriginalArrivalTime=oproparrivaltime;
+    entry.OriginalDepartureTime=opropdeparturetime;
 
 
-    return {
-      PNR_Number: key,
-      Cabin: entry.Proposed[0][1],
-      Class: entry.Proposed[0][2][0],
-      
+    return {                                                                 
+      PNR_Number: key,                                
+      ProposedArrivalTime: entry.ProposedArrivalTime,
+      ProposedDepartureTime: entry.ProposedDepartureTime,
+      OriginalArrivalTime: entry.OriginalArrivalTime,
+      OriginalDepartureTime: entry.OriginalDepartureTime,
       Flight: `Flight('Inventory ID: ${entry.ProposedID}, Departure City: ${entry.ProposedClass}, Arrival City: ${entry.ProposedSubClass})`,
-
       CancelledFlight: `Flight('Inventory ID: ${entry.OriginalID}, Departure City: ${entry.OriginalClass}, Arrival City: ${entry.OriginalSubClass})`,
     };
   });
-
   return entries;
 };
 
-const shuffleArray = (array) => {
-  // Fisher-Yates (Knuth) shuffle algorithm
+
+
+const shuffleArray = (array) => {                         //Randomly arrange PNRs 
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
-  return array.slice(0,24);
+  if (array.length>24)            
+  {
+    return array.slice(0,24);                             //If more than 24 PNRs present, return only first 24
+  }
+  else
+  {
+    return array;
+  }
+  
 };
 
-const App = () => {
+const App = () => {                                                 //State variables
   const [highlightFile1, setHighlightFile1] = useState(false);
   const [highlightFile2, setHighlightFile2] = useState(false);
   const [shuffledFile1, setShuffledFile1] = useState([]);
   const [shuffledFile2, setShuffledFile2] = useState([]);
   const [selectedPNR, setSelectedPNR] = useState(null);
-  const [selectedCabin, setSelectedCabin] = useState(null);
-  const [selectedClass, setSelectedClass] = useState(null);
   const [selectedInfo, setSelectedInfo] = useState(null);
   const [selectedCancelledInfo, setSelectedCancelledInfo] = useState(null);
   const [showAllPNRs, setShowAllPNRs] = useState(false);
   
   
   
-  const move = () => {  
-    document.getElementById('mover').style.display="flex";
+  const move = () => {                                        //To move passenger icon when PNRs are pressed
+    document.getElementById('mover').style.display="flex";    //Make icon visible
+    //Move to right side after small delay
     setTimeout(() => { document.getElementById('mover').style.transform="translate(1040px)"; }, 50);
+    //Make icon disappear again
     setTimeout(() => {try{document.getElementById('mover').style.display="none";}
     catch{}
-    setTimeout(() => { try{document.getElementById('mover').style.transform="translate(200px)";}  catch{}}
+    //Make disappeared icon move back to left
+    setTimeout(() => { try{document.getElementById('mover').style.transform="translate(250px)";}  catch{}}
     , 50);
   }, 3000);
       };
 
   useEffect(() => {
-    const convertedFile2 = convertNewFormat(result);
-    //setShuffledFile1(shuffleArray([...file1]));
-    setShuffledFile1(shuffleArray([...convertedFile2]));
-    setShuffledFile2(shuffleArray([...file2]));
+    const convertedFile2 = convertNewFormat(result);            //JSON file 
+    setShuffledFile1(shuffleArray([...convertedFile2]));        //Shuffle PNRs
+    setShuffledFile2(shuffleArray([...file2]));                 //Shuffle PNRs
   }, [highlightFile1, highlightFile2]);
 
-  const handleButtonClick = () => {
+  const handleButtonClick = () => {                             //Toggle all PNRs and affected PNRs on click
     if (showAllPNRs) {
+      document.getElementById('subhead').style.display='none';
       setHighlightFile1(false);
       setHighlightFile2(false);
       setShowAllPNRs(false);
     } else {
+      document.getElementById('subhead').style.display='flex';
       setHighlightFile1(true);
       setHighlightFile2(true);
       setShowAllPNRs(true);
     }
   };
 
-  const handleCardClick = (entry) => {
+  const handleCardClick = (entry) => {                       //To show animation on click of PNR card
     try{
-    // Only handle click for red cards
-    if (highlightFile1) {
-      setSelectedPNR(entry.PNR_Number);
-      setSelectedCabin(entry.Cabin);
-      setSelectedClass(entry.Class);
-
-      // Extracting information from the Flight attribute
+    
+    if (highlightFile1) {                                     //Only handle click for red cards
+      setSelectedPNR((entry.PNR_Number).replace(/\#.*/,''));  //Remove # from PNR numbers
+      //fetch information
       const flightInfo = entry.Flight.match(/Inventory ID: (\S+), Departure City: (\S+), Arrival City: (\S+)/);
       if (flightInfo) {
-        const [, inventoryId, departureCity, arrivalCity] = flightInfo;
-        let string="NEW FLIGHT\n\n";
-        const ID = inventoryId.split(",");
+        const [, inventoryId, departureCity, arrivalCity] = flightInfo;   //Split into variable
+        let string="";                                                    //String to hold all information of PNR
+        const ID = inventoryId.split(",");                                //Get respective lists
         const cabin=departureCity.split(",");
         const classs=arrivalCity.split(",");
-        const fixed_class=[];
+  
+        const fixed_class=[];                                            //To handle multiple PAX having different classes
         let j=0;
         for (let i=0;i<classs.length;i++)
         {
@@ -160,8 +184,9 @@ const App = () => {
             j++;
             fixed_class[j]=classs[i];
           }
-        }
-        for (let i=0;i<ID.length;i++)
+        }                                               
+
+        for (let i=0;i<ID.length;i++)             //Adding information to string
         { 
           if (ID.length!=1)
           {
@@ -169,29 +194,30 @@ const App = () => {
           string+=i+1;
           string+=':\n';
           }
-          string+=ID[i]+'\n';
-          string+=cabin[i]+'\n';
+          string+='Inventory ID: '+ID[i]+'\n';
+          string+='Cabin       : '+cabin[i]+'\n';
           if (fixed_class[i][fixed_class[i].length-1]==')')
           {
             fixed_class[i] = fixed_class[i].slice(0, -1);
           }
-          string+=fixed_class[i]+'\n';
+          string+='Class       : '+fixed_class[i]+'\n';                       //formatting to make all colums equally spaced
+          string+='Arrival     : '+entry.ProposedArrivalTime+'\n';
+          string+='Departure   : '+entry.ProposedDepartureTime+'\n';
           string+='\n'; 
         }
-        setSelectedInfo(`${string}`);
+        setSelectedInfo(`${string}`);       //display the string
       }
 
       // Extracting information from the Cancelled Flights attribute
+      //repeating above steps for cancelled flight schedule
       const cancelledflightInfo = entry.CancelledFlight.match(/Inventory ID: (\S+), Departure City: (\S+), Arrival City: (\S+)/);
       if (cancelledflightInfo) 
         {
-          console.log(cancelledflightInfo);
         const [, cancelledinventoryId, cancelledDepartureCity, cancelledArrivalCity] = cancelledflightInfo;
-        let string2="ORIGINAL FLIGHT\n\n";
+        let string2="";
         const ID2 = cancelledinventoryId.split(",");
         const cabin2=cancelledDepartureCity.split(",");
         const classs2=cancelledArrivalCity.split(",");
-        console.log(ID2);
         const fixed_class2=[];
         let j=0;
         for (let i=0;i<classs2.length;i++)
@@ -206,7 +232,7 @@ const App = () => {
             fixed_class2[j]=classs2[i];
           }
         }
-        //console.log(ID2);
+
         for (let i=0;i<ID2.length;i++)
         { 
           if (ID2.length!=1)
@@ -215,13 +241,15 @@ const App = () => {
           string2+=i+1;
           string2+=':\n';
           }
-          string2+=ID2[i]+'\n';
-          string2+=cabin2[i]+'\n';
+          string2+='Inventory ID: '+ID2[i]+'\n';
+          string2+='Cabin       : '+cabin2[i]+'\n';
           if (fixed_class2[i][fixed_class2[i].length-1]==')')
           {
             fixed_class2[i] = fixed_class2[i].slice(0, -1);
           }
-          string2+=fixed_class2[i]+'\n';
+          string2+='Class       : '+fixed_class2[i]+'\n';
+          string2+='Arrival     : '+entry.OriginalArrivalTime+'\n';
+          string2+='Departure   : '+entry.OriginalDepartureTime+'\n';
           string2+='\n'; 
         }
         setSelectedCancelledInfo(`${string2}`);
@@ -229,8 +257,9 @@ const App = () => {
       }
 
     }
-
+    //Call function that moves passenger icon after rendering flight schedules
     move();
+    
   }
   catch{}
   };
@@ -238,13 +267,15 @@ const App = () => {
   const getFile1Class = () => (highlightFile1 ? 'red clickable' : '');
   const getFile2Class = () => (highlightFile2 ? 'green' : '');
 
-
+  //HTML 
   return (
     <div>
       <div id="heading">
       <h1>PNR Numbers</h1>
+      <p id="subhead">Click on the affected PNRs to view the updated flight schedule</p>
       </div>
       <div className="card-container">
+        {/*Fetch PNR numbers and display */}
         {shuffledFile1.map((entry, index) => (
           <div
             key={index}
@@ -253,16 +284,17 @@ const App = () => {
             
             }
           >
-            <p>{entry.PNR_Number}</p>
+            {/*Replace # in PNR*/}
+            <p>{(entry.PNR_Number).replace(/\#.*/,'')}</p>
           </div>
         ))}
         {shuffledFile2.map((entry, index) => (
           <div
             key={index}
             className={`card ${getFile2Class()}`}
-            // Note: handleCardClick not applied to green cards
           >
-            <p>{entry.PNR_Number}</p>
+            {/*Replace # in PNR*/}
+            <p>{(entry.PNR_Number).replace(/\#.*/,'')}</p>
           </div>
         ))}
       </div>
@@ -276,22 +308,24 @@ const App = () => {
           <div className="textbox smaller" id = "mover">
           <img src = {icon}></img>
           
-            <input type="text" value={selectedPNR} readOnly />
+            <input type="text" id="qwerty" value={selectedPNR} readOnly />
           </div>
         )}
       </div>
       <div className="textbox-container">
         {highlightFile1 && selectedCancelledInfo && (
-          <div className="textbox rounded">
-          <img src={plane} className="plane" id="leftplane"></img>
-            <textarea value={selectedCancelledInfo} readOnly />
+          <div className="textbox rounded" id="left" style={{alignItems: "center"}}>
+          <div className="Head"><p id="flightHead"> Original Flight</p></div>
+          <img src={plane} id="leftplane"></img>
+          <div className="Info"><p id="content">{selectedCancelledInfo}</p></div>
           </div>
         )}
 
         {highlightFile1 && selectedInfo && (
-          <div className="textbox rounded" id = "right" >
+          <div className="textbox rounded" id = "right" style={{alignItems: "center"}}>
+          <div className="Head" style={{width:"300px"}}><p style={{textAlign:"center"}} id="flightHead">New Flight</p></div>
           <img src={plane} id="rightplane"></img>
-            <textarea value={selectedInfo} readOnly />
+          <div className="Info"><p id="content">{selectedInfo}</p></div>
           </div>
         )}
       </div>

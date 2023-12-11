@@ -122,7 +122,12 @@ with col3:
     #constraint for minimum connecting time
     MCT= st.number_input("Enter Minimum Connecting Time",min_value=0,value=1)
 
-CITY_PAIR_THRESHOLD=st.number_input("Enter maximum allowed travel time between original and new airport",min_value=0,value=8)
+col1,col2=st.columns(2)
+with col1:
+    CITY_PAIR_THRESHOLD=st.number_input("Enter maximum allowed travel time between airports",min_value=0,value=8)
+with col2:
+    connectingPenalty=st.number_input("Penalty for Connecting Flights",value=9.5)
+
 #add empty space
 st.write("")
 st.write("")
@@ -207,6 +212,9 @@ with col3:
         f.write("weight_pnr_map="+str(weight_pnr_map)+"\n")
         f.write("weight_cabin_map="+str(weight_cabin_map)+"\n")
         
+        
+        f.write("connection_constant="+str(connectingPenalty)+"\n")
+      
         
         #close file
         f.close()
