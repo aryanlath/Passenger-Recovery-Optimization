@@ -31,12 +31,12 @@ def writeStatistics():
     f=open("stats.py","w")
     f.write("total_impacted = "+str(total_impacted)+"\n")
     write_list_to_file("total_assigned",total_assigned,f)
-    write_list_to_file("total_non_assigned",total_assigned,f)
-    write_list_to_file("upgrade_count",total_assigned,f)
-    write_list_to_file("downgrade_count",total_assigned,f)
-    write_list_to_file("same_city_count",total_assigned,f)
-    write_list_to_file("diff_city_count",total_assigned,f)
-    write_list_to_file("mean_arrival_delay",total_assigned,f)
+    write_list_to_file("total_non_assigned",total_non_assigned,f)
+    write_list_to_file("upgrade_count",upgrade_count,f)
+    write_list_to_file("downgrade_count",downgrade_count,f)
+    write_list_to_file("same_city_count",same_city_count,f)
+    write_list_to_file("diff_city_count",diff_city_count,f)
+    write_list_to_file("mean_arrival_delay",mean_arrival_delay,f)
     f.close()
 
 
