@@ -7,6 +7,7 @@ import constants_immutable
 import copy
 import pprint
 import json
+from datetime import datetime
 pp = pprint.PrettyPrinter(indent=4)
 
 def string_to_dict(string_dict):
@@ -332,3 +333,49 @@ def AssignmentsToJSON( Cabin_Class_Assignments) :
             final_ans[pnr_number]["Proposed"].append(temp_list)
                 
     return json.dumps(final_ans,indent=4)
+
+
+def up_dn_arr_delay(json_final):
+     ## Stats
+    dict_final = json.loads(json_final)
+    up_cnt = 0
+    dn_cnt = 0
+    arr_del = 0
+    cabin_cost = {
+        # Based on Empirical Cost values of flight tickets of these classes
+        "EC": 1,
+        "PC": 1.5,
+        "BC": 3,
+        "FC": 6
+    }
+    for pnr_num, value in dict_final.items():
+        class_score_init = 0
+        class_score_fin = 0
+        for i in range(len(value['Original'])):
+            class_score_init += cabin_cost[value['Original'][i][1]]
+        for i in range(len(value['Proposed'])):
+            class_score_fin += cabin_cost[value['Proposed'][i][1]]
+        class_score_init/=len(value['Original'])
+        class_score_fin/=len(value['Proposed'])
+        if class_score_init>class_score_fin:
+            dn_cnt+=1
+        elif class_score_init<class_score_fin:
+            up_cnt+=1
+        
+        init_arr_time = datetime.strptime(value['Original'][-1][-1], "%Y-%m-%d %H:%M:%S")
+        fin_arr_time = datetime.strptime(value['Proposed'][-1][-1], "%Y-%m-%d %H:%M:%S")
+        arr_del += abs((fin_arr_time - init_arr_time).total_seconds() / 3600)
+
+    ## Stats
+    return up_cnt, dn_cnt, arr_del
+
+
+
+def write_list_to_file(listname,list,file):
+    file.write(str(listname)+" = [")
+    for i in list:
+        if i!=list[-1]:
+            file.write(str(i)+",")
+        else:
+            file.write(str(i)+"]\n")
+        

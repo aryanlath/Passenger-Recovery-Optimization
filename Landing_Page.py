@@ -11,37 +11,133 @@ import constants_immutable
 pp = pprint.PrettyPrinter(indent=4)
 from Assign_Class import *
 import json
+from utils import *
+
+
+## Global variables(Statistics)
+
+total_impacted = 0
+total_assigned = []
+total_non_assigned = []
+upgrade_count = []
+downgrade_count = []
+same_city_count = []
+diff_city_count = [] 
+mean_arrival_delay = []
+
+
+
+def writeStatistics():
+    f=open("stats.py","w")
+    f.write("total_impacted = "+str(total_impacted)+"\n")
+    write_list_to_file("total_assigned",total_assigned,f)
+    write_list_to_file("total_non_assigned",total_assigned,f)
+    write_list_to_file("upgrade_count",total_assigned,f)
+    write_list_to_file("downgrade_count",total_assigned,f)
+    write_list_to_file("same_city_count",total_assigned,f)
+    write_list_to_file("diff_city_count",total_assigned,f)
+    write_list_to_file("mean_arrival_delay",total_assigned,f)
+    f.close()
+
 
 #to display result
-def display_results(file_name1,file_name2,file_name3):
-    st.write()
-    st.write()
-    st.write()
+def display_results(hybrid_results):
     #display json in streamlit
-    col1,col2,col3=st.columns(3)
-    with col1:
-    #first solution
-        st.write("Solution 1")
-        file1=open(file_name1,'r')
-        json1=json.load(file1)
-        st.json(json1,expanded=False)
-    with col2:
-    #second solution
-        st.write("Solution 2")
-        file2=open(file_name2,'r')
-        json2=json.load(file2)
-        st.json(json2,expanded=False)
-    with col3:    
-    #third solution
-        st.write("Solution 3")
-        file3=open(file_name3,'r')
-        json3=json.load(file3)
-        st.json(json3,expanded=False)
 
+    if (len(hybrid_results)==2):
+        col1,col2=st.columns(2)
+        with col1:
+            #first solution
+            st.write("Solution 1")
+            st.write("Total impacted PNRs are :",total_impacted)
+            st.write("Reaccommodated PNRs :",total_assigned[0])
+            st.write("Unaccomadated PNRs :",total_non_assigned[0])
+            st.write("PNRs Upgraded :",upgrade_count[0])
+            st.write("PNRs Downgraded :",downgrade_count[0])
+            st.write("PNRs with city pairs same :",same_city_count[0])
+            st.write("PNRs with city pairs different :",diff_city_count[0])
+            st.write("Mean Arrival Delay :",mean_arrival_delay[0])
+            file=open(hybrid_results[0][0],'r')
+            jsonfile=json.load(file)
+            st.json(jsonfile,expanded=False)
+        with col2:
+            #second solution
+            st.write("Solution 2")
+            st.write("Total impacted PNRs are :",total_impacted)
+            st.write("Reaccommodated PNRs :",total_assigned[1])
+            st.write("Unaccomadated PNRs :",total_non_assigned[1])
+            st.write("PNRs Upgraded :",upgrade_count[1])
+            st.write("PNRs Downgraded :",downgrade_count[1])
+            st.write("PNRs with city pairs same :",same_city_count[1])
+            st.write("PNRs with city pairs different :",diff_city_count[1])
+            st.write("Mean Arrival Delay :",mean_arrival_delay[1])
+            file=open(hybrid_results[1][0],'r')
+            jsonfile=json.load(file)
+            st.json(jsonfile,expanded=False)
+    else:
+        col1,col2,col3=st.columns(3)
+        with col1:
+            #first solution
+            st.write("Solution 1")
+            st.write("Total impacted PNRs are :",total_impacted)
+            st.write("Reaccommodated PNRs :",total_assigned[0])
+            st.write("Unaccomadated PNRs :",total_non_assigned[0])
+            st.write("PNRs Upgraded :",upgrade_count[0])
+            st.write("PNRs Downgraded :",downgrade_count[0])
+            st.write("PNRs with city pairs same :",same_city_count[0])
+            st.write("PNRs with city pairs different :",diff_city_count[0])
+            st.write("Mean Arrival Delay :",mean_arrival_delay[0])
+            file=open(hybrid_results[0][0],'r')
+            jsonfile=json.load(file)
+            st.json(jsonfile,expanded=False)
+        with col2:
+            #second solution
+            st.write("Solution 2")
+            st.write("Total impacted PNRs are :",total_impacted)
+            st.write("Reaccommodated PNRs :",total_assigned[1])
+            st.write("Unaccomadated PNRs :",total_non_assigned[0])
+            st.write("PNRs Upgraded :",upgrade_count[1])
+            st.write("PNRs Downgraded :",downgrade_count[1])
+            st.write("PNRs with city pairs same :",same_city_count[1])
+            st.write("PNRs with city pairs different :",diff_city_count[1])
+            st.write("Mean Arrival Delay :",mean_arrival_delay[1])
+            file=open(hybrid_results[1][0],'r')
+            jsonfile=json.load(file)
+            st.json(jsonfile,expanded=False)
+        with col3:    
+            #third solution
+            st.write("Solution 3")
+            st.write("Total impacted PNRs are :",total_impacted)
+            st.write("Reaccommodated PNRs :",total_assigned[2])
+            st.write("Unaccomadated PNRs :",total_non_assigned[2])
+            st.write("PNRs Upgraded :",upgrade_count[2])
+            st.write("PNRs Downgraded :",downgrade_count[2])
+            st.write("PNRs with city pairs same :",same_city_count[2])
+            st.write("PNRs with city pairs different :",diff_city_count[2])
+            st.write("Mean Arrival Delay :",mean_arrival_delay[2])
+            file=open(hybrid_results[2][0],'r')
+            jsonfile=json.load(file)
+            st.json(jsonfile,expanded=False)
 
 
 def Main_function():
 
+    #refer to global variable
+    global total_impacted
+    global total_assigned
+    global total_non_assigned
+    global upgrade_count 
+    global downgrade_count
+    global diff_city_count  
+    global same_city_count
+    global mean_arrival_delay 
+    
+    
+    #store names of files containing results
+    hybrid_results = []
+    
+    
+    
     # initializes the loyalty scores for the passengers
     # init_loyalty_dictionary()
 
@@ -57,6 +153,7 @@ def Main_function():
 
 
     print("Total impacted Passengers: ",len(Impacted_PNR))
+    total_impacted = len(Impacted_PNR)
     pp.pprint(Impacted_PNR)
 
     # Classical part
@@ -74,6 +171,9 @@ def Main_function():
     print()
     with open('result_classical.json', 'w') as f:
         f.write(AssignmentsToJSON(Cabin_to_Class(result['Assignments'])))
+    #total_assigned.append(len(result['Assignments']))
+    #hybrid_results.append('result_classical.json')
+    #same_city_count.append(result['Assignments'])
     # print(AssignmentsToJSON(Cabin_to_Class(result["Assignments"])))
    # Quantum Pipeline
     start = time.time()
@@ -110,20 +210,41 @@ def Main_function():
     #     df_non_assignments.to_csv(f"Results/non_assignments_{idx}.csv")
     
     
-    
+    for i in range(len(quantum_result)):
+        hybrid_results.append([])
+        
     
     # Network flow pipeline
     for i in range(len(quantum_result)):
         start=time.time()
         final_result = Cabin_to_Class(quantum_result[i]["Assignments"])
+
+        ##Stats
+        total_assigned.append(len(quantum_result[i]["Assignments"]))
+        same_city_count.append(len((quantum_result[i]["Assignments"])))
+        total_non_assigned.append(total_impacted-len(quantum_result[i]["Assignments"]))
+        ##Stats
+        
+        
+        json_final = AssignmentsToJSON(final_result)
+
         with open(f'result_quantum_{i}.json', 'w') as f:
-            f.write(AssignmentsToJSON(final_result))
+            f.write(json_final)
+        hybrid_results[i].append(f'result_quantum_{i}.json')
         end=time.time()
         print("Network Flow time :",end-start)
         print()
     # pp.pprint(final_result)
         print("#"*100)
         print()
+
+        ##Stats
+        temp1, temp2, temp3 = up_dn_arr_delay(json_final)
+        upgrade_count.append(temp1)
+        downgrade_count.append(temp2)
+        mean_arrival_delay.append(temp3)
+        ##Stats
+       
 
     # Exception List Handling
     for i in range(len(quantum_result)):
@@ -133,6 +254,13 @@ def Main_function():
         print("Exception Handling time: ",end-start)
         print()
         print("Total Assignments with different City-Pairs: ", len(city_pairs_result['Assignments']))
+
+        ##Stats
+        total_assigned[i]+=len(city_pairs_result['Assignments'])
+        total_non_assigned[i]-=len(city_pairs_result['Assignments'])
+        diff_city_count.append(len(city_pairs_result['Assignments']))
+        ##Stats
+
         # pp.pprint(city_pairs_result['Assignments'])
         print("Not Assigned PNRs: ")
         # pp.pprint(city_pairs_result['Non Assignments'])
@@ -146,10 +274,22 @@ def Main_function():
         print()
         print("Final Assignments")
         # pp.pprint(final_result)
+        json_final = AssignmentsToJSON(final_result)
         with open(f'exception_list_{i}.json', 'w') as f:
-            f.write(AssignmentsToJSON(final_result))
+            f.write(json_final)
+        hybrid_results[i].append(f'exception_list_{i}.json')
         print("#"*100)
         print()
+        
+        ##Stats
+        temp1, temp2, temp3 = up_dn_arr_delay(json_final)
+        upgrade_count[i]+=temp1
+        downgrade_count[i]+=temp2
+        mean_arrival_delay[i]+=temp3
+        mean_arrival_delay[i]/=total_impacted
+        ##Stats
+        
+        
 
         print("Final Non Assignments")
         print(city_pairs_result['Non Assignments'])
@@ -159,10 +299,16 @@ def Main_function():
             final_non_assignments+="\n"
         with open(f'non_assignments_{i}.json', 'w') as f:
             f.write(final_non_assignments)
+        hybrid_results[i].append(f'non_assignments_{i}.json')            
 
     global code_been_run
     code_been_run=1
-    display_results('result_quantum_0.json','result_quantum_1.json','result_quantum_2.json')
+    #print(hybrid_results)
+    #To print statistics on landing page
+    display_results(hybrid_results)
+
+    #To write current statistics in a file 
+    writeStatistics();
 
 
     
@@ -196,6 +342,7 @@ from feasible_flights import Get_All_Maps
 from dotenv import load_dotenv
 import os
 import json
+
 load_dotenv()
 
 def read_template(filename):
@@ -478,10 +625,10 @@ st.write()
 code_been_run=0
 
 
-col1,col2,col3,col4,col5=st.columns(5)
-with col3:
-    if st.button("Run Code"):
-        Main_function()
+# col1,col2,col3,col4,col5=st.columns(5)
+# with col3:
+if st.button("Run Code"):
+    Main_function()
 st.write("Click the below button to send E-mails to all affected passengers to notify them about their re-accomadation")
 col1,col2,col3,col4,col5=st.columns(5)
 with col3:
