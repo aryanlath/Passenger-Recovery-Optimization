@@ -10,6 +10,34 @@ import pprint
 import constants_immutable
 pp = pprint.PrettyPrinter(indent=4)
 from Assign_Class import *
+import json
+
+#to display result
+def display_results(file_name1,file_name2,file_name3):
+    st.write()
+    st.write()
+    st.write()
+    #display json in streamlit
+    col1,col2,col3=st.columns(3)
+    with col1:
+    #first solution
+        st.write("Solution 1")
+        file1=open(file_name1,'r')
+        json1=json.load(file1)
+        st.json(json1,expanded=False)
+    with col2:
+    #second solution
+        st.write("Solution 2")
+        file2=open(file_name2,'r')
+        json2=json.load(file2)
+        st.json(json2,expanded=False)
+    with col3:    
+    #third solution
+        st.write("Solution 3")
+        file3=open(file_name3,'r')
+        json3=json.load(file3)
+        st.json(json3,expanded=False)
+
 
 
 def Main_function():
@@ -132,7 +160,10 @@ def Main_function():
         with open(f'non_assignments_{i}.json', 'w') as f:
             f.write(final_non_assignments)
 
-    
+    global code_been_run
+    code_been_run=1
+    display_results('result_quantum_0.json','result_quantum_1.json','result_quantum_2.json')
+
 
     
     # Network flow pipeline
@@ -442,13 +473,21 @@ st.write("Click the below button after you have made all required modifications"
 st.write()
 
 
+
+#To see if code has been run
+code_been_run=0
+
+
 col1,col2,col3,col4,col5=st.columns(5)
 with col3:
     if st.button("Run Code"):
         Main_function()
-
 st.write("Click the below button to send E-mails to all affected passengers to notify them about their re-accomadation")
 col1,col2,col3,col4,col5=st.columns(5)
 with col3:
     if st.button("Send Email"):
-        send_mail('result_quantum_0.json','result_quantum_1.json','result_quantum_2.json')
+        if (code_been_run):
+            send_mail('result_quantum_0.json','result_quantum_1.json','result_quantum_2.json')
+        else:
+            st.write('Run the code first!')
+            
