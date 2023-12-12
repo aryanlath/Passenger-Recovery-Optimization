@@ -36,7 +36,7 @@ flight_mail_password = your_email_password (if using gmail, you need to generate
 ### Running the program
 Now, to run the script enter the following command in the terminal
 ```bash
-  streamlit run PNR_Score.py
+  streamlit run Landing_page.py
 ```
 
 
