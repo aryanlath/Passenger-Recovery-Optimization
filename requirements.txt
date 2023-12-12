@@ -9,3 +9,4 @@ dwave-system
 python-dotenv
 scipy
 dwave-inspector
+plotly
