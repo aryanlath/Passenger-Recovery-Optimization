@@ -4,9 +4,6 @@ import streamlit as st
 
 n_cabin=2
 
-st.title("Business Rules Modification Engine")
-#heading
-
 st.header("PNR Level Score Modifications")
 st.write("")
 

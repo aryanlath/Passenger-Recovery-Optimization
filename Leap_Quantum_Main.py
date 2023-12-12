@@ -26,7 +26,6 @@ load_dotenv()
 # Access the API key
 dwave_token = os.getenv('DWAVE_TOKEN')
 
-
 def get_flight_cabin_mappings(flights, current_mapping=None, flight_index=0):
     """
     To generate the tuple of all possible cabin Mappings.
