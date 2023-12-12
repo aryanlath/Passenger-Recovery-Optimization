@@ -56,7 +56,7 @@ def display_results(hybrid_results):
             st.write("PNRs Downgraded :",downgrade_count[0])
             st.write("PNRs with city pairs same :",same_city_count[0])
             st.write("PNRs with city pairs different :",diff_city_count[0])
-            st.write("Mean Arrival Delay :",mean_arrival_delay[0])
+            st.write("Mean Arrival Delay(in Hours) :",mean_arrival_delay[0])
             file=open(hybrid_results[0][0],'r')
             jsonfile=json.load(file)
             st.json(jsonfile,expanded=False)
@@ -70,7 +70,7 @@ def display_results(hybrid_results):
             st.write("PNRs Downgraded :",downgrade_count[1])
             st.write("PNRs with city pairs same :",same_city_count[1])
             st.write("PNRs with city pairs different :",diff_city_count[1])
-            st.write("Mean Arrival Delay :",mean_arrival_delay[1])
+            st.write("Mean Arrival Delay(in Hours) :",mean_arrival_delay[1])
             file=open(hybrid_results[1][0],'r')
             jsonfile=json.load(file)
             st.json(jsonfile,expanded=False)
@@ -86,7 +86,7 @@ def display_results(hybrid_results):
             st.write("PNRs Downgraded :",downgrade_count[0])
             st.write("PNRs with city pairs same :",same_city_count[0])
             st.write("PNRs with city pairs different :",diff_city_count[0])
-            st.write("Mean Arrival Delay :",mean_arrival_delay[0])
+            st.write("Mean Arrival Delay(in Hours) :",mean_arrival_delay[0])
             file=open(hybrid_results[0][0],'r')
             jsonfile=json.load(file)
             st.json(jsonfile,expanded=False)
@@ -100,7 +100,7 @@ def display_results(hybrid_results):
             st.write("PNRs Downgraded :",downgrade_count[1])
             st.write("PNRs with city pairs same :",same_city_count[1])
             st.write("PNRs with city pairs different :",diff_city_count[1])
-            st.write("Mean Arrival Delay :",mean_arrival_delay[1])
+            st.write("Mean Arrival Delay(in Hours) :",mean_arrival_delay[1])
             file=open(hybrid_results[1][0],'r')
             jsonfile=json.load(file)
             st.json(jsonfile,expanded=False)
@@ -114,7 +114,7 @@ def display_results(hybrid_results):
             st.write("PNRs Downgraded :",downgrade_count[2])
             st.write("PNRs with city pairs same :",same_city_count[2])
             st.write("PNRs with city pairs different :",diff_city_count[2])
-            st.write("Mean Arrival Delay :",mean_arrival_delay[2])
+            st.write("Mean Arrival Delay(in Hours) :",mean_arrival_delay[2])
             file=open(hybrid_results[2][0],'r')
             jsonfile=json.load(file)
             st.json(jsonfile,expanded=False)
@@ -287,6 +287,7 @@ def Main_function():
         downgrade_count[i]+=temp2
         mean_arrival_delay[i]+=temp3
         mean_arrival_delay[i]/=total_impacted
+        mean_arrival_delay[i] = round(mean_arrival_delay[i], 3)
         ##Stats
         
         
