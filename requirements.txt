@@ -9,4 +9,8 @@ dwave-system
 python-dotenv
 scipy
 dwave-inspector
+<<<<<<< HEAD
 plotly
+=======
+plotly
+>>>>>>> 02a984d004507ca6aae84b3f475bb27e467c603b
