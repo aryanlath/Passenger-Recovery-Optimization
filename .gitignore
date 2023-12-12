@@ -7,3 +7,5 @@ assignments*.csv
 non_assignments*.csv
 out*.txt
 res*.json
+non_ass*.json
+ReactAnimation/visualization/node_modules
