@@ -373,9 +373,9 @@ def up_dn_arr_delay(json_final):
 
 def write_list_to_file(listname,list,file):
     file.write(str(listname)+" = [")
-    for i in list:
-        if i!=list[-1]:
-            file.write(str(i)+",")
+    for i in range(len(list)):
+        if i!=len(list)-1:
+            file.write(str(list[i])+",")
         else:
-            file.write(str(i)+"]\n")
+            file.write(str(list[i])+"]\n")
         
