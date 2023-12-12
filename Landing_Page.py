@@ -39,7 +39,7 @@ def Main_function():
     print()
     print("Total Reassigned: ",len(result['Assignments']))
     print("Classical Optimal Cost",result['Total Cost'])
-    pp.pprint(result['Assignments'])
+    # pp.pprint(result['Assignments'])
     print("Not Assigned PNRs: ")
     pp.pprint(result['Non Assignments'])
     print("#"*100)
@@ -59,9 +59,9 @@ def Main_function():
     pp.pprint(quantum_result[0]['Non Assignments'])
     print("#"*100)
     print()
-    for i in range(len(quantum_result)):
-        with open(f'result_quantum_{i}.json', 'w') as f:
-            f.write(AssignmentsToJSON(Cabin_to_Class(quantum_result[i]['Assignments'])))
+    # for i in range(len(quantum_result)):
+    #     with open(f'result_quantum_{i}.json', 'w') as f:
+    #         f.write(AssignmentsToJSON(Cabin_to_Class(quantum_result[i]['Assignments'])))
 
     # Constructing 3 CSVs corresponding to the top 3 quantum solutions
     # for idx in range(0,len(quantum_result)):
@@ -85,38 +85,66 @@ def Main_function():
     
     
     # Network flow pipeline
-    start=time.time()
-    final_result = Cabin_to_Class(quantum_result[0]["Assignments"])
-    end=time.time()
-    print("Network Flow time :",end-start)
-    print()
-    pp.pprint(final_result)
-    print("#"*100)
-    print()
+    for i in range(len(quantum_result)):
+        start=time.time()
+        final_result = Cabin_to_Class(quantum_result[i]["Assignments"])
+        with open(f'result_quantum_{i}.json', 'w') as f:
+            f.write(AssignmentsToJSON(final_result))
+        end=time.time()
+        print("Network Flow time :",end-start)
+        print()
+    # pp.pprint(final_result)
+        print("#"*100)
+        print()
 
     # Exception List Handling
-    start=time.time()
-    city_pairs_result = optimize_flight_assignments(quantum_result[0]['Non Assignments'],True)
-    end=time.time()
-    print("Exception Handling time: ",end-start)
-    print()
-    print("Total Assignments with different City-Pairs: ", len(city_pairs_result['Assignments']))
-    pp.pprint(city_pairs_result['Assignments'])
-    print("Not Assigned PNRs: ")
-    pp.pprint(city_pairs_result['Non Assignments'])
-    print("#"*100)
-    print()
+    for i in range(len(quantum_result)):
+        start=time.time()
+        city_pairs_result = optimize_flight_assignments(quantum_result[i]['Non Assignments'],True)
+        end=time.time()
+        print("Exception Handling time: ",end-start)
+        print()
+        print("Total Assignments with different City-Pairs: ", len(city_pairs_result['Assignments']))
+        # pp.pprint(city_pairs_result['Assignments'])
+        print("Not Assigned PNRs: ")
+        # pp.pprint(city_pairs_result['Non Assignments'])
+        print("#"*100)
+        print()
+
+        start=time.time()
+        final_result = Cabin_to_Class(city_pairs_result["Assignments"])
+        end=time.time()
+        print("Network Flow time :",end-start)
+        print()
+        print("Final Assignments")
+        # pp.pprint(final_result)
+        with open(f'exception_list_{i}.json', 'w') as f:
+            f.write(AssignmentsToJSON(final_result))
+        print("#"*100)
+        print()
+
+        print("Final Non Assignments")
+        print(city_pairs_result['Non Assignments'])
+        final_non_assignments = ""
+        for j in range(len(city_pairs_result['Non Assignments'])):
+            final_non_assignments+=city_pairs_result['Non Assignments'][j].pnr_number
+            final_non_assignments+="\n"
+        with open(f'non_assignments_{i}.json', 'w') as f:
+            f.write(final_non_assignments)
+
+    
+
     
     # Network flow pipeline
-    start=time.time()
-    final_result = Cabin_to_Class(city_pairs_result["Assignments"])
-    end=time.time()
-    print("Network Flow time :",end-start)
-    print()
-    print("Final Assignments")
-    pp.pprint(final_result)
-    print("#"*100)
-    print()
+    # start=time.time()
+    # final_result = Cabin_to_Class(city_pairs_result["Assignments"])
+    # end=time.time()
+    # print("Network Flow time :",end-start)
+    # print()
+    # print("Final Assignments")
+    # pp.pprint(final_result)
+    # print("#"*100)
+    # print()
 
     # TODO: Integrate email sending and mockup simulation of choosing of a scheme
 
