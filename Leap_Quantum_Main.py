@@ -16,7 +16,6 @@ from dwave.system import LeapHybridCQMSampler
 # import dwave.inspector
 from dimod import ConstrainedQuadraticModel, BinaryQuadraticModel, QuadraticModel
 from dimod import Real
-import dwave.inspector
 all_flights =[]
 from dotenv import load_dotenv
 
