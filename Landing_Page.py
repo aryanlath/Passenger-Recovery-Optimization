@@ -24,19 +24,22 @@ downgrade_count = []
 same_city_count = []
 diff_city_count = [] 
 mean_arrival_delay = []
-
+one_multi = []
+multi_one = []
+multi_multi = []
+one_one = []
 
 
 def writeStatistics():
     f=open("stats.py","w")
     f.write("total_impacted = "+str(total_impacted)+"\n")
     write_list_to_file("total_assigned",total_assigned,f)
-    write_list_to_file("total_non_assigned",total_assigned,f)
-    write_list_to_file("upgrade_count",total_assigned,f)
-    write_list_to_file("downgrade_count",total_assigned,f)
-    write_list_to_file("same_city_count",total_assigned,f)
-    write_list_to_file("diff_city_count",total_assigned,f)
-    write_list_to_file("mean_arrival_delay",total_assigned,f)
+    write_list_to_file("total_non_assigned",total_non_assigned,f)
+    write_list_to_file("upgrade_count",upgrade_count,f)
+    write_list_to_file("downgrade_count",downgrade_count,f)
+    write_list_to_file("same_city_count",same_city_count,f)
+    write_list_to_file("diff_city_count",diff_city_count,f)
+    write_list_to_file("mean_arrival_delay",mean_arrival_delay,f)
     f.close()
 
 
@@ -56,7 +59,8 @@ def display_results(hybrid_results):
             st.write("PNRs Downgraded :",downgrade_count[0])
             st.write("PNRs with city pairs same :",same_city_count[0])
             st.write("PNRs with city pairs different :",diff_city_count[0])
-            st.write("Mean Arrival Delay :",mean_arrival_delay[0])
+            st.write("Mean Arrival Delay(in Hours) :",mean_arrival_delay[0])
+            st.write("Multi-Multi(%) :",multi_multi[0])
             file=open(hybrid_results[0][0],'r')
             jsonfile=json.load(file)
             st.json(jsonfile,expanded=False)
@@ -70,7 +74,8 @@ def display_results(hybrid_results):
             st.write("PNRs Downgraded :",downgrade_count[1])
             st.write("PNRs with city pairs same :",same_city_count[1])
             st.write("PNRs with city pairs different :",diff_city_count[1])
-            st.write("Mean Arrival Delay :",mean_arrival_delay[1])
+            st.write("Mean Arrival Delay(in Hours) :",mean_arrival_delay[1])
+            st.write("Multi-Multi(%) :",multi_multi[1])
             file=open(hybrid_results[1][0],'r')
             jsonfile=json.load(file)
             st.json(jsonfile,expanded=False)
@@ -86,7 +91,11 @@ def display_results(hybrid_results):
             st.write("PNRs Downgraded :",downgrade_count[0])
             st.write("PNRs with city pairs same :",same_city_count[0])
             st.write("PNRs with city pairs different :",diff_city_count[0])
-            st.write("Mean Arrival Delay :",mean_arrival_delay[0])
+            st.write("Mean Arrival Delay(in Hours) :",mean_arrival_delay[0])
+            st.write("One-One(%) :",one_one[0])
+            st.write("One-Multi(%) :",one_multi[0])
+            st.write("Multi-One(%) :",multi_one[0])
+            st.write("Multi-Multi(%) :",multi_multi[0])
             file=open(hybrid_results[0][0],'r')
             jsonfile=json.load(file)
             st.json(jsonfile,expanded=False)
@@ -100,7 +109,11 @@ def display_results(hybrid_results):
             st.write("PNRs Downgraded :",downgrade_count[1])
             st.write("PNRs with city pairs same :",same_city_count[1])
             st.write("PNRs with city pairs different :",diff_city_count[1])
-            st.write("Mean Arrival Delay :",mean_arrival_delay[1])
+            st.write("Mean Arrival Delay(in Hours) :",mean_arrival_delay[1])
+            st.write("One-One(%) :",one_one[1])
+            st.write("One-Multi(%) :",one_multi[1])
+            st.write("Multi-One(%) :",multi_one[1])
+            st.write("Multi-Multi(%) :",multi_multi[1])
             file=open(hybrid_results[1][0],'r')
             jsonfile=json.load(file)
             st.json(jsonfile,expanded=False)
@@ -114,7 +127,11 @@ def display_results(hybrid_results):
             st.write("PNRs Downgraded :",downgrade_count[2])
             st.write("PNRs with city pairs same :",same_city_count[2])
             st.write("PNRs with city pairs different :",diff_city_count[2])
-            st.write("Mean Arrival Delay :",mean_arrival_delay[2])
+            st.write("Mean Arrival Delay(in Hours) :",mean_arrival_delay[2])
+            st.write("One-One(%) :",one_one[2])
+            st.write("One-Multi(%) :",one_multi[2])
+            st.write("Multi-One(%) :",multi_one[2])
+            st.write("Multi-Multi(%) :",multi_multi[2])
             file=open(hybrid_results[2][0],'r')
             jsonfile=json.load(file)
             st.json(jsonfile,expanded=False)
@@ -131,7 +148,10 @@ def Main_function():
     global diff_city_count  
     global same_city_count
     global mean_arrival_delay 
-    
+    global one_multi
+    global one_one
+    global multi_multi
+    global multi_one
     
     #store names of files containing results
     hybrid_results = []
@@ -225,7 +245,7 @@ def Main_function():
         total_non_assigned.append(total_impacted-len(quantum_result[i]["Assignments"]))
         ##Stats
         
-        
+        # print(final_result)
         json_final = AssignmentsToJSON(final_result)
 
         with open(f'result_quantum_{i}.json', 'w') as f:
@@ -239,10 +259,17 @@ def Main_function():
         print()
 
         ##Stats
+
         temp1, temp2, temp3 = up_dn_arr_delay(json_final)
         upgrade_count.append(temp1)
         downgrade_count.append(temp2)
         mean_arrival_delay.append(temp3)
+
+        temp1, temp2, temp3, temp4 = count_one_multi(json_final)
+        one_one.append(temp1)
+        one_multi.append(temp2)
+        multi_one.append(temp3)
+        multi_multi.append(temp4)
         ##Stats
        
 
@@ -282,11 +309,24 @@ def Main_function():
         print()
         
         ##Stats
+
         temp1, temp2, temp3 = up_dn_arr_delay(json_final)
         upgrade_count[i]+=temp1
         downgrade_count[i]+=temp2
         mean_arrival_delay[i]+=temp3
         mean_arrival_delay[i]/=total_impacted
+        mean_arrival_delay[i] = round(mean_arrival_delay[i], 3)
+
+        temp1, temp2, temp3, temp4 = count_one_multi(json_final)
+        one_one[i]+=temp1
+        one_one[i]=(one_one[i]*100)/total_assigned[i]
+        one_multi[i]+=temp2
+        one_multi[i]=(one_multi[i]*100)/total_assigned[i]
+        multi_one[i]+=temp3
+        multi_one[i]=(multi_one[i]*100)/total_assigned[i]
+        multi_multi[i]+=temp4
+        multi_multi[i]=(multi_multi[i]*100)/total_assigned[i]
+
         ##Stats
         
         
