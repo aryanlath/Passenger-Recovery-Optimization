@@ -6,8 +6,8 @@ test_small_PNR = 'Dataset/Small/Double_leg.csv'
 test_large_PNR = 'Dataset/Large/large_PNR.csv'
 test_large_flight = 'Dataset/Large/large_Flights.csv'
 # Change the path of test_flight_data_file and test_PNR_data_file according to the size of data_file
-test_flight_data_file = test_small_flight 
-test_PNR_data_file = test_small_PNR
+test_flight_data_file = test_medium_flight 
+test_PNR_data_file = test_medium_PNR
 n_cabin=2
 
 ETD=72

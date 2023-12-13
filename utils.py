@@ -229,9 +229,9 @@ def find_airport_location(airport_code):
     """
     df = pd.read_csv(airport_code_location_data_file)
     for _, row in df.iterrows():
-        if row['iata'] == airport_code:
+        if row['iata'] == airport_code and row['latitude'] is not None and row['longitude'] is not None:
             return row['latitude'], row['longitude']
-    return None, None
+    # return None, None
 
 
 
@@ -344,9 +344,9 @@ def up_dn_arr_delay(json_final):
     cabin_cost = {
         # Based on Empirical Cost values of flight tickets of these classes
         "EC": 1,
-        "PC": 1.5,
+        "PC": 2,
         "BC": 3,
-        "FC": 6
+        "FC": 4
     }
     for pnr_num, value in dict_final.items():
         class_score_init = 0
@@ -368,6 +368,27 @@ def up_dn_arr_delay(json_final):
 
     ## Stats
     return up_cnt, dn_cnt, arr_del
+
+
+def count_one_multi(json_final):
+
+    dict_final = json.loads(json_final)
+    one_one_temp = 0
+    one_multi_temp = 0
+    multi_one_temp = 0
+    multi_multi_temp = 0
+
+    for pnr_num, value in dict_final.items():
+        if len(value['Original'])==1 and len(value['Proposed'])==1:
+            one_one_temp+=1
+        elif len(value['Original'])<len(value['Proposed']):
+            one_multi_temp+=1
+        elif len(value['Original'])>len(value['Proposed']):
+            multi_one_temp+=1
+        else:
+            multi_multi_temp+=1
+    
+    return one_one_temp, one_multi_temp, multi_one_temp, multi_multi_temp
 
 
 
