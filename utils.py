@@ -119,7 +119,7 @@ def extract_PNR_from_CSV(file_path):
         seg_seq = int(row['SEG_SEQ'])
         pax = row['PAX_CNT']
         inv_id = row.get('INV_ID', None)
-        passenger_loyalty = row.get('LOYALTY', "Silver")
+        passenger_loyalty = row.get('LOYALTY', 'CM')
         special_requirements = row.get('SSR', "Grade2")
         email_id = row.get('CONTACT_EMAIL', "g-s01@outlook.com")
 

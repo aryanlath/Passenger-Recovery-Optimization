@@ -160,7 +160,9 @@ def custom_dfs_iterative(graph, source, destination, k,dp):
     Input: Networkx graph, source, destination, max_number of hops (k)
     Output: List of all possible paths composed of distinct edges
     """
-    stack = [(source, [], set())]
+    initial_visited = set()
+    initial_visited.add(source)
+    stack = [(source, [], initial_visited)]
     all_paths = []
     if((source,destination,k) in dp):
         return dp[(source,destination,k)] #memoisation to reduce time
@@ -188,7 +190,7 @@ def custom_dfs_iterative(graph, source, destination, k,dp):
     return dp[(source,destination,k)]
 
 
-def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_map,dp,num_of_hops=4,new_arrival_city=None):
+def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_map,dp,num_of_hops=3,new_arrival_city=None):
     """
     Find flights from departure_city to arrival_city with exactly number_of_hops.
     Input : graph , current network graph
@@ -278,7 +280,7 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_
         else:
             if(PNR_Object.next_leg is not None and PNR_Object.next_leg.timestamp()-path[-1].arrival_time.timestamp()<= MCT*60*60):
                 actual_valid_paths.remove(path)
-    
+
     if new_arrival_city is None:
         PNR_to_FeasibleFlights_map[PNR_Object.pnr_number] =actual_valid_paths
 
@@ -287,4 +289,3 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_
                 PNR_to_FeasibleFlights_map[PNR_Object.pnr_number]=actual_valid_paths
         else:
                 PNR_to_FeasibleFlights_map[PNR_Object.pnr_number].extend(actual_valid_paths)
-

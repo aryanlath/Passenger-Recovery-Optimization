@@ -288,7 +288,7 @@ def send_mail(assignment_0,assignment_1,assignment_2):
     
 
 
-send_mail('result1.json','result2.json','result3.json')
+# send_mail('result1.json','result2.json','result3.json')
 '''
 all_flights,_,_,_ = Get_All_Maps()
 for x in all_flights:

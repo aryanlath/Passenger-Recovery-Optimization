@@ -79,7 +79,7 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
             old_arrival_city = all_flights[PNR.inv_list[-1]].arrival_city
             proposed_arrival_cities = get_city_pairs_cost(old_arrival_city)
             for city in proposed_arrival_cities:
-                PNR_to_Feasible_Flights(g,all_flights,PNR,PNR_to_FeasibleFlights_map,dp,4,city[0])
+                PNR_to_Feasible_Flights(g,all_flights,PNR,PNR_to_FeasibleFlights_map,dp,3,city[0])
     end = time.time()
     print("Feasible Flights Time: ", end-start)
 
