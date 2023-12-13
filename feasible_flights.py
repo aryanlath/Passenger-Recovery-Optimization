@@ -181,18 +181,22 @@ def custom_dfs_iterative(graph, source, destination, k,dp,start_time):
         for neighbor in neighbors:
             for key in graph[current_node][neighbor]:
                 edge = (graph[current_node][neighbor][key]["flight"])
+                c=0
                 if neighbor not in visited_nodes:
                     if(len(path_edges)>0):
+                        c=1
                         prev_time=path_edges[-1].arrival_time
                     else:
                         prev_time=start_time
-                    if(abs(edge.departure_time.timestamp()-prev_time.timestamp())>ETD*60*60):
-                        continue
+                    if(c==0):
+                        if(abs(edge.departure_time.timestamp()-prev_time.timestamp())>ETD*60*60):
+                            continue
+                    else:
+                        if(abs(edge.departure_time.timestamp()-prev_time.timestamp())>MAXCT*60*60 or edge.departure_time.timestamp()-prev_time.timestamp()<MCT*60*60):
+                            continue
                     new_path_edges = path_edges + [edge]
                     new_visited_nodes = copy.deepcopy(visited_nodes)
                     new_visited_nodes.add(neighbor)
-                    # print("hi")
-                    # print(new_path_edges)
                     stack.append((neighbor, new_path_edges, new_visited_nodes))
     dp[(source,destination,start_time,k)]=all_paths
     return dp[(source,destination,start_time,k)]
@@ -256,6 +260,7 @@ def PNR_to_Feasible_Flights(graph,all_flights,PNR_Object,PNR_to_FeasibleFlights_
         arrival_city=new_arrival_city
     all_paths=custom_dfs_iterative(graph,departure_city,arrival_city,num_of_hops-current_hops,dp,departure_time)
     actual_valid_paths=copy.deepcopy(all_paths)
+    # Safety Check wheather the path is valid
     for path in all_paths:
         isFirst=True
         valid= True
