@@ -37,7 +37,7 @@ st.write("")
 col1,col2=st.columns(2)
 with col1:
     #score for CM Presidential Platinum class
-    CM=st.slider("CM Presidential Platinum",1500,2000,value=2000)
+    CM=st.slider("General(CM)",0,1500,value=0)
     #score for gold class
     gold=st.slider("Gold",1500,2000,value=1600)
 with col2:
@@ -145,16 +145,19 @@ with col3:
         f = open("constants.py", "w")
         
         #pnr data source
+        f.write("airport_code_location_data_file = 'Dataset/airport-code-to-location.csv'\n")
         f.write("test_medium_flight = 'Dataset/Medium/fake_flights_data_2.csv'\n")
         f.write("test_medium_PNR = 'Dataset/Medium/Double_leg.csv'\n")
         f.write("test_small_flight = 'Dataset/Small/Mock_Flight_Inv.csv'\n")
         f.write("test_small_PNR = 'Dataset/Small/Double_leg.csv'\n")
         f.write("test_large_PNR = 'Dataset/Large/large_PNR.csv'\n")
         f.write("test_large_flight = 'Dataset/Large/large_Flights.csv'\n")
+        f.write("final_flight = 'Dataset/Final/Final_Flight.csv'\n")
+        f.write("final_PNR = 'Dataset/Final/Final_PNR.csv'\n")
         f.write("# Change the path of test_flight_data_file and test_PNR_data_file according to the size of data_file\n")
-        f.write("test_flight_data_file = 'Dataset/Large/Changed_1.csv'\n")
-        f.write("test_PNR_data_file = test_large_PNR\n")
-        f.write("airport_code_location_data_file = 'Dataset/airport-code-to-location.csv'\n")
+        f.write("test_flight_data_file = final_flight\n")
+        f.write("test_PNR_data_file = final_PNR\n")
+        
 
         #writing number of cabins
         f.write("n_cabin="+str(n_cabin)+"\n")
