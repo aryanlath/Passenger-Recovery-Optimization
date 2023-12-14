@@ -17,7 +17,9 @@ from utils import *
 ## Global variables(Statistics)
 
 total_impacted = 0
+total_impacted_pax = 0
 total_assigned = []
+total_assigned_pax = []
 total_non_assigned = []
 upgrade_count = []
 downgrade_count = []
@@ -54,7 +56,9 @@ def display_results(hybrid_results):
             st.write("Solution 1")
             st.write("Total impacted PNRs are :",total_impacted)
             st.write("Reaccommodated PNRs :",total_assigned[0])
-            st.write("Unaccomadated PNRs :",total_non_assigned[0])
+            # st.write("Unaccomadated PNRs :",total_non_assigned[0])
+            st.write("Total impacted PAX are :",total_impacted_pax)   
+            st.write("Reaccommodated PAX :",total_assigned_pax[0])     
             st.write("PNRs Upgraded :",upgrade_count[0])
             st.write("PNRs Downgraded :",downgrade_count[0])
             st.write("PNRs with city pairs same :",same_city_count[0])
@@ -69,7 +73,10 @@ def display_results(hybrid_results):
             st.write("Solution 2")
             st.write("Total impacted PNRs are :",total_impacted)
             st.write("Reaccommodated PNRs :",total_assigned[1])
-            st.write("Unaccomadated PNRs :",total_non_assigned[1])
+            st.write("Total impacted PAX are :",total_impacted_pax)
+            
+            st.write("Reaccommodated PAX :",total_assigned_pax[1])
+            # st.write("Unaccomadated PNRs :",total_non_assigned[1])
             st.write("PNRs Upgraded :",upgrade_count[1])
             st.write("PNRs Downgraded :",downgrade_count[1])
             st.write("PNRs with city pairs same :",same_city_count[1])
@@ -86,7 +93,10 @@ def display_results(hybrid_results):
             st.write("Solution 1")
             st.write("Total impacted PNRs are :",total_impacted)
             st.write("Reaccommodated PNRs :",total_assigned[0])
-            st.write("Unaccomadated PNRs :",total_non_assigned[0])
+            st.write("Total impacted PAX are :",total_impacted_pax)
+            
+            st.write("Reaccommodated PAX :",total_assigned_pax[0])
+            # st.write("Unaccomadated PNRs :",total_non_assigned[0])
             st.write("PNRs Upgraded :",upgrade_count[0])
             st.write("PNRs Downgraded :",downgrade_count[0])
             st.write("PNRs with city pairs same :",same_city_count[0])
@@ -104,7 +114,10 @@ def display_results(hybrid_results):
             st.write("Solution 2")
             st.write("Total impacted PNRs are :",total_impacted)
             st.write("Reaccommodated PNRs :",total_assigned[1])
-            st.write("Unaccomadated PNRs :",total_non_assigned[0])
+            st.write("Total impacted PAX are :",total_impacted_pax)
+            st.write("Reaccommodated PAX :",total_assigned_pax[1])
+            
+            # st.write("Unaccomadated PNRs :",total_non_assigned[0])
             st.write("PNRs Upgraded :",upgrade_count[1])
             st.write("PNRs Downgraded :",downgrade_count[1])
             st.write("PNRs with city pairs same :",same_city_count[1])
@@ -122,7 +135,10 @@ def display_results(hybrid_results):
             st.write("Solution 3")
             st.write("Total impacted PNRs are :",total_impacted)
             st.write("Reaccommodated PNRs :",total_assigned[2])
-            st.write("Unaccomadated PNRs :",total_non_assigned[2])
+            st.write("Total impacted PAX are :",total_impacted_pax)
+            st.write("Reaccommodated PAX :",total_assigned_pax[2])
+            
+            # st.write("Unaccomadated PNRs :",total_non_assigned[2])
             st.write("PNRs Upgraded :",upgrade_count[2])
             st.write("PNRs Downgraded :",downgrade_count[2])
             st.write("PNRs with city pairs same :",same_city_count[2])
@@ -141,7 +157,9 @@ def Main_function():
 
     #refer to global variable
     global total_impacted
+    global total_impacted_pax
     global total_assigned
+    global total_assigned_pax
     global total_non_assigned
     global upgrade_count 
     global downgrade_count
@@ -219,6 +237,9 @@ def Main_function():
 
         ##Stats
         total_assigned.append(len(quantum_result[i]["Assignments"]))
+        total_impacted_pax = GetTotalPAX(quantum_result[i]["Assignments"], 1)
+        total_assigned_pax.append(total_impacted_pax)
+        total_impacted_pax += GetTotalPAX(quantum_result[i]["Non Assignments"], 0)
         same_city_count.append(len((quantum_result[i]["Assignments"])))
         total_non_assigned.append(total_impacted-len(quantum_result[i]["Assignments"]))
         ##Stats
@@ -313,23 +334,23 @@ def Main_function():
         print(city_pairs_result['Non Assignments'])
     
     
-        final_non_assignments = set()  # Use a set to store unique pnr_number values
+    final_non_assignments = set()  # Use a set to store unique pnr_number values
 
-        for j in range(len(city_pairs_result['Non Assignments'])):
-            pnr_number = city_pairs_result['Non Assignments'][j].pnr_number
-            
-            if "#" in pnr_number:
-                some_number = pnr_number.split("#")[0]
-            else:
-                some_number = pnr_number
-            
-            final_non_assignments.add(some_number)
+    for j in range(len(city_pairs_result['Non Assignments'])):
+        pnr_number = city_pairs_result['Non Assignments'][j].pnr_number
+        
+        if "#" in pnr_number:
+            some_number = pnr_number.split("#")[0]
+        else:
+            some_number = pnr_number
+        
+        final_non_assignments.add(some_number)
 
-        # Convert the set to a newline-separated string
-        final_non_assignments_str = "\n".join(final_non_assignments)
-        with open(f'non_assignments_{i}.json', 'w') as f:
-            f.write(final_non_assignments_str)
-        hybrid_results[i].append(f'non_assignments_{i}.json')          
+    # Convert the set to a newline-separated string
+    final_non_assignments_str = "\n".join(final_non_assignments)
+    with open(f'non_assignments_{i}.json', 'w') as f:
+        f.write(final_non_assignments_str)
+    hybrid_results[i].append(f'non_assignments_{i}.json')          
 
     global code_been_run
     code_been_run=1
