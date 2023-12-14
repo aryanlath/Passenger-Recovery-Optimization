@@ -313,23 +313,23 @@ def Main_function():
         print(city_pairs_result['Non Assignments'])
     
     
-    final_non_assignments = set()  # Use a set to store unique pnr_number values
+        final_non_assignments = set()  # Use a set to store unique pnr_number values
 
-    for j in range(len(city_pairs_result['Non Assignments'])):
-        pnr_number = city_pairs_result['Non Assignments'][j].pnr_number
-        
-        if "#" in pnr_number:
-            some_number = pnr_number.split("#")[0]
-        else:
-            some_number = pnr_number
-        
-        final_non_assignments.add(some_number)
+        for j in range(len(city_pairs_result['Non Assignments'])):
+            pnr_number = city_pairs_result['Non Assignments'][j].pnr_number
+            
+            if "#" in pnr_number:
+                some_number = pnr_number.split("#")[0]
+            else:
+                some_number = pnr_number
+            
+            final_non_assignments.add(some_number)
 
-    # Convert the set to a newline-separated string
-    final_non_assignments_str = "\n".join(final_non_assignments)
-    with open(f'non_assignments_{i}.json', 'w') as f:
-        f.write(final_non_assignments_str)
-    hybrid_results[i].append(f'non_assignments_{i}.json')          
+        # Convert the set to a newline-separated string
+        final_non_assignments_str = "\n".join(final_non_assignments)
+        with open(f'non_assignments_{i}.json', 'w') as f:
+            f.write(final_non_assignments_str)
+        hybrid_results[i].append(f'non_assignments_{i}.json')          
 
     global code_been_run
     code_been_run=1

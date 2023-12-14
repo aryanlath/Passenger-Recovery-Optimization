@@ -15,7 +15,7 @@ def group_pnrs(dict_final):
     To remove hashes and group the PNRs in one key without hash
     Cancelled: Will contain indicies of flight in Original that is cancelled.
     """
-    grouped_pnrs = defaultdict(lambda: {'Original': [], 'Proposed': [],'Cancelled':[]})
+    grouped_pnrs = defaultdict(lambda: {'Original': [], 'Proposed': [],'Cancelled':[],'Email':'mockpnr@gmail.com'})
     for pnr, data in dict_final.items():
         # Split the PNR to check for hash
         split_pnr = pnr.split('#')
