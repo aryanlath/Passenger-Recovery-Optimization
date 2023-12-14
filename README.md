@@ -18,7 +18,7 @@ We have provided a GUI, deployed using `Streamlit` to easily modify the various 
 
 Run the following command in the terminal
 ```
-  pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ### Setting up the environment file
@@ -36,7 +36,7 @@ flight_mail_password = your_email_password (if using gmail, you need to generate
 ### Running the program
 Now, to run the script enter the following command in the terminal
 ```bash
-  streamlit run Landing_page.py
+streamlit run Landing_page.py
 ```
 
 
@@ -66,7 +66,8 @@ Each file contains widgets to adjust various parameters along with some default 
 - Used to display the new and optimal flight and class details of re-accomadated passengers.
 To run this page, open a separate terminal in the ReactAnimation/visualization folder and run the following command 
 ```
-    npm start
+cd ReactAnimation/visualization
+npm start
 ```
 
 ![Visualisation Animation](./assets/ResultVisualisation_SS.png)
