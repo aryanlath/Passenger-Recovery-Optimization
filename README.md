@@ -67,6 +67,7 @@ Each file contains widgets to adjust various parameters along with some default 
 To run this page, open a separate terminal in the ReactAnimation/visualization folder and run the following command 
 ```
 cd ReactAnimation/visualization
+npm install
 npm start
 ```
 
