@@ -10,7 +10,31 @@ import json
 from datetime import datetime
 pp = pprint.PrettyPrinter(indent=4)
 
+def group_pnrs(dict_final):
+    """
+    To remove hashes and group the PNRs in one key without hash
+    Cancelled: Will contain indicies of flight in Original that is cancelled.
+    """
+    grouped_pnrs = defaultdict(lambda: {'Original': [], 'Proposed': [],'Cancelled':[]})
+    for pnr, data in dict_final.items():
+        # Split the PNR to check for hash
+        split_pnr = pnr.split('#')
+        base_pnr = split_pnr[0]
+
+        # If there's no hash, treat it as a unique entry
+        if len(split_pnr) == 1:
+            grouped_pnrs[pnr]['Original'] = data['Original']
+            grouped_pnrs[pnr]['Proposed'] = data['Proposed']
+        else:
+            # If there's a hash, group by the base name
+            grouped_pnrs[base_pnr]['Original'] += data['Original']
+            grouped_pnrs[base_pnr]['Proposed'] += data['Proposed']
+    return grouped_pnrs
+
+
+
 def string_to_dict(string_dict):
+
     # Remove curly braces and split by commas
     pairs = string_dict[1:-1].split(', ')
 
@@ -188,6 +212,38 @@ def extract_PNR_from_CSV(file_path):
     
     return pnr_objects,pnr_to_split_pnrs
 
+
+def extract_PNR_from_CSV_without_split(file_path):
+    """
+    Without splitting the inv_list
+    """
+    pnr_dict = {}
+    df = pd.read_csv(file_path)
+    for _,row in df.iterrows():
+        pnr_number = row['RECLOC']
+        subclass = row['COS_CD']
+        seg_seq = int(row['SEG_SEQ'])
+        pax = row['PAX_CNT']
+        inv_id = row.get('INV_ID', None)
+        passenger_loyalty = row.get('LOYALTY', 'CM')
+        special_requirements = row.get('SSR', "Grade2")
+        email_id = row.get('CONTACT_EMAIL', "g-s01@outlook.com")
+
+        # To get the Legs of flight ordered by seq_number
+
+        if(pnr_dict.get(pnr_number) is None):
+            pnr_dict[pnr_number] = PNR(pnr_number,[inv_id+"#"+str(seg_seq)],[subclass+"#"+str(seg_seq)],special_requirements,pax,passenger_loyalty,email_id)
+        else:
+            pnr_dict[pnr_number].inv_list.append(inv_id+"#"+str(seg_seq),)
+            pnr_dict[pnr_number].sub_class_list.append(subclass+"#"+str(seg_seq))
+
+    # Cleaning up the # and sorting according to the seg_seq
+    for key,value in pnr_dict.items():
+        value.inv_list = sort_and_remove_number(value.inv_list)
+        value.sub_class_list = sort_and_remove_number(value.sub_class_list)
+    
+    return pnr_dict
+
 def convert_result_to_csv(result):
     dataframe = pd.DataFrame()
     PNR = []
@@ -302,24 +358,14 @@ def AssignmentsToJSON( Cabin_Class_Assignments) :
                 }
     """
     final_ans = {}
+    pnr_dict = extract_PNR_from_CSV_without_split(test_PNR_data_file)
     for pnr_number , val in  Cabin_Class_Assignments.items():
         final_ans[pnr_number]={} 
         final_ans[pnr_number]["Original"] =[]
         final_ans[pnr_number]["Proposed"]=[]
+        final_ans[pnr_number]["Cancelled"] =[]
         My_Pnr_obj = constants_immutable.pnr_objects[pnr_number]
-        final_ans[pnr_number]["Email"] = My_Pnr_obj.email_id
-        Orig_inv_list=  My_Pnr_obj.inv_list
-        Orig_subclass_list = My_Pnr_obj.sub_class_list
-        for idx, val1 in enumerate(Orig_inv_list):
-            temp_list =[]
-            temp_list.append(val1)
-            temp_list.append(constants_immutable.pnr_objects[pnr_number].get_cabin(Orig_subclass_list[0]))
-            temp_list_2 = [Orig_subclass_list[idx]]*(My_Pnr_obj.PAX)
-            temp_list.append(temp_list_2)
-            temp_list.append(str(constants_immutable.all_flights[val1].departure_time))
-            temp_list.append(str(constants_immutable.all_flights[val1].arrival_time))
-            final_ans[pnr_number]["Original"].append(temp_list)
-        
+        final_ans[pnr_number]["Email"] = My_Pnr_obj.email_id        
         num_of_proposed_flights = int(len(val)/My_Pnr_obj.PAX)
         
         for i in range(num_of_proposed_flights):
@@ -331,8 +377,32 @@ def AssignmentsToJSON( Cabin_Class_Assignments) :
             temp_list.append(str(constants_immutable.all_flights[val[i*My_Pnr_obj.PAX][1].inventory_id].departure_time))
             temp_list.append(str(constants_immutable.all_flights[val[i*My_Pnr_obj.PAX][1].inventory_id].arrival_time))
             final_ans[pnr_number]["Proposed"].append(temp_list)
-                
-    return json.dumps(final_ans,indent=4)
+    
+    final_ans   = group_pnrs(final_ans)  
+
+    for pnr , attr in final_ans.items():
+        if "#" in pnr:
+            pnr_without_hash = pnr.split("#")[0]
+        else:
+            pnr_without_hash = pnr
+
+        Orig_inv_list=  pnr_dict[pnr_without_hash].inv_list
+        Orig_subclass_list = pnr_dict[pnr_without_hash].sub_class_list
+        for idx, val1 in enumerate(Orig_inv_list):
+            temp_list =[]
+            temp_list.append(val1)
+            temp_list.append( pnr_dict[pnr_without_hash].get_cabin(Orig_subclass_list[0]))
+            temp_list_2 = [Orig_subclass_list[idx]]*(pnr_dict[pnr_without_hash].PAX)
+            temp_list.append(temp_list_2)
+            temp_list.append(str(constants_immutable.all_flights[val1].departure_time))
+            temp_list.append(str(constants_immutable.all_flights[val1].arrival_time))
+            if(constants_immutable.all_flights[val1].status=='cancelled'):
+                attr["Cancelled"].append(idx)
+            attr["Original"].append(temp_list)
+
+    
+        
+    return json.dumps(final_ans,indent=1)
 
 
 def up_dn_arr_delay(json_final):

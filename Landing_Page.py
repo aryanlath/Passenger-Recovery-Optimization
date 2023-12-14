@@ -207,29 +207,7 @@ def Main_function():
     pp.pprint(quantum_result[0]['Non Assignments'])
     print("#"*100)
     print()
-    # for i in range(len(quantum_result)):
-    #     with open(f'result_quantum_{i}.json', 'w') as f:
-    #         f.write(AssignmentsToJSON(Cabin_to_Class(quantum_result[i]['Assignments'])))
 
-    # Constructing 3 CSVs corresponding to the top 3 quantum solutions
-    # for idx in range(0,len(quantum_result)):
-    #     result_new=Cabin_to_Class(quantum_result[idx]["Assignments"])
-    #     my_dict = AssignmentsToJSON(result_new)
-    #     result_new_modified = []
-    #     for T in result_new :
-    #         Cancelled_Flights = []
-    #         for inv in T[0].inv_list:
-    #             if(constants_immutable.all_flights[inv].status=="cancelled"):
-    #                 Cancelled_Flights.append(constants_immutable.all_flights[inv])
-                    
-    #         result_new_modified.append((T[0].pnr_number,T[0].email_id,T[1],T[2],T[3],Cancelled_Flights))
-    #     df_assignments = pd.DataFrame(result_new_modified, columns=['PNR_Number', 'PNR_Email','Flight', 'Cabin','Class','Cancelled Flights'])
-    #     df_non_assignments = pd.DataFrame(quantum_result[idx]['Non Assignments'], columns=['PNR_Number'])
-
-    #     df_assignments.to_csv(f"Results/assignments_{idx}.csv")
-    #     df_non_assignments.to_csv(f"Results/non_assignments_{idx}.csv")
-    
-    
     for i in range(len(quantum_result)):
         hybrid_results.append([])
         
@@ -333,13 +311,25 @@ def Main_function():
 
         print("Final Non Assignments")
         print(city_pairs_result['Non Assignments'])
-        final_non_assignments = ""
-        for j in range(len(city_pairs_result['Non Assignments'])):
-            final_non_assignments+=city_pairs_result['Non Assignments'][j].pnr_number
-            final_non_assignments+="\n"
-        with open(f'non_assignments_{i}.json', 'w') as f:
-            f.write(final_non_assignments)
-        hybrid_results[i].append(f'non_assignments_{i}.json')            
+    
+    
+    final_non_assignments = set()  # Use a set to store unique pnr_number values
+
+    for j in range(len(city_pairs_result['Non Assignments'])):
+        pnr_number = city_pairs_result['Non Assignments'][j].pnr_number
+        
+        if "#" in pnr_number:
+            some_number = pnr_number.split("#")[0]
+        else:
+            some_number = pnr_number
+        
+        final_non_assignments.add(some_number)
+
+    # Convert the set to a newline-separated string
+    final_non_assignments_str = "\n".join(final_non_assignments)
+    with open(f'non_assignments_{i}.json', 'w') as f:
+        f.write(final_non_assignments_str)
+    hybrid_results[i].append(f'non_assignments_{i}.json')          
 
     global code_been_run
     code_been_run=1
@@ -461,7 +451,8 @@ def send_mail(assignment_0,assignment_1,assignment_2):
         
         cancelled_flight_string = 'Cancelled Flight Details - \n'
         if index == 1:
-            for x in schema1[pnr]['Original']:
+            for ind in schema1[pnr]['Cancelled']:
+                x = schema1[pnr]['Original'][ind]
                 inventory_id = str(x[0])
                 cabin = str(x[1])
                 pnr_class = x[2]
@@ -482,7 +473,8 @@ def send_mail(assignment_0,assignment_1,assignment_2):
                 cancelled_flight_string += 'Departure Time : ' + departure_time
                 cancelled_flight_string += '\n\n'
         elif index == 2:
-            for x in schema2[pnr]['Original']:
+            for ind in schema2[pnr]['Cancelled']:
+                x = schema2[pnr]['Original'][ind]
                 inventory_id = str(x[0])
                 cabin = str(x[1])
                 pnr_class =x[2]
@@ -503,7 +495,8 @@ def send_mail(assignment_0,assignment_1,assignment_2):
                 cancelled_flight_string += 'Departure Time : ' + departure_time
                 cancelled_flight_string += '\n' + '\n'
         else :
-            for x in schema3[pnr]['Original']:
+            for ind in schema3[pnr]['Cancelled']:
+                x = schema3[pnr]['Original'][ind]
                 inventory_id = str(x[0])
                 cabin = str(x[1])
                 pnr_class = x[2]
@@ -615,11 +608,7 @@ def send_mail(assignment_0,assignment_1,assignment_2):
             
             
         
-        pnr_string = ''
-        for x in pnr:
-            if x != '#':
-                pnr_string += x
-        # Replace newline characters with HTML line breaks
+        pnr_string = pnr
         cancelled_flight_string = cancelled_flight_string.replace('\n', '<br>')
         alt_flight0_string = alt_flight0_string.replace('\n','<br>')
         alt_flight1_string = alt_flight1_string.replace('\n','<br>')
@@ -638,7 +627,7 @@ def send_mail(assignment_0,assignment_1,assignment_2):
         email_message = MIMEMultipart()
         email_message['From'] = Airlines_Name
         email_message['To'] = email_pnr
-        email_message['Subject'] = f"Flight Cancellation - {pnr_string}"
+        email_message['Subject'] = f"Alternate Flight Options - {pnr_string}"
 
         # Attach the message template defined earlier, as a MIMEText html content type to the MIME message
         email_message.attach(MIMEText(msg, "html"))
