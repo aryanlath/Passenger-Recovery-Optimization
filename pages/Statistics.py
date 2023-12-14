@@ -5,6 +5,7 @@ from plotly.offline import plot
 #from .. import stats
 from stats import *
 import numpy as np
+import pandas as pd
 # Your list of values
 
 
@@ -100,3 +101,35 @@ fig.update_layout(
 )
 
 st.plotly_chart(fig)
+
+st.header("Bar Graph")
+
+
+
+# Sample data
+data = {
+    'Category': ['A', 'B', 'C', 'D'],
+    'Values': [20, 35, 30, 25]
+}
+
+# Create a DataFrame from the sample data
+df = pd.DataFrame(data)
+
+
+# Create a bar graph using Plotly Go
+fig = go.Figure(data=[go.Bar(
+    x=df['Category'],
+    y=df['Values'],
+    marker=dict(color='royalblue')  # Set color for bars
+)])
+
+fig.update_layout(
+    xaxis=dict(title='Categories'),  # X-axis label
+    yaxis=dict(title='Values'),      # Y-axis label
+    plot_bgcolor='rgba(0,0,0,0)',    # Background color
+    bargap=0.1,                      # Gap between bars
+)
+
+# Display the bar graph in Streamlit
+st.plotly_chart(fig)
+
