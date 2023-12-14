@@ -470,3 +470,25 @@ def write_list_to_file(listname,list,file):
         else:
             file.write(str(list[i])+"]\n")
         
+
+
+
+
+
+def GetTotalPAX( result,isAssignments):
+    """
+        result : list of tuples of the form (PNR,FT,CABIN) of each assignment, or list of PNR objects
+        in the case of non assignment list.
+        Pass quantumresult[i]['Assignments']/['Non Assignments] in this function
+        isAssignments : boolean indicating whether this is Assignment list or non assignment list 
+    """
+    Total_PAX_Count = 0 
+    for tup in result:
+        # currPNR = tup
+        if(isAssignments) :
+            currPNR = tup[0]
+            Total_PAX_Count+= currPNR.PAX
+        else :
+            currPNR = tup 
+            Total_PAX_Count+= currPNR.PAX
+    return Total_PAX_Count
