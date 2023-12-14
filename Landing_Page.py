@@ -30,6 +30,8 @@ one_multi = []
 multi_one = []
 multi_multi = []
 one_one = []
+pnr_score_assigned = []
+pnr_score_non_assigned = []
 
 
 def writeStatistics():
@@ -42,8 +44,49 @@ def writeStatistics():
     write_list_to_file("same_city_count",same_city_count,f)
     write_list_to_file("diff_city_count",diff_city_count,f)
     write_list_to_file("mean_arrival_delay",mean_arrival_delay,f)
+    f.write("pnr_score_assigned = [")
+    for solution in range(len(pnr_score_assigned)):
+        list=pnr_score_assigned[solution]
+        if solution!=len(pnr_score_assigned)-1:
+            f.write("[")
+            for i in range(len(list)):
+                if i!=len(list)-1:
+                    f.write(str(list[i])+",")
+                else:
+                    f.write(str(list[i]))
+            f.write("]")
+            f.write(",")
+        else:
+            f.write("[")
+            for i in range(len(list)):
+                if i!=len(list)-1:
+                    f.write(str(list[i])+",")
+                else:
+                    f.write(str(list[i]))
+            f.write("]")
+            f.write("]\n")
+    f.write("pnr_score_non_assigned = [")
+    for solution in range(len(pnr_score_non_assigned)):
+        list=pnr_score_non_assigned[solution]
+        if solution!=len(pnr_score_non_assigned)-1:
+            f.write("[")
+            for i in range(len(list)):
+                if i!=len(list)-1:
+                    f.write(str(list[i])+",")
+                else:
+                    f.write(str(list[i]))
+            f.write("]")
+            f.write(",")
+        else:
+            f.write("[")
+            for i in range(len(list)):
+                if i!=len(list)-1:
+                    f.write(str(list[i])+",")
+                else:
+                    f.write(str(list[i]))
+            f.write("]")
+            f.write("]\n")                                
     f.close()
-
 
 #to display result
 def display_results(hybrid_results):
@@ -170,6 +213,8 @@ def Main_function():
     global one_one
     global multi_multi
     global multi_one
+    global pnr_score_assigned
+    global pnr_score_non_assigned
     
     #store names of files containing results
     hybrid_results = []
@@ -228,6 +273,9 @@ def Main_function():
 
     for i in range(len(quantum_result)):
         hybrid_results.append([])
+        pnr_score_assigned.append([])
+        pnr_score_non_assigned.append([])
+        
         
     
     # Network flow pipeline
@@ -242,6 +290,8 @@ def Main_function():
         total_impacted_pax += GetTotalPAX(quantum_result[i]["Non Assignments"], 0)
         same_city_count.append(len((quantum_result[i]["Assignments"])))
         total_non_assigned.append(total_impacted-len(quantum_result[i]["Assignments"]))
+        for pnr_flight_tuple in quantum_result[i]["Assignments"]:
+            pnr_score_assigned[i].append(pnr_flight_tuple[0].get_pnr_score())
         ##Stats
         
         # print(final_result)
@@ -285,6 +335,9 @@ def Main_function():
         total_assigned[i]+=len(city_pairs_result['Assignments'])
         total_non_assigned[i]-=len(city_pairs_result['Assignments'])
         diff_city_count.append(len(city_pairs_result['Assignments']))
+        for pnr_flight_tuple in city_pairs_result["Assignments"]:
+            pnr_score_assigned[i].append(pnr_flight_tuple[0].get_pnr_score())
+        
         ##Stats
 
         # pp.pprint(city_pairs_result['Assignments'])
@@ -334,26 +387,25 @@ def Main_function():
         print(city_pairs_result['Non Assignments'])
     
     
-    final_non_assignments = set()  # Use a set to store unique pnr_number values
+        final_non_assignments = set()  # Use a set to store unique pnr_number values
 
-    for j in range(len(city_pairs_result['Non Assignments'])):
-        pnr_number = city_pairs_result['Non Assignments'][j].pnr_number
-        
-        if "#" in pnr_number:
-            some_number = pnr_number.split("#")[0]
-        else:
-            some_number = pnr_number
-        
-        final_non_assignments.add(some_number)
+        for j in range(len(city_pairs_result['Non Assignments'])):
+            pnr_number = city_pairs_result['Non Assignments'][j].pnr_number
+            pnr_score_non_assigned[i].append(city_pairs_result['Non Assignments'][j].get_pnr_score())
+            
+            if "#" in pnr_number:
+                some_number = pnr_number.split("#")[0]
+            else:
+                some_number = pnr_number
+            
+            final_non_assignments.add(some_number)
+    
+        # Convert the set to a newline-separated string
+        final_non_assignments_str = "\n".join(final_non_assignments)
+        with open(f'non_assignments_{i}.json', 'w') as f:
+            f.write(final_non_assignments_str)
+        hybrid_results[i].append(f'non_assignments_{i}.json')          
 
-    # Convert the set to a newline-separated string
-    final_non_assignments_str = "\n".join(final_non_assignments)
-    with open(f'non_assignments_{i}.json', 'w') as f:
-        f.write(final_non_assignments_str)
-    hybrid_results[i].append(f'non_assignments_{i}.json')          
-
-    global code_been_run
-    code_been_run=1
     #print(hybrid_results)
     #To print statistics on landing page
     display_results(hybrid_results)
@@ -668,11 +720,6 @@ st.title("Business Rules Modification Engine")
 st.write("This GUI allows you to modify scores for different business rules and customize your solution. Please proceed to the next three pages to do so.")
 st.write("Click the below button after you have made all required modifications")
 st.write()
-
-
-
-#To see if code has been run
-code_been_run=0
 
 
 # col1,col2,col3,col4,col5=st.columns(5)
