@@ -673,8 +673,6 @@ st.write("Click the below button to send E-mails to all affected passengers to n
 col1,col2,col3,col4,col5=st.columns(5)
 with col3:
     if st.button("Send Email"):
-        if (code_been_run):
-            send_mail('result_quantum_0.json','result_quantum_1.json','result_quantum_2.json')
-        else:
-            st.write('Run the code first!')
+        send_mail('result_quantum_0.json','result_quantum_1.json','result_quantum_2.json')
+
             
