@@ -468,7 +468,8 @@ def write_list_to_file(listname,list,file):
         if i!=len(list)-1:
             file.write(str(list[i])+",")
         else:
-            file.write(str(list[i])+"]\n")
+            file.write(str(list[i]))
+    file.write("]\n")
         
 
 
