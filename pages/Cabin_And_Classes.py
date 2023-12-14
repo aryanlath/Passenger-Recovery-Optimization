@@ -10,8 +10,8 @@ st.write("")
 
 #dictionary to store class as key and list of alternate classes as value
 classChange={}
-
-subClassFirst=['F','P']
+global_class=['Y','A','B','D','E','G','I','K','L','N','O','U','V','W','X','F','P','C','J','Z','Q','R','S','T','H','M']
+subClassFirst=global_class
 
 st.subheader("First Class")
 
@@ -20,26 +20,26 @@ col1,col2=st.columns(2)
 with col1:
     
     #list of classes where passengers of class F can be allocated to
-    classChange['F'] = st.multiselect('Proposed Class for Class F',subClassFirst,default=subClassFirst)
+    classChange['F'] = st.multiselect('Proposed Class for Class F',subClassFirst,default=['F'])
 with col2:
     #list of classes where passengers of class P can be allocated to
-    classChange['P'] = st.multiselect('Proposed Class for Class P',subClassFirst,default=subClassFirst)
+    classChange['P'] = st.multiselect('Proposed Class for Class P',subClassFirst,default=['P'])
     
-subClassBusiness=['C','J','Z']
+subClassBusiness=global_class
 
 st.subheader("Business Class")
 col1,col2=st.columns(2)
 with col1:
     #list of classes where passengers of class C can be allocated to
-    classChange['C'] = st.multiselect('Proposed Class for Class C',subClassBusiness,default=subClassBusiness)
+    classChange['C'] = st.multiselect('Proposed Class for Class C',subClassBusiness,default=['C'])
     
     #list of classes where passengers of class Z can be allocated to
-    classChange['Z'] = st.multiselect('Proposed Class for Class Z',subClassBusiness,default=subClassBusiness)
+    classChange['Z'] = st.multiselect('Proposed Class for Class Z',subClassBusiness,default=['Z'])
 with col2:
     #list of classes where passengers of class J can be allocated to
-    classChange['J'] = st.multiselect('Proposed Class for Class J',subClassBusiness,default=subClassBusiness)
+    classChange['J'] = st.multiselect('Proposed Class for Class J',subClassBusiness,default=['J'])
     
-subClassPremium=['Q','R','S','T','H','M']
+subClassPremium=global_class
 
 st.subheader("Premium Economy Class")
 
@@ -59,7 +59,7 @@ with col1:
 with col2:
     
     #list of classes where passengers of class Q can be allocated to
-    classChange['Q'] = st.multiselect('Proposed Class for Class Q',subClassPremium,default=[])
+    classChange['Q'] = st.multiselect('Proposed Class for Class Q',subClassPremium,default=['Q'])
     
     
     #list of classes where passengers of class S can be allocated to
@@ -68,7 +68,7 @@ with col2:
     #list of classes where passengers of class H can be allocated to
     classChange['H'] = st.multiselect('Proposed Class for Class H',subClassPremium,default=['Q','M'])
 
-subClassEconomy=['Y','A','B','D','E','G','I','K','L','N','O','U','V','W','X']
+subClassEconomy=global_class
 
 st.subheader("Economy Class")
 col1,col2=st.columns(2)
