@@ -27,8 +27,8 @@ Make a file named `.env` in the main folder, it's content should be:
 ```
 GMAPS_API_KEY=your_actual_api_key
 DWAVE_TOKEN=dwave_token
-flight_mail = your_email_id
-flight_mail_password = your_email_password (if using gmail, you need to generate an app password)
+flight_mail=your_email_id
+flight_mail_password=your_email_password (if using gmail, you need to generate an app password)
 ```
 `GMAPS_API_KEY` can be obtained from the `First Distancematrix accurate application` API of [Distance Matrix](https://distancematrix.ai/)
 
