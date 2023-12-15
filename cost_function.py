@@ -42,12 +42,12 @@ def cost_function(PNR,flight_tuple, cabin_tuple):
     """
     if(flight_tuple is None):
         return -NON_ASSIGNMENT_COST*PNR_Score(PNR)*2
-    s1 = flight_quality_score(PNR, flight_tuple) + 100
-    s2 = PNR_Score(PNR) + 100
+    s1 = flight_quality_score(PNR, flight_tuple) + 1
+    s2 = PNR_Score(PNR) + 1
     s3 = class_difference_score(PNR,cabin_tuple) 
     if(s3==0):
         return - 100*NON_ASSIGNMENT_COST*PNR_Score(PNR)
-    s3 = sigmoid(s3) + 100 
+    s3 = sigmoid(s3) + 1
     cost = weight_flight_map*math.log(s1) + weight_pnr_map*math.log(s2) + weight_cabin_map*math.log(s3)
     return cost
 
