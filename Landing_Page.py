@@ -313,6 +313,7 @@ def Landing_Page():
 
                 ##Stats
                 total_assigned[i]+=len(city_pairs_result['Assignments'])
+                total_assigned_pax[i] += GetTotalPAX(city_pairs_result["Assignments"], 1)
                 total_non_assigned[i]-=len(city_pairs_result['Assignments'])
                 diff_city_count.append(len(city_pairs_result['Assignments']))
                 for pnr_flight_tuple in city_pairs_result["Assignments"]:
@@ -436,7 +437,7 @@ def Landing_Page():
     st.write("Click the below button after you have made all required modifications")
     st.write()
 
-    constants_immutable.city_pairs_reqd=st.toggle("Different City-Pairs",value=False)
+    constants_immutable.city_pairs_reqd=st.toggle("Different City-Pairs",value=True)
     if st.button("Generate Solution Files"):
             # To clear out the json files
         with open('result_quantum_0.json', 'w') as file:
