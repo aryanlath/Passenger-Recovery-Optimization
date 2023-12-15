@@ -22,7 +22,6 @@ def find_nearest_airports(iata_code, k=3):
     """
     # Extracting the coordinates and creating a KDTree
     coordinates = list(airports.values())
-    print(f"Coordinates: {coordinates}")
     tree = KDTree(coordinates)
     if iata_code not in airports:
         return "Airport code not found."

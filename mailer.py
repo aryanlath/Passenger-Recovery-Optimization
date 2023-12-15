@@ -1,17 +1,15 @@
-# mail the PNRs from assignments.csv to the respective passengers
-
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import ssl
-
 import smtplib
+import constants_immutable
 import time
 from string import Template
-
 from feasible_flights import Get_All_Maps
 from dotenv import load_dotenv
 import os
 import json
+
 load_dotenv()
 
 def read_template(filename):
@@ -25,16 +23,10 @@ def send_mail(assignment_0,assignment_1,assignment_2):
     '''
     This function sends an email to the passengers whose flight has been cancelled.
     '''
-
-    print("Do you want to send emails to the passengers whose flight has been cancelled? (y/n)")
-    choice = input()
-    if choice == 'n':
-        return
-    
     # Define the content of the email
     Airlines_Name = "Mock Airlines"
-    email = 'ayush.savar1@gmail.com'
-    pwd = 'rzty djrg ucrb dtrd'
+    email = os.getenv('flight_mail')
+    pwd = os.getenv('flight_mail_password')
     
     schema_0_link = 'https://forms.gle/8wZmJ5e9szYm37r48'
     schema_1_link = 'https://forms.gle/q3QrqN8fSHPnkRcq6'
@@ -73,13 +65,13 @@ def send_mail(assignment_0,assignment_1,assignment_2):
     for pnr in schema3:
         assigned_pnr_set.add(pnr)
    
-    all_flights,_,_,_ = Get_All_Maps()
+    # constants_immutable.all_flights,_,_,_ = Get_All_Maps()
     # Connect to the Gmail SMTP server
     server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
     server.ehlo()
     server.login(email,pwd)
     print('Connected to Gmail SMTP server of ', email)
-    for pnr in assigned_pnr_set:
+    for passenger,pnr in enumerate(assigned_pnr_set):
         index = -1
         if pnr in schema1:
             email_pnr = schema1[pnr]['Email']
@@ -96,67 +88,71 @@ def send_mail(assignment_0,assignment_1,assignment_2):
         
         cancelled_flight_string = 'Cancelled Flight Details - \n'
         if index == 1:
-            for x in schema1[pnr]['Original']:
+            for ind in schema1[pnr]['Cancelled']:
+                x = schema1[pnr]['Original'][ind]
                 inventory_id = str(x[0])
                 cabin = str(x[1])
                 pnr_class = x[2]
                 pnr_class_string = ', '.join(pnr_class)
-                arrival_city = all_flights[inventory_id].arrival_city
-                departure_city = all_flights[inventory_id].departure_city
-                flight_number = all_flights[inventory_id].flight_number
-                departure_time = str(all_flights[inventory_id].departure_time)
-                arrival_time = str(all_flights[inventory_id].arrival_time)
+                arrival_city = constants_immutable.all_flights[inventory_id].arrival_city
+                departure_city = constants_immutable.all_flights[inventory_id].departure_city
+                flight_number = constants_immutable.all_flights[inventory_id].flight_number
+                departure_time = str(constants_immutable.all_flights[inventory_id].departure_time)
+                arrival_time = str(constants_immutable.all_flights[inventory_id].arrival_time)
                 
-                cancelled_flight_string = cancelled_flight_string +  'Inventory ID : ' + inventory_id + '\n' 
+                cancelled_flight_string = cancelled_flight_string + 'Flight Number : ' + flight_number + '\n'
+                # cancelled_flight_string += 'Inventory ID : ' + inventory_id + '\n' 
                 cancelled_flight_string += 'Cabin : ' + cabin + '\n'
                 cancelled_flight_string += 'Class : ' + pnr_class_string + '\n'
-                cancelled_flight_string += 'Arrival City : ' + arrival_city + '\n'
-                cancelled_flight_string += 'Departure City : ' + departure_city + '\n'
-                cancelled_flight_string += 'Flight Number : ' + flight_number + '\n'
+                cancelled_flight_string += 'Arrival Airport : ' + arrival_city + '\n'
+                cancelled_flight_string += 'Departure Airport : ' + departure_city + '\n'
                 cancelled_flight_string += 'Arrival Time : ' + arrival_time + '\n'
                 cancelled_flight_string += 'Departure Time : ' + departure_time
                 cancelled_flight_string += '\n\n'
         elif index == 2:
-            for x in schema2[pnr]['Original']:
+            for ind in schema2[pnr]['Cancelled']:
+                x = schema2[pnr]['Original'][ind]
                 inventory_id = str(x[0])
                 cabin = str(x[1])
                 pnr_class =x[2]
                 pnr_class_string = ', '.join(pnr_class)
-                arrival_city =all_flights[inventory_id].arrival_city
-                departure_city =all_flights[inventory_id].departure_city
-                flight_number = all_flights[inventory_id].flight_number
-                departure_time = str(all_flights[inventory_id].departure_time)
-                arrival_time = str(all_flights[inventory_id].arrival_time)
+                arrival_city =constants_immutable.all_flights[inventory_id].arrival_city
+                departure_city =constants_immutable.all_flights[inventory_id].departure_city
+                flight_number = constants_immutable.all_flights[inventory_id].flight_number
+                departure_time = str(constants_immutable.all_flights[inventory_id].departure_time)
+                arrival_time = str(constants_immutable.all_flights[inventory_id].arrival_time)
                 
-                cancelled_flight_string  = cancelled_flight_string + 'Inventory ID : ' + inventory_id + '\n' 
+                cancelled_flight_string = cancelled_flight_string + 'Flight Number : ' + flight_number + '\n'
+                # cancelled_flight_string += 'Inventory ID : ' + inventory_id + '\n' 
                 cancelled_flight_string += 'Cabin : ' + cabin + '\n'
                 cancelled_flight_string += 'Class : ' + pnr_class_string + '\n'
-                cancelled_flight_string += 'Arrival City : ' + arrival_city + '\n'
-                cancelled_flight_string += 'Departure City : ' + departure_city + '\n'
-                cancelled_flight_string += 'Flight Number : ' + flight_number + '\n'
+                cancelled_flight_string += 'Arrival Airport : ' + arrival_city + '\n'
+                cancelled_flight_string += 'Departure Airport : ' + departure_city + '\n'
                 cancelled_flight_string += 'Arrival Time : ' + arrival_time + '\n'
                 cancelled_flight_string += 'Departure Time : ' + departure_time
-                cancelled_flight_string += '\n' + '\n'
+                cancelled_flight_string += '\n\n'
         else :
-            for x in schema3[pnr]['Original']:
+            for ind in schema3[pnr]['Cancelled']:
+                x = schema3[pnr]['Original'][ind]
                 inventory_id = str(x[0])
                 cabin = str(x[1])
                 pnr_class = x[2]
                 pnr_class_string = ', '.join(pnr_class)
-                arrival_city =all_flights[inventory_id].arrival_city
-                departure_city = all_flights[inventory_id].departure_city
-                flight_number = all_flights[inventory_id].flight_number
-                departure_time = str(all_flights[inventory_id].departure_time)
-                arrival_time = str(all_flights[inventory_id].arrival_time)             
-                cancelled_flight_string =  cancelled_flight_string +  'Inventory ID : ' + inventory_id + '\n' 
+                arrival_city =constants_immutable.all_flights[inventory_id].arrival_city
+                departure_city = constants_immutable.all_flights[inventory_id].departure_city
+                flight_number = constants_immutable.all_flights[inventory_id].flight_number
+                departure_time = str(constants_immutable.all_flights[inventory_id].departure_time)
+                arrival_time = str(constants_immutable.all_flights[inventory_id].arrival_time)             
+                
+                cancelled_flight_string = cancelled_flight_string + 'Flight Number : ' + flight_number + '\n'
+                # cancelled_flight_string += 'Inventory ID : ' + inventory_id + '\n' 
                 cancelled_flight_string += 'Cabin : ' + cabin + '\n'
                 cancelled_flight_string += 'Class : ' + pnr_class_string + '\n'
-                cancelled_flight_string += 'Arrival City : ' + arrival_city + '\n'
-                cancelled_flight_string += 'Departure City : ' + departure_city + '\n'
-                cancelled_flight_string += 'Flight Number : ' + str(flight_number) + '\n'
+                cancelled_flight_string += 'Arrival Airport : ' + arrival_city + '\n'
+                cancelled_flight_string += 'Departure Airport : ' + departure_city + '\n'
                 cancelled_flight_string += 'Arrival Time : ' + arrival_time + '\n'
                 cancelled_flight_string += 'Departure Time : ' + departure_time
-                cancelled_flight_string += '\n' + '\n'
+                cancelled_flight_string += '\n\n'
                                                                 
         
         
@@ -170,19 +166,21 @@ def send_mail(assignment_0,assignment_1,assignment_2):
                 cabin = str(x[1])
                 pnr_class = x[2]
                 pnr_class_string = ', '.join(pnr_class)
-                arrival_city = all_flights[inventory_id].arrival_city
-                departure_city =all_flights[inventory_id].departure_city
-                flight_number =all_flights[inventory_id].flight_number
-                departure_time = str(all_flights[inventory_id].departure_time)
-                arrival_time = str(all_flights[inventory_id].arrival_time)
+                arrival_city = constants_immutable.all_flights[inventory_id].arrival_city
+                departure_city =constants_immutable.all_flights[inventory_id].departure_city
+                flight_number =constants_immutable.all_flights[inventory_id].flight_number
+                departure_time = str(constants_immutable.all_flights[inventory_id].departure_time)
+                arrival_time = str(constants_immutable.all_flights[inventory_id].arrival_time)
                 
                 
-                alt_flight0_string = alt_flight0_string + 'Inventory ID : ' + inventory_id + '\n' 
+                #alt_flight0_string = alt_flight0_string + 'Inventory ID : ' + inventory_id + '\n' 
+                alt_flight0_string = ''
+                alt_flight0_string += 'Flight Number : ' + str(flight_number) + '\n'
                 alt_flight0_string += 'Cabin : ' + cabin + '\n'
                 alt_flight0_string += 'Class : ' + pnr_class_string + '\n'
                 alt_flight0_string += 'Arrival City : ' + arrival_city + '\n'
                 alt_flight0_string += 'Departure City : ' + departure_city + '\n'
-                alt_flight0_string += 'Flight Number : ' + str(flight_number) + '\n'
+                # alt_flight0_string += 'Flight Number : ' + str(flight_number) + '\n'
                 alt_flight0_string += 'Arrival Time : ' + arrival_time + '\n'
                 alt_flight0_string += 'Departure Time : ' + departure_time + '\n'
                 alt_flight0_string += '\n'   
@@ -201,18 +199,18 @@ def send_mail(assignment_0,assignment_1,assignment_2):
                 cabin = str(x[1])
                 pnr_class = x[2]
                 pnr_class_string = ', '.join(pnr_class)
-                arrival_city = all_flights[inventory_id].arrival_city
-                departure_city = all_flights[inventory_id].departure_city
-                flight_number = all_flights[inventory_id].flight_number
-                departure_time = str(all_flights[inventory_id].departure_time)
-                arrival_time = str(all_flights[inventory_id].arrival_time)
+                arrival_city = constants_immutable.all_flights[inventory_id].arrival_city
+                departure_city = constants_immutable.all_flights[inventory_id].departure_city
+                flight_number = constants_immutable.all_flights[inventory_id].flight_number
+                departure_time = str(constants_immutable.all_flights[inventory_id].departure_time)
+                arrival_time = str(constants_immutable.all_flights[inventory_id].arrival_time)
                 
-                alt_flight1_string = alt_flight1_string + 'Inventory ID : ' + inventory_id + '\n' 
+                alt_flight1_string = 'Flight Number : ' + str(flight_number) + '\n' 
                 alt_flight1_string += 'Cabin : ' + cabin + '\n'
                 alt_flight1_string += 'Class : ' + pnr_class_string + '\n'
                 alt_flight1_string += 'Arrival City : ' + arrival_city + '\n'
                 alt_flight1_string += 'Departure City : ' + departure_city + '\n'
-                alt_flight1_string += 'Flight Number : ' + str(flight_number) + '\n'
+                # alt_flight1_string += 'Flight Number : ' + str(flight_number) + '\n'
                 alt_flight1_string += 'Arrival Time : ' + arrival_time + '\n'
                 alt_flight1_string += 'Departure Time : ' + departure_time + '\n'
                 alt_flight1_string += '\n'   
@@ -229,18 +227,18 @@ def send_mail(assignment_0,assignment_1,assignment_2):
                 cabin = str(x[1])
                 pnr_class = x[2]
                 pnr_class_string = ', '.join(pnr_class)
-                arrival_city = all_flights[inventory_id].arrival_city
-                departure_city = all_flights[inventory_id].departure_city
-                flight_number = all_flights[inventory_id].flight_number
-                departure_time = str(all_flights[inventory_id].departure_time)
-                arrival_time = str(all_flights[inventory_id].arrival_time)
+                arrival_city = constants_immutable.all_flights[inventory_id].arrival_city
+                departure_city = constants_immutable.all_flights[inventory_id].departure_city
+                flight_number = constants_immutable.all_flights[inventory_id].flight_number
+                departure_time = str(constants_immutable.all_flights[inventory_id].departure_time)
+                arrival_time = str(constants_immutable.all_flights[inventory_id].arrival_time)
                 
-                alt_flight2_string = alt_flight2_string + 'Inventory ID : ' + inventory_id + '\n' 
+                alt_flight2_string = 'Flight Number : ' + str(flight_number) + '\n'
                 alt_flight2_string += 'Cabin : ' + cabin + '\n'
                 alt_flight2_string += 'Class : ' + pnr_class_string + '\n'
                 alt_flight2_string += 'Arrival City : ' + arrival_city + '\n'
                 alt_flight2_string += 'Departure City : ' + departure_city + '\n'
-                alt_flight2_string += 'Flight Number : ' + str(flight_number) + '\n'
+                # alt_flight2_string += 'Flight Number : ' + str(flight_number) + '\n'
                 alt_flight2_string += 'Arrival Time : ' + arrival_time + '\n'
                 alt_flight2_string += 'Departure Time : ' + departure_time + '\n'
                 alt_flight2_string += '\n'   
@@ -250,11 +248,7 @@ def send_mail(assignment_0,assignment_1,assignment_2):
             
             
         
-        pnr_string = ''
-        for x in pnr:
-            if x != '#':
-                pnr_string += x
-        # Replace newline characters with HTML line breaks
+        pnr_string = pnr
         cancelled_flight_string = cancelled_flight_string.replace('\n', '<br>')
         alt_flight0_string = alt_flight0_string.replace('\n','<br>')
         alt_flight1_string = alt_flight1_string.replace('\n','<br>')
@@ -273,7 +267,7 @@ def send_mail(assignment_0,assignment_1,assignment_2):
         email_message = MIMEMultipart()
         email_message['From'] = Airlines_Name
         email_message['To'] = email_pnr
-        email_message['Subject'] = f"Flight Cancellation - {pnr_string}"
+        email_message['Subject'] = f"Alternate Flight Options - {pnr_string}"
 
         # Attach the message template defined earlier, as a MIMEText html content type to the MIME message
         email_message.attach(MIMEText(msg, "html"))
@@ -282,21 +276,8 @@ def send_mail(assignment_0,assignment_1,assignment_2):
         server.sendmail(email, email_pnr, email_string)
 
         print("Mail sent to ",email_pnr)
+        if passenger==5:
+            break
         time.sleep(2)
 
     server.quit()
-    
-
-
-# send_mail('result1.json','result2.json','result3.json')
-'''
-all_flights,_,_,_ = Get_All_Maps()
-for x in all_flights:
-    print(x)
-
-
-'''
-
-
-
-

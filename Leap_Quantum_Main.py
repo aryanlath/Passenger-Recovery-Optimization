@@ -16,7 +16,6 @@ from dwave.system import LeapHybridCQMSampler
 # import dwave.inspector
 from dimod import ConstrainedQuadraticModel, BinaryQuadraticModel, QuadraticModel
 from dimod import Real
-all_flights =[]
 from dotenv import load_dotenv
 
 # Load the .env file
@@ -47,7 +46,7 @@ def get_flight_cabin_mappings(flights, current_mapping=None, flight_index=0):
 
 def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False):
     g=create_flight_graph()
-    all_flights, _,_ ,_= Get_All_Maps()
+    #constants_immutable.all_flights, _,_ ,_= Get_All_Maps()
     """
         input: List of Impacted PNR objects, optional: city_pairs bool to tell if we have to include city pairs or not
         returns: list of result dictionaries containing Assignments, Non assignments and costs
@@ -71,14 +70,14 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
     start = time.time()
     if not city_pairs:
         for PNR in PNR_List:
-            PNR_to_Feasible_Flights(g,all_flights,PNR,PNR_to_FeasibleFlights_map,dp)
+            PNR_to_Feasible_Flights(g,constants_immutable.all_flights,PNR,PNR_to_FeasibleFlights_map,dp)
     
     else :
         for PNR in PNR_List:
-            old_arrival_city = all_flights[PNR.inv_list[-1]].arrival_city
+            old_arrival_city = constants_immutable.all_flights[PNR.inv_list[-1]].arrival_city
             proposed_arrival_cities = get_city_pairs_cost(old_arrival_city)
             for city in proposed_arrival_cities:
-                PNR_to_Feasible_Flights(g,all_flights,PNR,PNR_to_FeasibleFlights_map,dp,3,city[0])
+                PNR_to_Feasible_Flights(g,constants_immutable.all_flights,PNR,PNR_to_FeasibleFlights_map,dp,3,city[0])
     end = time.time()
     print("Feasible Flights Time: ", end-start)
 
@@ -239,7 +238,7 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
 
     end = time.time()
     print("Solving time: ", end-start)
-# all_flights,pnr_list,, = Get_All_Maps()
+# constants_immutable.all_flights,pnr_list,, = Get_All_Maps()
 
 
 # passenger_pnr_path = 'passenger_pnr_dataset.csv'
@@ -247,7 +246,7 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
 
 
 # # Identify the impacted PNRs
-# Impacted_PNR = Get_Impacted_passengers(all_flights,pnr_list)
+# Impacted_PNR = Get_Impacted_passengers(constants_immutable.all_flights,pnr_list)
 # print("Total impacted Passengers: ",len(Impacted_PNR))
 # pp.pprint(Impacted_PNR)
 # result = optimize_flight_assignments(Impacted_PNR)

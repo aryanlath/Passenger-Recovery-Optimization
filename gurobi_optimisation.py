@@ -30,7 +30,7 @@ def get_flight_cabin_mappings(flights, current_mapping=None, flight_index=0):
 
 def optimize_flight_assignments(PNR_List,city_pairs=False):
     g=create_flight_graph()
-    all_flights,_,_,_= Get_All_Maps()
+    #constants_immutable.all_flights,_,_,_= Get_All_Maps()
     """
         input: List of Impacted PNR objects, optional: city_pairs bool to tell if we have to include city pairs or not
         returns: result dictionary containing Assignments, Non assignments and costs
@@ -58,15 +58,15 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
     start = time.time()
     if not city_pairs:
         for PNR in PNR_List:
-            PNR_to_Feasible_Flights(g, all_flights, PNR, PNR_to_FeasibleFlights_map, dp)
+            PNR_to_Feasible_Flights(g, constants_immutable.all_flights, PNR, PNR_to_FeasibleFlights_map, dp)
 
     else:
         for PNR in PNR_List:
-            old_arrival_city = all_flights[PNR.inv_list[-1]].arrival_city
+            old_arrival_city = constants_immutable.all_flights[PNR.inv_list[-1]].arrival_city
             proposed_arrival_cities = get_city_pairs_cost(old_arrival_city,dp1)
             for city in proposed_arrival_cities:
                 start=time.time()
-                PNR_to_Feasible_Flights(g,all_flights,PNR,PNR_to_FeasibleFlights_map,dp,3,city[0])
+                PNR_to_Feasible_Flights(g,constants_immutable.all_flights,PNR,PNR_to_FeasibleFlights_map,dp,3,city[0])
                 end=time.time()
 
     end = time.time()
