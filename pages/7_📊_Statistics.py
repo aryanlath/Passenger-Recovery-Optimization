@@ -102,34 +102,34 @@ fig.update_layout(
 
 st.plotly_chart(fig)
 
-st.header("Bar Graph")
+# st.header("Solver Time(ms) vs Impacted PNR")
 
 
 
-# Sample data
-data = {
-    'Category': ['A', 'B', 'C', 'D'],
-    'Values': [20, 35, 30, 25]
-}
+# # Sample data
+# data = {
+#     'Category': ['87', '518', '490', '1233'],
+#     'Values': [16.03, 16.04, 21.37, 16.05]
+# }
 
-# Create a DataFrame from the sample data
-df = pd.DataFrame(data)
+# # Create a DataFrame from the sample data
+# df = pd.DataFrame(data)
 
 
-# Create a bar graph using Plotly Go
-fig = go.Figure(data=[go.Bar(
-    x=df['Category'],
-    y=df['Values'],
-    marker=dict(color='royalblue')  # Set color for bars
-)])
+# # Create a bar graph using Plotly Go
+# fig = go.Figure(data=[go.Bar(
+#     x=df['Category'],
+#     y=df['Values'],
+#     marker=dict(color='royalblue')  # Set color for bars
+# )])
 
-fig.update_layout(
-    xaxis=dict(title='Categories'),  # X-axis label
-    yaxis=dict(title='Values'),      # Y-axis label
-    plot_bgcolor='rgba(0,0,0,0)',    # Background color
-    bargap=0.1,                      # Gap between bars
-)
+# fig.update_layout(
+#     xaxis=dict(title='Impacted PNR'),  # X-axis label
+#     yaxis=dict(title='Solver Time(ms)'),      # Y-axis label
+#     plot_bgcolor='rgba(0,0,0,0)',    # Background color
+#     bargap=0.1,                      # Gap between bars
+# )
 
-# Display the bar graph in Streamlit
-st.plotly_chart(fig)
+# # Display the bar graph in Streamlit
+# st.plotly_chart(fig)
 
