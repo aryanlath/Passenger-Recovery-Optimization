@@ -130,12 +130,15 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
 
     start = time.time()
     CQM.set_objective(-1*CQM_obj)
-    cqm_file = CQM.to_file()
+    from timings import timings_dict
+    timings_dict["Variables"] = len(CQM.variables)
+    timings_dict["Constraints"] = len(CQM.constraints)
+
     # presolve = Presolver(CQM)
     # presolve.apply()
     # reduced_cqm = presolve.detach_model()
     sampler = LeapHybridCQMSampler(token=dwave_token)    
-    print("Sampler Min Time: ",sampler.min_time_limit(CQM))
+    # print("Sampler Min Time: ",sampler.min_time_limit(CQM))
     sampleset = sampler.sample_cqm(CQM).aggregate()
     # dwave.inspector.show(sampleset, block=dwave.inspector.Block.FOREVER)
     end_time_sampling = time.time()
@@ -148,6 +151,7 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
     print("Total Filter time " , end_agg - start_agg)
     print("{} feasible solutions of {}.".format(len(feasible_sampleset), len(sampleset)))    
     best = feasible_sampleset.first.sample   
+    timings_dict["Quantum_Time"] = sampleset.info["qpu_access_time"]/1000
     # Aggregated_sampleset = feasible_sampleset.aggregate()
     print("Total No. of Quantum Solutions are " , len(feasible_sampleset))
     solution_count= 0 
@@ -178,7 +182,8 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
                 Objective_Value_List[idx] += Non_assignment_Cost 
     end_cost_cal = time.time()
     print("Total Obj Function calculation time" , end_cost_cal - start_cost_cal)
-    print(f"Objective Value List of top {QSol_count} quantum solutions is: \n", Objective_Value_List)    
+    print(f"Objective Value List of top {QSol_count} quantum solutions is: \n", Objective_Value_List) 
+    timings_dict["Quantum_Cost"]=Objective_Value_List[0]   
     result = []
     print("RESULT LENGTH " ,len(result))
     # set to keep track of assigned PNRs
@@ -210,48 +215,4 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
                 temp_result['Non Assignments'].append(PNR)
         result.append(temp_result)
     return result
-    # for idx,solution in enumerate(Final_Quantum_Solutions):
-    #     variable_cnt=0
-    #     for PNR in PNR_List:
-    #         for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
-    #             cabins_tuple = get_flight_cabin_mappings(FT)
-    #             for cabin in cabins_tuple:         
-    #                 if solution[f'X_{variable_cnt}'] == 0.0:
-    #                     if PNR.pnr_number not in assigned_pnrs[idx] and PNR.pnr_number not in not_assigned_pnrs[idx]:
-    #                         result[idx]['Non Assignments'].append(PNR)
-    #                         not_assigned_pnrs[idx].add(PNR.pnr_number)
-    #                 variable_cnt += 1
-
-    # for idx,solution in enumerate(Final_Quantum_Solutions):
-    #     for PNR in PNR_List:
-    #         if PNR.pnr_number not in assigned_pnrs[idx] and PNR.pnr_number not in not_assigned_pnrs[idx]:
-    #             result[idx]['Non Assignments'].append(PNR)
-                
-    # for idx, solution in enumerate(Final_Top3_Quantum_Solutions):
-    #     df_assignments = pd.DataFrame(result[idx]['Assignments'], columns=['PNR_Number', 'PNR_Email','Flight', 'Cabin'])
-    #     df_non_assignments = pd.DataFrame(result[idx]['Non Assignments'], columns=['PNR'])
     
-    #     df_assignments.to_csv(f"Results/assignments_{idx}.csv")
-    #     df_non_assignments.to_csv(f"Results/non_assignments_{idx}.csv")
-    # else:
-        # return "The problem does not have an optimal solution."
-
-    end = time.time()
-    print("Solving time: ", end-start)
-# constants_immutable.all_flights,pnr_list,, = Get_All_Maps()
-
-
-# passenger_pnr_path = 'passenger_pnr_dataset.csv'
-# flight_schedule_path = 'flight_schedule_dataset.csv'
-
-
-# # Identify the impacted PNRs
-# Impacted_PNR = Get_Impacted_passengers(constants_immutable.all_flights,pnr_list)
-# print("Total impacted Passengers: ",len(Impacted_PNR))
-# pp.pprint(Impacted_PNR)
-# result = optimize_flight_assignments(Impacted_PNR)
-# print("Total Reassigned: ",len(result['Assignments']))
-
-# pp.pprint(result['Assignments'])
-# print("Not Assigned PNRs: ")
-# pp.pprint(result['Non Assignments'])

@@ -119,14 +119,13 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
     model.setObjective(objective,GRB.MAXIMIZE)
     start = time.time()
     model.optimize()
-
-    # model.write("try.lp") # To Print the problem and constraints in a file
-
+    from timings import timings_dict
+    timings_dict["Classical_Time"] = model.Runtime*1000
     # Checking if a solution exists
     if model.status == GRB.OPTIMAL:
         # Extract the solution and its cost
         result['Total Cost'] = model.objVal
-
+        timings_dict["Classical_Cost"] = model.ObjVal
         # Populating the result dictionary
         for PNR in PNR_List:
             Assigned = False

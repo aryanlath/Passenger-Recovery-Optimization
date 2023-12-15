@@ -116,12 +116,7 @@ def flight_quality_score(PNR, flight_tuple):
     
     # ConnectionScore -> If proposed flight solutions's length increases, score decreases   
                         # If proposed original flight solutions's length decreases, score increases
-    ConnectionScore = constants_immutable.connection_constant - len(flight_tuple) + len(constants_immutable.pnr_flight_mapping[PNR.pnr_number])
-    min_DelayScore = 0.00000002
-    max_DelayScore = STD6h + arrDelay6h
-    max_ConnectionScore = constants_immutable.connection_constant + 3
-    min_ConnectionScore = constants_immutable.connection_constant - 3
-    # return ((DelayScore-min_DelayScore)/(max_DelayScore - min_DelayScore)) * ((ConnectionScore-min_ConnectionScore)/(max_ConnectionScore-min_ConnectionScore))
+    ConnectionScore = connection_constant - len(flight_tuple) + len(constants_immutable.pnr_flight_mapping[PNR.pnr_number])
     return sigmoid(DelayScore*ConnectionScore)
 
 def class_difference_score(PNR, cabin_Tuple):

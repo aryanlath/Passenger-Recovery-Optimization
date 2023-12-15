@@ -232,36 +232,32 @@ def Landing_Page():
         init_normalize_factors()
         
         # Identify the impacted PNRs
+        from timings import timings_dict
         Impacted_PNR = Get_Impacted_passengers(constants_immutable.all_flights, constants_immutable.pnr_objects)
 
 
         print("Total impacted Passengers: ",len(Impacted_PNR))
         total_impacted = len(Impacted_PNR)
         # pp.pprint(Impacted_PNR)
-
-        # Classical part
-        # start = time.time()
-        # result = optimize_flight_assignments(Impacted_PNR,False)
-        # end = time.time()
-        # print("Total Classical Time:" , end-start)
-        # print()
+        timings_dict["Impacted_PNR"] = total_impacted
+        #Classical part
+        start = time.time()
+        result = optimize_flight_assignments(Impacted_PNR,False)
+        end = time.time()
+        print("Total Classical Time:" , end-start)
+        print()
         # print("Total Reassigned: ",len(result['Assignments']))
-        # print("Classical Optimal Cost",result['Total Cost'])
-        # # pp.pprint(result['Assignments'])
-        # print("Not Assigned PNRs: ")
-        # pp.pprint(result['Non Assignments'])
-        # print("#"*100)
-        # print()
-        # with open('result_classical.json', 'w') as f:
-        #     f.write(AssignmentsToJSON(Cabin_to_Class(result['Assignments'])))
-        # #total_assigned.append(len(result['Assignments']))
-        # #hybrid_results.append('result_classical.json')
-        # #same_city_count.append(result['Assignments'])
-        # # print(AssignmentsToJSON(Cabin_to_Class(result["Assignments"])))
+        print("Classical Optimal Cost",result['Total Cost'])
+        # pp.pprint(result['Assignments'])
+        print("Not Assigned PNRs: ")
+        pp.pprint(result['Non Assignments'])
+        print("#"*100)
+        print()
+
 
     # Quantum Pipeline
         start = time.time()
-        quantum_result =quantum_optimize_flight_assignments(Impacted_PNR,QSol_count=4)
+        quantum_result =quantum_optimize_flight_assignments(Impacted_PNR,QSol_count=3)
         end = time.time()
         print("Total Quantum Time:", end-start)
         print()
@@ -315,81 +311,121 @@ def Landing_Page():
         
 
         # City Pairs Handling
-        for i in range(len(quantum_result)):
-            start=time.time()
-            city_pairs_result = optimize_flight_assignments(quantum_result[i]['Non Assignments'],True)
-            end=time.time()
-            print(f"Exception Handling time - {i}: ",end-start)
-            print()
-            print("Total Assignments with different City-Pairs: ", len(city_pairs_result['Assignments']))
+        if constants_immutable.city_pairs_reqd:
+            for i in range(len(quantum_result)):
+                start=time.time()
+                city_pairs_result = optimize_flight_assignments(quantum_result[i]['Non Assignments'],True)
+                end=time.time()
+                print(f"Exception Handling time - {i}: ",end-start)
+                print()
+                print("Total Assignments with different City-Pairs: ", len(city_pairs_result['Assignments']))
 
-            ##Stats
-            total_assigned[i]+=len(city_pairs_result['Assignments'])
-            total_non_assigned[i]-=len(city_pairs_result['Assignments'])
-            diff_city_count.append(len(city_pairs_result['Assignments']))
-            for pnr_flight_tuple in city_pairs_result["Assignments"]:
-                pnr_score_assigned[i].append(pnr_flight_tuple[0].get_pnr_score())
-            
-
-            start=time.time()
-            final_result = Cabin_to_Class(city_pairs_result["Assignments"])
-            end=time.time()
-            print("Network Flow time :",end-start)
-            print()
-            print("Final Assignments")
-            json_final = AssignmentsToJSON(final_result)
-            with open(f'exception_list_{i}.json', 'w') as f:
-                f.write(json_final)
-            hybrid_results[i].append(f'exception_list_{i}.json')
-
-            
-            ##Stats
-
-            temp1, temp2, temp3 = up_dn_arr_delay(json_final)
-            upgrade_count[i]+=temp1
-            downgrade_count[i]+=temp2
-            mean_arrival_delay[i]+=temp3
-            mean_arrival_delay[i]/=total_impacted
-            mean_arrival_delay[i] = round(mean_arrival_delay[i], 3)
-
-            temp1, temp2, temp3, temp4 = count_one_multi(json_final)
-            one_one[i]+=temp1
-            one_one[i]=(one_one[i]*100)/total_assigned[i]
-            one_multi[i]+=temp2
-            one_multi[i]=(one_multi[i]*100)/total_assigned[i]
-            multi_one[i]+=temp3
-            multi_one[i]=(multi_one[i]*100)/total_assigned[i]
-            multi_multi[i]+=temp4
-            multi_multi[i]=(multi_multi[i]*100)/total_assigned[i]
-
-            ##Stats
-            
-            
-            final_non_assignments = set()  # Use a set to store unique pnr_number values
-
-            for j in range(len(city_pairs_result['Non Assignments'])):
-                pnr_number = city_pairs_result['Non Assignments'][j].pnr_number
-                pnr_score_non_assigned[i].append(city_pairs_result['Non Assignments'][j].get_pnr_score())
+                ##Stats
+                total_assigned[i]+=len(city_pairs_result['Assignments'])
+                total_non_assigned[i]-=len(city_pairs_result['Assignments'])
+                diff_city_count.append(len(city_pairs_result['Assignments']))
+                for pnr_flight_tuple in city_pairs_result["Assignments"]:
+                    pnr_score_assigned[i].append(pnr_flight_tuple[0].get_pnr_score())
                 
-                if "#" in pnr_number:
-                    some_number = pnr_number.split("#")[0]
-                else:
-                    some_number = pnr_number
+
+                start=time.time()
+                final_result = Cabin_to_Class(city_pairs_result["Assignments"])
+                end=time.time()
+                print("Network Flow time :",end-start)
+                print()
+                print("Final Assignments")
+                json_final = AssignmentsToJSON(final_result)
+                with open(f'exception_list_{i}.json', 'w') as f:
+                    f.write(json_final)
+                hybrid_results[i].append(f'exception_list_{i}.json')
+
                 
-                final_non_assignments.add(some_number)
-        
-            # Convert the set to a newline-separated string
-            final_non_assignments_str = "\n".join(final_non_assignments)
-            with open(f'non_assignments_{i}.json', 'w') as f:
-                f.write(final_non_assignments_str)
-            hybrid_results[i].append(f'non_assignments_{i}.json')          
+                ##Stats
 
+                temp1, temp2, temp3 = up_dn_arr_delay(json_final)
+                upgrade_count[i]+=temp1
+                downgrade_count[i]+=temp2
+                mean_arrival_delay[i]+=temp3
+                mean_arrival_delay[i]/=total_impacted
+                mean_arrival_delay[i] = round(mean_arrival_delay[i], 3)
 
+                temp1, temp2, temp3, temp4 = count_one_multi(json_final)
+                one_one[i]+=temp1
+                one_one[i]=(one_one[i]*100)/total_assigned[i]
+                one_multi[i]+=temp2
+                one_multi[i]=(one_multi[i]*100)/total_assigned[i]
+                multi_one[i]+=temp3
+                multi_one[i]=(multi_one[i]*100)/total_assigned[i]
+                multi_multi[i]+=temp4
+                multi_multi[i]=(multi_multi[i]*100)/total_assigned[i]
+
+                ##Stats
+                
+                
+                final_non_assignments = set()  # Use a set to store unique pnr_number values
+
+                for j in range(len(city_pairs_result['Non Assignments'])):
+                    pnr_number = city_pairs_result['Non Assignments'][j].pnr_number
+                    pnr_score_non_assigned[i].append(city_pairs_result['Non Assignments'][j].get_pnr_score())
+                    
+                    if "#" in pnr_number:
+                        some_number = pnr_number.split("#")[0]
+                    else:
+                        some_number = pnr_number
+                    
+                    final_non_assignments.add(some_number)
+            
+                # Convert the set to a newline-separated string
+                final_non_assignments_str = "\n".join(final_non_assignments)
+                with open(f'non_assignments_{i}.json', 'w') as f:
+                    f.write(final_non_assignments_str)
+                hybrid_results[i].append(f'non_assignments_{i}.json')          
+
+        else:
+            for i in range(len(quantum_result)):
+                diff_city_count.append(0)
+                final_non_assignments = set()  # Use a set to store unique pnr_number values
+
+                for j in range(len(quantum_result[i]['Non Assignments'])):
+                    pnr_number = quantum_result[i]['Non Assignments'][j].pnr_number
+                    pnr_score_non_assigned[i].append(quantum_result[i]['Non Assignments'][j].get_pnr_score())
+                    
+                    if "#" in pnr_number:
+                        some_number = pnr_number.split("#")[0]
+                    else:
+                        some_number = pnr_number
+                    
+                    final_non_assignments.add(some_number)
+            
+                # Convert the set to a newline-separated string
+                final_non_assignments_str = "\n".join(final_non_assignments)
+                with open(f'non_assignments_{i}.json', 'w') as f:
+                    f.write(final_non_assignments_str)
+                hybrid_results[i].append(f'non_assignments_{i}.json')         
+
+        timings_dict["Name"]="Big"
         #To print statistics on landing page
+        import csv
+        csv_file_path = "timings_data.csv"
+
+        # Check if the CSV file exists and write data
+        file_exists = os.path.exists(csv_file_path)
+
+        with open(csv_file_path, mode='a', newline='') as csv_file:
+            fieldnames = timings_dict.keys()
+            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+            
+            # If the file doesn't exist, write the header row
+            if not file_exists:
+                writer.writeheader()
+            
+            # Write the data
+            writer.writerow(timings_dict)
+
         display_results(hybrid_results)
 
         #To write current statistics in a file 
-        writeStatistics()
+        #writeStatistics()
 
 
     
@@ -399,7 +435,7 @@ def Landing_Page():
     st.write("Click the below button after you have made all required modifications")
     st.write()
 
-
+    constants_immutable.city_pairs_reqd=st.toggle("Different City-Pairs",value=False)
     if st.button("Generate Solution Files"):
         Main_function()
     st.write("Click the below button to send E-mails to all affected PNRs to notify them about their re-accomodation")
@@ -409,6 +445,6 @@ def Landing_Page():
             mailer.send_mail('result_quantum_0.json','result_quantum_1.json','result_quantum_2.json')
 
 
-
-Landing_Page()
+if __name__=="__main__":
+    Landing_Page()
 

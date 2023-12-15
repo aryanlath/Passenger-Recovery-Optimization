@@ -45,7 +45,7 @@ def Get_Impacted_passengers(all_flights,pnr_objects):
     Returns :- List of Impacted Parameters
 
     """
-    
+    from timings import timings_dict
     Impacted_flights=[]
     Impacted_PNR=[]
     for key,value in all_flights.items():
@@ -54,6 +54,7 @@ def Get_Impacted_passengers(all_flights,pnr_objects):
     for key,value in pnr_objects.items():
         for flight_number in value.inv_list:
             if flight_number in Impacted_flights:
+                timings_dict["Cancelled_Flights"]+=1
                 if(value in Impacted_PNR ):
                     pass
                 else:

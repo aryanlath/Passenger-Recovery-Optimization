@@ -8,8 +8,8 @@ test_large_flight = 'Dataset/Large/large_Flights.csv'
 final_flight = 'Dataset/Final/Final_Flight.csv'
 final_PNR = 'Dataset/Final/Final_PNR.csv'
 # Change the path of test_flight_data_file and test_PNR_data_file according to the size of data_file
-test_flight_data_file = test_small_flight
-test_PNR_data_file = test_small_PNR
+test_flight_data_file = final_flight
+test_PNR_data_file = final_PNR
 n_cabin=2
 ETD=72
 cabinScoreFirst=1950

@@ -1,6 +1,6 @@
 import streamlit as st
 import json
-from constants_immutable import all_flights
+from constants_immutable import all_flights,city_pairs_reqd
 
 # Function to parse and organize data
 def parse_data(data):
@@ -23,7 +23,7 @@ def display_data():
     with open('exception_list_0.json', 'r') as file:
         data = json.load(file)
 
-    if len(data)==0:
+    if len(data)==0 or not city_pairs_reqd:
         st.info('No city Pairs!', icon="🚨")
 
     else:
