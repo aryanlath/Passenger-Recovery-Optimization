@@ -414,9 +414,9 @@ def up_dn_arr_delay(json_final):
     cabin_cost = {
         # Based on Empirical Cost values of flight tickets of these classes
         "EC": 1,
-        "PC": 2,
+        "PC": 1.5,
         "BC": 3,
-        "FC": 4
+        "FC": 6
     }
     for pnr_num, value in dict_final.items():
         class_score_init = 0
