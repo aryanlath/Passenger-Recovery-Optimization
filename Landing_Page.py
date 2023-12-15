@@ -404,7 +404,7 @@ def Landing_Page():
 
         timings_dict["Name"]=test_PNR_data_file
 
-        
+
         #To print statistics on landing page
         csv_file_path = "timings_data.csv"
 
@@ -446,6 +446,15 @@ def Landing_Page():
             json.dump({},file)
 
         with open('result_quantum_2.json', 'w') as file:
+            json.dump({},file)
+
+        with open('exception_list_0.json', 'w') as file:
+            json.dump({},file)
+
+        with open('exception_list_1.json', 'w') as file:
+            json.dump({},file)
+
+        with open('exception_list_2.json', 'w') as file:
             json.dump({},file)
 
         Main_function()
