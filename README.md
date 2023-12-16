@@ -5,7 +5,7 @@ operating frequency, timings, etc. Many passengers get impacted due to these sch
 changes and they need to be regularly re-accommodated to alternate flights. 
 
 The project uses a advanced and robust **Hybrid Classical-Quantum Solution** to identify optimal alternate flight solutions for all impacted passengers based on certain constraints and considering various factors like PNR priority, time to reach the destination, and special passenger types without jeopardizing the flight experience for the passengers.
-[Report Link](https://drive.google.com/file/d/1sPOJW-YTl1KlpY3xH9R1-QTFlTAFfTzS/view?usp=sharing)
+[Report Link](https://drive.google.com/file/d/1ruoWMwxBDLI-IDLsrfOWq1jFPJ4lMMna/view?usp=drive_link)
 
 ## Business Rules Engine using Streamlit
 
@@ -57,7 +57,7 @@ python -m streamlit run Landing_Page.py
 3. Go to the Next page Cabins and Classes and do the same. Click **Proceed** when done.
 4. Go to the next page flight quality score and do the same. Click **Proceed**.
 5. Then come to **Landing Page** and click Run Code. You can disable and enable accordingly if u need different city pairs or not.
-6. Go to **Solution 1** , **Solution 2**, **Solution 3*** and **Different City Pairs** to see the different solution files.
+6. Go to **Solution 1** , **Solution 2**, **Solution 3** and **Different City Pairs** to see the different solution files.
 7. Click on **Statistics** to view the statistics.
 
 ## Solution Files:
@@ -82,7 +82,7 @@ Each file contains widgets to adjust various parameters along with some default 
 - Used to modify scores for PNR priority calculation parameters like PAX, loyalty, classes, MCT, MAXCT, ETD, etc
 - **writes to constants.py**
   
-![PNR Scores](./assets/PNR_Score_SS2.png)
+![PNR Scores](./assets/PNR_Ranking_SS2.png)
 
 ### Cabin_And_Classes.py
 - Used to allow/disallow class changes during flight allocation and upgrade/downgrade rules
