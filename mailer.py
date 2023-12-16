@@ -174,7 +174,7 @@ def send_mail(assignment_0,assignment_1,assignment_2):
                 
                 
                 #alt_flight0_string = alt_flight0_string + 'Inventory ID : ' + inventory_id + '\n' 
-                alt_flight0_string = ''
+                
                 alt_flight0_string += 'Flight Number : ' + str(flight_number) + '\n'
                 alt_flight0_string += 'Cabin : ' + cabin + '\n'
                 alt_flight0_string += 'Class : ' + pnr_class_string + '\n'
@@ -205,7 +205,7 @@ def send_mail(assignment_0,assignment_1,assignment_2):
                 departure_time = str(constants_immutable.all_flights[inventory_id].departure_time)
                 arrival_time = str(constants_immutable.all_flights[inventory_id].arrival_time)
                 
-                alt_flight1_string = 'Flight Number : ' + str(flight_number) + '\n' 
+                alt_flight1_string += 'Flight Number : ' + str(flight_number) + '\n' 
                 alt_flight1_string += 'Cabin : ' + cabin + '\n'
                 alt_flight1_string += 'Class : ' + pnr_class_string + '\n'
                 alt_flight1_string += 'Arrival City : ' + arrival_city + '\n'
@@ -233,7 +233,7 @@ def send_mail(assignment_0,assignment_1,assignment_2):
                 departure_time = str(constants_immutable.all_flights[inventory_id].departure_time)
                 arrival_time = str(constants_immutable.all_flights[inventory_id].arrival_time)
                 
-                alt_flight2_string = 'Flight Number : ' + str(flight_number) + '\n'
+                alt_flight2_string += 'Flight Number : ' + str(flight_number) + '\n'
                 alt_flight2_string += 'Cabin : ' + cabin + '\n'
                 alt_flight2_string += 'Class : ' + pnr_class_string + '\n'
                 alt_flight2_string += 'Arrival City : ' + arrival_city + '\n'
