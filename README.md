@@ -63,6 +63,12 @@ Each file contains widgets to adjust various parameters along with some default 
   
 ![Flight Scores](./assets/Flight_Score_SS2.png)
 
+### Solution_1.py
+- Used to display PNR wise re-accomodation solution 
+- **displays only after generating solution files**
+  
+![Solution File](./assets/Solution_File_SS2.png)
+
 ### Visualisation_Animation.py
 - Used to display the new and optimal flight and class details of re-accomadated passengers.
 To run this page, open a separate terminal in the ReactAnimation/visualization folder and run the following command 
