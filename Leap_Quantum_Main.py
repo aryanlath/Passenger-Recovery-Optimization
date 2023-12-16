@@ -1,8 +1,4 @@
-import pandas as pd
-import gurobipy as gp
-from gurobipy import GRB
 from utils import *
-from Models.Flights import Flight
 from collections import defaultdict
 from feasible_flights import *
 from cost_function import *
@@ -10,12 +6,8 @@ import time
 import os
 from dwave.preprocessing.presolve import Presolver
 from handle_city_pairs import *
-import multiprocessing
 import dimod
 from dwave.system import LeapHybridCQMSampler
-# import dwave.inspector
-from dimod import ConstrainedQuadraticModel, BinaryQuadraticModel, QuadraticModel
-from dimod import Real
 from dotenv import load_dotenv
 
 # Load the .env file
@@ -46,7 +38,7 @@ def get_flight_cabin_mappings(flights, current_mapping=None, flight_index=0):
 
 def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False):
     g=create_flight_graph()
-    #constants_immutable.all_flights, _,_ ,_= Get_All_Maps()
+
     """
         input: List of Impacted PNR objects, optional: city_pairs bool to tell if we have to include city pairs or not
         returns: list of result dictionaries containing Assignments, Non assignments and costs
@@ -57,15 +49,16 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
     X_PNR_Constraint = defaultdict(list)
     X_Flight_Capacity_Constraint = defaultdict(lambda: defaultdict(list))
 
-    # PNR_to_FeasibleFlights_map=manager.dict()
-    #
+
     # X_ijk = 1 if the ith PNR is assigned to the jth flight's kth class
     # Variables
     X = {}
-    
+    X_PNR_Constraint_1 = defaultdict(list)
+    X_Flight_Capacity_Constraint_1 = defaultdict(lambda: defaultdict(list))
     variable_cnt=0
     PNR_to_FeasibleFlights_map={}
     my_dict = {}
+    test_dict = {}
     dp={}
     start = time.time()
     if not city_pairs:
@@ -88,6 +81,7 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
             for cabin in cabins_tuple:
                 # cabin is a tuple Eg: ('FC','PC')
                 X[(PNR,FT,cabin)] = dimod.Binary(f'X_{variable_cnt}')
+                test_dict[(PNR,FT,cabin)] = variable_cnt
                 my_dict[f'X_{variable_cnt}'] = (PNR,FT,cabin)
                 # X[(PNR,FT,cabin)] = model.addVar(vtype=GRB.BINARY, name=f'X_{i}')
                 variable_cnt+=1
@@ -107,7 +101,7 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
         if(len(X_PNR_Constraint[PNR])==0):
             continue
         CQM.add_constraint(sum(X_PNR_Constraint[PNR]) <= 1)
-        # model.addConstr(sum(X_PNR_Constraint[PNR]) <= 1)
+
         # Penalise non assignment costs (-M(1-sigma(Xi))) - For each PNR
         Non_assignment_Cost = cost_function(PNR,None,None)
         CQM_obj += Non_assignment_Cost - Non_assignment_Cost*sum(X_PNR_Constraint[PNR])
@@ -134,35 +128,20 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
     timings_dict["Variables"] = len(CQM.variables)
     timings_dict["Constraints"] = len(CQM.constraints)
 
-    # presolve = Presolver(CQM)
-    # presolve.apply()
-    # reduced_cqm = presolve.detach_model()
     sampler = LeapHybridCQMSampler(token=dwave_token)    
-    # print("Sampler Min Time: ",sampler.min_time_limit(CQM))
     sampleset = sampler.sample_cqm(CQM).aggregate()
-    # dwave.inspector.show(sampleset, block=dwave.inspector.Block.FOREVER)
-    end_time_sampling = time.time()
-    print("API CALL Time " ,end_time_sampling - start)     
-    start_agg = time.time()
     feasible_sampleset = sampleset.filter(lambda row: row.is_feasible) 
-    end_agg = time.time()
-    print("TYPE OF SAMPLESET IS " , type(sampleset) )  
-    # dwave.inspector.show_qmi(CQM,feasible_sampleset.first.sample)
-    print("Total Filter time " , end_agg - start_agg)
     print("{} feasible solutions of {}.".format(len(feasible_sampleset), len(sampleset)))    
-    best = feasible_sampleset.first.sample   
     timings_dict["Quantum_Time"] = sampleset.info["qpu_access_time"]/1000
-    # Aggregated_sampleset = feasible_sampleset.aggregate()
+    print("QPU Access time",timings_dict["Quantum_Time"])
     print("Total No. of Quantum Solutions are " , len(feasible_sampleset))
-    solution_count= 0 
     Final_Quantum_Solutions =[]
     for idx,sample in enumerate(feasible_sampleset.truncate(QSol_count)):
-        # print("NEXT SOLUTION\n") 
+
         if(idx >=QSol_count):
             break
         Final_Quantum_Solutions.append(sample)
-    start_cost_cal = time.time()
-    print("Total sampling time " , start_cost_cal - start)
+
     Objective_Value_List =[0]*QSol_count
     variable_cnt=0
     for PNR in PNR_List:
@@ -180,12 +159,42 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
             if not is_PNR_assigned[idx]:
                 Non_assignment_Cost = cost_function(PNR, None, None)
                 Objective_Value_List[idx] += Non_assignment_Cost 
-    end_cost_cal = time.time()
-    print("Total Obj Function calculation time" , end_cost_cal - start_cost_cal)
+
     print(f"Objective Value List of top {QSol_count} quantum solutions is: \n", Objective_Value_List) 
     timings_dict["Quantum_Cost"]=Objective_Value_List[0]   
     result = []
-    print("RESULT LENGTH " ,len(result))
+
+    if not city_pairs:
+        X_PNR_Constraint_1.clear()
+        X_Flight_Capacity_Constraint_1.clear()
+        for idx,solution in enumerate(Final_Quantum_Solutions):
+            for PNR in PNR_List:
+                for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
+                    cabins_tuple = list(get_flight_cabin_mappings(FT))
+                    for cabin in cabins_tuple:
+                        if solution[f'X_{test_dict[(PNR,FT,cabin)]}'] == 1.0 :
+                            print((PNR, FT, cabin))
+                            X_PNR_Constraint_1[PNR].append(1)
+                        else :
+                            X_PNR_Constraint_1[PNR].append(0)
+                    for flight_index,flight in enumerate(FT): 
+                        for cabin in cabins_tuple:
+                                if solution[f'X_{test_dict[(PNR,FT,cabin)]}'] ==1.0:
+                                    X_Flight_Capacity_Constraint_1[flight][cabin[flight_index]].append(PNR.PAX)
+                                else:
+                                    X_Flight_Capacity_Constraint_1[flight][cabin[flight_index]].append(0)
+        
+            for PNR in PNR_List :
+                if(len(X_PNR_Constraint_1[PNR])==0):
+                    continue
+                if sum(X_PNR_Constraint_1[PNR]) > 1 :
+                    print(f"{idx} PNR Feasibility violated",PNR,sum(X_PNR_Constraint_1[PNR]),1)
+            for Flight, constraint_dic in X_Flight_Capacity_Constraint_1.items():
+                for cabin, cabin_list in constraint_dic.items():
+                    if sum(cabin_list) > Flight.get_capacity(cabin):
+                        print(f"{idx} Feasibility violated",sum(cabin_list),Flight.get_capacity(cabin))
+
+                    
     # set to keep track of assigned PNRs
     for idx,solution in enumerate(Final_Quantum_Solutions):
         variable_cnt=0
@@ -207,12 +216,14 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
                                 else:
                                     flights.bc_available_inventory-= PNR.PAX
                         temp_result['Assignments'].append((PNR, FT, cabin))
-                        # assigned_pnrs[idx].add(PNR.pnr_number)
                         Assigned= True
                     variable_cnt += 1
                     
             if not Assigned:
                 temp_result['Non Assignments'].append(PNR)
         result.append(temp_result)
+
+
+    
     return result
     

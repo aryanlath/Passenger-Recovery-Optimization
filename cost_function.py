@@ -46,7 +46,7 @@ def cost_function(PNR,flight_tuple, cabin_tuple):
     s2 = PNR_Score(PNR) + 10
     s3 = class_difference_score(PNR,cabin_tuple) 
     if(s3==0):
-        return - 100*NON_ASSIGNMENT_COST*PNR_Score(PNR)
+        return -100*NON_ASSIGNMENT_COST*PNR_Score(PNR)
     s3 = sigmoid(s3) + 10
     cost = weight_flight_map*math.log(s1) + weight_pnr_map*math.log(s2) + weight_cabin_map*math.log(s3)
     return cost
@@ -65,13 +65,9 @@ def flight_quality_score(PNR, flight_tuple):
     """
     Calculates the flight quality score for each PNR to flight mapping.
     """
-    # Dictionary that maps each PNR.pnr_numer to list of all flights taken by that PNR
-    # TODO: kNN
-    # _,_,pnr_flight_mapping,_= feasible_flights.Get_All_Maps()
     first_flight = constants_immutable.pnr_flight_mapping[PNR.pnr_number][0]
     last_flight = constants_immutable.pnr_flight_mapping[PNR.pnr_number][-1]
     Arrival_Delay_inHours = abs((last_flight.arrival_time - flight_tuple[-1].arrival_time).total_seconds())/3600
-    # Departure_Delay_inHours = abs((first_flight.departure_time - flight_tuple[0].departure_time).total_seconds())/3600
 
     DelayScore = 0
 

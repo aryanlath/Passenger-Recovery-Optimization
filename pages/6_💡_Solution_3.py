@@ -20,7 +20,7 @@ def format_cabins(cabin_list):
 
 def display_data():
     # Parse the data
-    with open('result_quantum_3.json', 'r') as file:
+    with open('result_quantum_2.json', 'r') as file:
         data = json.load(file)
     if len(data)==0:
         st.info('Run the code to get the Solution!', icon="🚨")

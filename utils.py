@@ -6,6 +6,7 @@ from collections import defaultdict
 import constants_immutable 
 import copy
 import pprint
+import scipy.stats as stats
 import json
 from datetime import datetime
 pp = pprint.PrettyPrinter(indent=4)
@@ -449,14 +450,19 @@ def count_one_multi(json_final):
     multi_multi_temp = 0
 
     for pnr_num, value in dict_final.items():
-        if len(value['Original'])==1 and len(value['Proposed'])==1:
-            one_one_temp+=1
-        elif len(value['Original'])<len(value['Proposed']):
-            one_multi_temp+=1
-        elif len(value['Original'])>len(value['Proposed']):
-            multi_one_temp+=1
+        if len(value['Cancelled'])==1:
+            if len(value['Proposed'])==1:
+                one_one_temp+=1
+            else:
+                one_multi_temp+=1
+                print("one-multi",pnr_num)
         else:
-            multi_multi_temp+=1
+            if len(value['Proposed'])==1:
+                multi_one_temp+=1
+                print("Multi-1",pnr_num)
+            else:
+                multi_multi_temp+=1
+                print("Multi-multi",pnr_num)
     
     return one_one_temp, one_multi_temp, multi_one_temp, multi_multi_temp
 
