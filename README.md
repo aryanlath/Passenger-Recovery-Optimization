@@ -57,7 +57,7 @@ python -m streamlit run Landing_Page.py
 3. Go to the Next page Cabins and Classes and do the same. Click **Proceed** when done.
 4. Go to the next page flight quality score and do the same. Click **Proceed**.
 5. Then come to **Landing Page** and click Run Code. You can disable and enable accordingly if u need different city pairs or not.
-6. Go to **Solution 1** , **Solution 2**, **Solution 3*** and **Different City Pairs** to see the different solution files.
+6. Go to **Solution 1** , **Solution 2**, **Solution 3** and **Different City Pairs** to see the different solution files.
 7. Click on **Statistics** to view the statistics.
 
 ## Solution Files:
