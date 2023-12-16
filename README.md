@@ -116,7 +116,7 @@ Following this, we have 2 more pages corresponding to the other two solutions.
 - Each entry in the solution JSON  is indexed based on the PNR number , each PNR has 4 values 
 1. Original list of flights
 2. Proposed list of flights from out solution
-3. List of indexes of flights cancelled in the original itinerary
+3. List of indexes of flights wrt (Original list of flights in 1) cancelled in the original itinerary
 4. Email ID of PNR
 
 
