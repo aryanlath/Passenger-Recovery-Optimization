@@ -50,7 +50,7 @@ streamlit run Landing_Page.py
 6. Go to **Solution 1** , **Solution 2**, **Solution 3*** and **Different City Pairs** to see the different solution files.
 7. Click on **Statistics** to view the statistics.
 
-## Solution Files
+## Solution Files:
 1. `result_quantum_0.json`, `result_quantum_1.json`,`result_quantum_2.json` are the different solution files with **same** city pairs
 2.  `exception_list_0.json`, `exception_list_1.json`,`exception_list_2.json` are the different solution files with **different** city pairs
 3.  `non_assignments_0.txt`, `non_assignments_1.txt`,`non_assignments_2.txt` are the 3 non assigned list of PNRs corresponding to the 3 solutions.
