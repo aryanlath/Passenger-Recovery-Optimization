@@ -11,8 +11,8 @@ vlarge_flight = 'Dataset/Experimental/1233_flight.csv'
 vlarge_pnr = 'Dataset/Final/Final_PNR.csv'
 all_acc_flight = 'Dataset/Experimental/629_flight.csv'
 # Change the path of test_flight_data_file and test_PNR_data_file according to the size of data_file
-test_flight_data_file = all_acc_flight
-test_PNR_data_file = final_PNR
+test_flight_data_file = vlarge_flight
+test_PNR_data_file = vlarge_pnr
 n_cabin=2
 ETD=72
 cabinScoreFirst=1950
