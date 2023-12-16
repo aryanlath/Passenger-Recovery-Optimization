@@ -226,7 +226,7 @@ def Landing_Page():
 
         ## Normalizing variables
         init_normalize_factors()
-        
+        Dp1={}
         # Identify the impacted PNRs
         from timings import timings_dict
         Impacted_PNR = Get_Impacted_passengers(constants_immutable.all_flights, constants_immutable.pnr_objects)
@@ -290,7 +290,7 @@ def Landing_Page():
         # City Pairs Handling
         if constants_immutable.city_pairs_reqd:
             for i in range(len(quantum_result)):
-                city_pairs_result = optimize_flight_assignments(quantum_result[i]['Non Assignments'],True)
+                city_pairs_result = optimize_flight_assignments(quantum_result[i]['Non Assignments'],Dp1,True)
                 print(f"City Pairs- {i} done")
                 print("Total Assignments with different City-Pairs: ", len(city_pairs_result['Assignments']))
 

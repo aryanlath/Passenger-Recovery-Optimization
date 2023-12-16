@@ -28,7 +28,7 @@ def get_flight_cabin_mappings(flights, current_mapping=None, flight_index=0):
         yield from get_flight_cabin_mappings(flights, current_mapping, flight_index + 1)
         current_mapping.pop()
 
-def optimize_flight_assignments(PNR_List,city_pairs=False):
+def optimize_flight_assignments(PNR_List,dp1,city_pairs=False):
     g=create_flight_graph()
     #constants_immutable.all_flights,_,_,_= Get_All_Maps()
     """
@@ -54,7 +54,6 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
     variable_cnt=0
     PNR_to_FeasibleFlights_map={}
     dp={}
-    dp1={}
     if not city_pairs:
         for PNR in PNR_List:
             PNR_to_Feasible_Flights(g, constants_immutable.all_flights, PNR, PNR_to_FeasibleFlights_map, dp)

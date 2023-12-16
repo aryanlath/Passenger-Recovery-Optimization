@@ -24,14 +24,14 @@ def Main_function():
 
     # Identify the impacted PNRs
     Impacted_PNR = Get_Impacted_passengers(constants_immutable.all_flights, constants_immutable.pnr_objects)
-
+    dp1={}
 
     print("Total impacted Passengers: ",len(Impacted_PNR))
     pp.pprint(Impacted_PNR)
 
     # Classical part
     start = time.time()
-    result = optimize_flight_assignments(Impacted_PNR,False)
+    result = optimize_flight_assignments(Impacted_PNR,dp1,False)
     end = time.time()
     print("Total Classical Time:" , end-start)
     print()
@@ -92,18 +92,18 @@ def Main_function():
     print("#"*100)
     print()
 
-    # Exception List Handling
-    # start=time.time()
-    # city_pairs_result = optimize_flight_assignments(quantum_result[0]['Non Assignments'],True)
-    # end=time.time()
-    # print("Exception Handling time: ",end-start)
-    # print()
-    # print("Total Assignments with different City-Pairs: ", len(city_pairs_result['Assignments']))
-    # pp.pprint(city_pairs_result['Assignments'])
-    # print("Not Assigned PNRs: ")
-    # pp.pprint(city_pairs_result['Non Assignments'])
-    # print("#"*100)
-    # print()
+   #Exception List Handling
+    start=time.time()
+    city_pairs_result = optimize_flight_assignments(quantum_result[0]['Non Assignments'],dp1,True)
+    end=time.time()
+    print("Exception Handling time: ",end-start)
+    print()
+    print("Total Assignments with different City-Pairs: ", len(city_pairs_result['Assignments']))
+    pp.pprint(city_pairs_result['Assignments'])
+    print("Not Assigned PNRs: ")
+    pp.pprint(city_pairs_result['Non Assignments'])
+    print("#"*100)
+    print()
     
     # Network flow pipeline
     # start=time.time()
