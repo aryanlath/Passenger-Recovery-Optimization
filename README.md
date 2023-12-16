@@ -69,6 +69,13 @@ Each file contains widgets to adjust various parameters along with some default 
   
 ![Solution File](./assets/Solution_File_SS2.png)
 
+### Statistics.py
+- Used to display various plots which helps compare different solutions by our model.
+- **displays only after generating solution files**
+  
+![Statistics](./assets/Statistics_SS2.png)
+
+
 ### Visualisation_Animation.py
 - Used to display the new and optimal flight and class details of re-accomadated passengers.
 To run this page, open a separate terminal in the ReactAnimation/visualization folder and run the following command 
