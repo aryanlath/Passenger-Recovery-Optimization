@@ -186,15 +186,7 @@ def Cabin_to_Class_1(Assignment_list):
        while(i<len(assignment[1])):
            flow_map[(assignment[1][i],assignment[2][i],i)].append(assignment[0])
            i+=1
-    # thread_map={}
-    # thread_cnt=0
-    # #pp.pprint(m)
-    # for flight_cabin_tuple,PNR_object in flow_map.items():
-    #        thread_map[thread_cnt]=threading.Thread(target=Flow,args=(PNR_object,flight_cabin_tuple)) 
-    #        thread_map[thread_cnt].start()
-    #        thread_cnt+=1
-    # for thread in range(thread_cnt):
-    #     thread_map[thread].join()
+   
     sampler = LeapHybridCQMSampler(token=dwave_token)
     for flight_cabin_tuple,PNR_Object in flow_map.items():
         Flow(PNR_Object,flight_cabin_tuple,sampler)
@@ -202,17 +194,7 @@ def Cabin_to_Class_1(Assignment_list):
     final_assignments=[]
     for key1, value_list in assignments.items():
         assignments[key1] = sorted(value_list, key=lambda x: x[1])
-        # temp=[]
-        # for flights in assignments[key1]:
-        #     temp.append(flights[0])
-        # assignments[key1]=temp
-
-    # for key,value in assignments.items():
-    #     temp=[]
-    #     for flights in value:
-    #         temp.append(flights[0])
-    #     final_assignments.append(temp)
-    #     # pp.pprint(value)
+       
     for key1, value_list in assignments.items():
         temp=[]
         for flights in value_list:
