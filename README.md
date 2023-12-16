@@ -56,9 +56,10 @@ python -m streamlit run Landing_Page.py
 2. Change the values if needed using slider and click **Proceed** (IMPORTANT)
 3. Go to the Next page Cabins and Classes and do the same. Click **Proceed** when done.
 4. Go to the next page flight quality score and do the same. Click **Proceed**.
-5. Then come to **Landing Page** and click Run Code. You can disable and enable accordingly if u need different city pairs or not.
-6. Go to **Solution 1** , **Solution 2**, **Solution 3** and **Different City Pairs** to see the different solution files.
-7. Click on **Statistics** to view the statistics.
+5. Please note that you will have to click on **Rerun**. located at top right section everytime you click **Proceed**.
+6. Then come to **Landing Page** and click Run Code. You can disable and enable accordingly if u need different city pairs or not.
+7. Go to **Solution 1** , **Solution 2**, **Solution 3** and **Different City Pairs** to see the different solution files.
+8. Click on **Statistics** to view the statistics.
 
 ## Solution Files:
 1. `result_quantum_0.json`, `result_quantum_1.json`,`result_quantum_2.json` are the different solution files with **same** city pairs
