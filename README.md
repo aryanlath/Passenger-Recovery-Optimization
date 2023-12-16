@@ -4,12 +4,12 @@ Airlines routinely change their flight schedules for various reasons like season
 operating frequency, timings, etc. Many passengers get impacted due to these schedule
 changes and they need to be regularly re-accommodated to alternate flights. 
 
-The project uses a quantum computing-based approach to identify optimal alternate flight solutions for all impacted passengers based on certain constraints and considering various factors like PNR priority, time to reach the destination, and special passenger types without jeopardizing the flight experience for the passengers.
+The project uses a advanced and robust **hybrid Classical-Quantum Solution** to identify optimal alternate flight solutions for all impacted passengers based on certain constraints and considering various factors like PNR priority, time to reach the destination, and special passenger types without jeopardizing the flight experience for the passengers.
 
 
 ## Business Rules Engine using Streamlit
 
-We have provided a GUI, deployed using `Streamlit` to easily modify the various scores for each attribute used to calculate PNR scores, flight grades, class allocation, etc.
+We have provided a GUI, deployed using `Streamlit` to provide **flexibility** and easily modify the ruleset containing various scores for each attribute used to calculate PNR scores, flight grades, class allocation, etc.
 
 
 ## Deployment
@@ -33,6 +33,7 @@ flight_mail_password=your_email_password (if using gmail, you need to generate a
 `GMAPS_API_KEY` can be obtained from the `First Distancematrix accurate application` API of [Distance Matrix](https://distancematrix.ai/)
 
 `DWAVE_TOKEN` can be obtained from [here](https://cloud.dwavesys.com/leap/)
+
 ### Running the program
 Now, to run the script enter the following command in the terminal
 ```bash
