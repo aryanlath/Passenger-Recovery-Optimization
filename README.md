@@ -27,7 +27,7 @@ pip install -r requirements.txt
 Make a file named `.env` in the main folder, it's content should be: (It has already been made in this case though)
 ```
 GMAPS_API_KEY=m9E2S8UXfEJDX7zdwDBlHW1eoMDUOOzlCJBiEsnu6gPMEZzr6lE9FNC6SNgTjmly
-DWAVE_TOKEN=DEV-3e05ad7ac21e02030bd41cdbfbbb9ee45989364f
+DWAVE_TOKEN=Jzqsrtx2bgVrisP4S4Ek3cnsfzXzKQe87uvlRZEpGnJ7G9GuAHryvxeMOw9q9IfD
 flight_mail=rsinh1140@gmail.com
 flight_mail_password=asku teig bixk iiwh
 ```
