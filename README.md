@@ -4,7 +4,7 @@ Airlines routinely change their flight schedules for various reasons like season
 operating frequency, timings, etc. Many passengers get impacted due to these schedule
 changes and they need to be regularly re-accommodated to alternate flights. 
 
-The project uses a advanced and robust **hybrid Classical-Quantum Solution** to identify optimal alternate flight solutions for all impacted passengers based on certain constraints and considering various factors like PNR priority, time to reach the destination, and special passenger types without jeopardizing the flight experience for the passengers.
+The project uses a advanced and robust **Hybrid Classical-Quantum Solution** to identify optimal alternate flight solutions for all impacted passengers based on certain constraints and considering various factors like PNR priority, time to reach the destination, and special passenger types without jeopardizing the flight experience for the passengers.
 
 
 ## Business Rules Engine using Streamlit
