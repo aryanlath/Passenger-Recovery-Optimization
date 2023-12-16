@@ -307,7 +307,7 @@ def Landing_Page():
                 final_result = Cabin_to_Class(city_pairs_result["Assignments"])
                 print(f"City-Pair Network Flow - {i} done")
                 print()
-                print(f"Final Assignments Got for solution - {i}")
+                print(f"Final Assignments Got for city pairs- {i}")
                 json_final = AssignmentsToJSON(final_result)
                 with open(f'exception_list_{i}.json', 'w') as f:
                     f.write(json_final)

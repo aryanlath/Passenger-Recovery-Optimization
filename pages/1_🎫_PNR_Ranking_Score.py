@@ -7,7 +7,7 @@ n_cabin=2
 dataset_choice = ['vlarge_flight','vlarge_pnr']
 option = st.selectbox(
     'Select the Dataset to be used',
-    ('small(490)', 'medium(629)','big(1233)','small-test(87)','medium-test(518)','medium-large(1078)'))
+    ('small(490)', 'medium(629)','big(1233)')) #,'small-test(87)','medium-test(518)','medium-large(1078)'
 
 if option == 'small(490)':
     dataset_choice = ['final_flight','final_PNR']
@@ -15,12 +15,12 @@ elif option =='medium(629)':
     dataset_choice = ['all_acc_flight','final_PNR']
 elif option == 'big(1233)':
     dataset_choice=['vlarge_flight','vlarge_pnr']
-elif option == 'small-test(87)':
-    dataset_choice=['test_small_flight','test_small_PNR']
-elif option == 'medium-test(518)':
-    dataset_choice=['test_medium_flight','test_medium_PNR']
-elif option == 'medium-large(1078)':
-    dataset_choice=['test_large_flight','test_large_PNR']
+# elif option == 'small-test(87)':
+#     dataset_choice=['test_small_flight','test_small_PNR']
+# elif option == 'medium-test(518)':
+#     dataset_choice=['test_medium_flight','test_medium_PNR']
+# elif option == 'medium-large(1078)':
+#     dataset_choice=['test_large_flight','test_large_PNR']
 
 st.header("PNR Level Score Modifications")
 st.write("")

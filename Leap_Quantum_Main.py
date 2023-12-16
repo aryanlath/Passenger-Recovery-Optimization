@@ -69,8 +69,8 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
             old_arrival_city = constants_immutable.all_flights[PNR.inv_list[-1]].arrival_city
             proposed_arrival_cities = get_city_pairs_cost(old_arrival_city,dp1)
             for city in proposed_arrival_cities:
-                PNR_to_Feasible_Flights(g,constants_immutable.all_flights,PNR,PNR_to_FeasibleFlights_map,dp,4,city[0])
-
+                PNR_to_Feasible_Flights(g,constants_immutable.all_flights,PNR,PNR_to_FeasibleFlights_map,dp,3,city[0])
+    print("Feasible Flights done")
     for PNR in PNR_List:
         for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
             cabins_tuple = list(get_flight_cabin_mappings(FT))
@@ -86,7 +86,7 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
             for flight_index,flight in enumerate(FT): # Flight is a object
                 for cabin in cabins_tuple: # cabin is a tuple Eg:  ('FC','PC') and cabins_tuple = list of cabins
                         X_Flight_Capacity_Constraint[flight][cabin[flight_index]].append(X[(PNR, FT, cabin)] * PNR.PAX)
-
+    print("Variables Created")
     # Constraints
     # Each PNR can be assigned to only one flight class
     for PNR in PNR_List :
@@ -103,7 +103,7 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
         for cabin, cabin_list in constraint_dic.items():
             CQM.add_constraint(sum(cabin_list) <= Flight.get_capacity(cabin))
 
-
+    print("Constraints added")
     for PNR in PNR_List:
         for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
             cabins_tuple = get_flight_cabin_mappings(FT)
@@ -154,34 +154,34 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
     result = []
 
     # Feasibility check
-    if not city_pairs:
-        for idx,solution in enumerate(Final_Quantum_Solutions):
-            X_PNR_Constraint_1 = defaultdict(list)
-            X_Flight_Capacity_Constraint_1 = defaultdict(lambda: defaultdict(list))
-            for PNR in PNR_List:
-                for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
-                    cabins_tuple = list(get_flight_cabin_mappings(FT))
-                    for cabin in cabins_tuple:
-                        if solution[f'X_{test_dict[(PNR,FT,cabin)]}'] == 1.0 :
-                            X_PNR_Constraint_1[PNR].append(1)
-                        else :
-                            X_PNR_Constraint_1[PNR].append(0)
-                    for flight_index,flight in enumerate(FT): 
-                        for cabin in cabins_tuple:
-                                if solution[f'X_{test_dict[(PNR,FT,cabin)]}'] ==1.0:
-                                    X_Flight_Capacity_Constraint_1[flight][cabin[flight_index]].append(PNR.PAX)
-                                else:
-                                    X_Flight_Capacity_Constraint_1[flight][cabin[flight_index]].append(0)
+    # if not city_pairs:
+    #     for idx,solution in enumerate(Final_Quantum_Solutions):
+    #         X_PNR_Constraint_1 = defaultdict(list)
+    #         X_Flight_Capacity_Constraint_1 = defaultdict(lambda: defaultdict(list))
+    #         for PNR in PNR_List:
+    #             for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
+    #                 cabins_tuple = list(get_flight_cabin_mappings(FT))
+    #                 for cabin in cabins_tuple:
+    #                     if solution[f'X_{test_dict[(PNR,FT,cabin)]}'] == 1.0 :
+    #                         X_PNR_Constraint_1[PNR].append(1)
+    #                     else :
+    #                         X_PNR_Constraint_1[PNR].append(0)
+    #                 for flight_index,flight in enumerate(FT): 
+    #                     for cabin in cabins_tuple:
+    #                             if solution[f'X_{test_dict[(PNR,FT,cabin)]}'] ==1.0:
+    #                                 X_Flight_Capacity_Constraint_1[flight][cabin[flight_index]].append(PNR.PAX)
+    #                             else:
+    #                                 X_Flight_Capacity_Constraint_1[flight][cabin[flight_index]].append(0)
         
-            for PNR in PNR_List :
-                if(len(X_PNR_Constraint_1[PNR])==0):
-                    continue
-                if sum(X_PNR_Constraint_1[PNR]) > 1 :
-                    print(f"{idx} PNR Feasibility violated",PNR,sum(X_PNR_Constraint_1[PNR]),1)
-            for Flight, constraint_dic in X_Flight_Capacity_Constraint_1.items():
-                for cabin, cabin_list in constraint_dic.items():
-                    if sum(cabin_list) > Flight.get_capacity(cabin):
-                        print(f"{idx} Feasibility violated",sum(cabin_list),Flight.get_capacity(cabin))
+    #         for PNR in PNR_List :
+    #             if(len(X_PNR_Constraint_1[PNR])==0):
+    #                 continue
+    #             if sum(X_PNR_Constraint_1[PNR]) > 1 :
+    #                 print(f"{idx} PNR Feasibility violated",PNR,sum(X_PNR_Constraint_1[PNR]),1)
+    #         for Flight, constraint_dic in X_Flight_Capacity_Constraint_1.items():
+    #             for cabin, cabin_list in constraint_dic.items():
+    #                 if sum(cabin_list) > Flight.get_capacity(cabin):
+    #                     print(f"{idx} Feasibility violated",sum(cabin_list),Flight.get_capacity(cabin))
 
                     
     # set to keep track of assigned PNRs

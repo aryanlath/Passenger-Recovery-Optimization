@@ -455,14 +455,14 @@ def count_one_multi(json_final):
                 one_one_temp+=1
             else:
                 one_multi_temp+=1
-                print("one-multi",pnr_num)
+                #print("one-multi",pnr_num)
         else:
             if len(value['Proposed'])==1:
                 multi_one_temp+=1
-                print("Multi-1",pnr_num)
+                #print("Multi-1",pnr_num)
             else:
                 multi_multi_temp+=1
-                print("Multi-multi",pnr_num)
+                #print("Multi-multi",pnr_num)
     
     return one_one_temp, one_multi_temp, multi_one_temp, multi_multi_temp
 

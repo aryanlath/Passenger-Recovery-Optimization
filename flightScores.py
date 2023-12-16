@@ -1,7 +1,7 @@
 arrDelay6h=70
 arrDelay12h=50
 arrDelay24h=40
-arrDelay48h=25
+arrDelay48h=30
 STD6h=70
 STD12h=50
 STD24h=40
