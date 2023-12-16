@@ -407,7 +407,7 @@ def Landing_Page():
 
     
     #Title
-    st.title("🧳 Passenger Reaccomodation and Business Rule Engine")
+    st.title("🧳 Passenger Reaccommodation and Business Rule Engine")
     st.write("This GUI allows you to modify scores for different business rules and customize your solution. Please proceed to the next three pages to do so.")
     st.write("Click the below button after you have made all required modifications")
     st.write()
