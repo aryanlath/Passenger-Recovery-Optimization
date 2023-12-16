@@ -157,8 +157,8 @@ with col3:
         f.write("vlarge_flight = 'Dataset/Experimental/1233_flight.csv'\n")
         f.write("vlarge_pnr = 'Dataset/Final/Final_PNR.csv'\n")
         f.write("# Change the path of test_flight_data_file and test_PNR_data_file according to the size of data_file\n")
-        f.write("test_flight_data_file = final_flight\n")
-        f.write("test_PNR_data_file = final_PNR\n")
+        f.write("test_flight_data_file = vlarge_flight\n")
+        f.write("test_PNR_data_file = vlarge_pnr\n")
         
 
         #writing number of cabins
