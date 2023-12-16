@@ -43,7 +43,10 @@ streamlit run Landing_page.py
 
 ## Working
 
-Each file contains widgets to adjust various parameters along with some default values. On pressing the proceed button at the bottom of each page, all the values chosen are written into a python file as variables which can be imported for use in other programs.
+Each file contains widgets to adjust various parameters along with some default values.There is also a button indicating wheather we want to allow flights to adjacent city pairs in main page. On pressing the proceed button at the bottom of each page, all the values chosen are written into a python file as variables which can be imported for use in other programs.
+
+Main Page: ![main_page](https://github.com/aryanlath/Passenger-Recovery-Optimization/assets/95119050/7f08041f-a996-4941-b575-561369f394dd)
+
 
  ### PNR_Score.py
 - Used to modify scores for PNR priority calculation parameters like PAX, loyalty, classes, MCT, MAXCT, ETD, etc
@@ -66,6 +69,8 @@ Each file contains widgets to adjust various parameters along with some default 
 ### Solution_1.py
 - Used to display PNR wise re-accomodation solution 
 - **displays only after generating solution files**
+
+Following this, we have 2 more pages corresponding to the other two solutions.
   
 ![Solution File](./assets/Solution_File_SS2.png)
 
@@ -76,16 +81,6 @@ Each file contains widgets to adjust various parameters along with some default 
 ![Statistics](./assets/Statistics_SS2.png)
 
 
-### Visualisation_Animation.py
-- Used to display the new and optimal flight and class details of re-accomadated passengers.
-To run this page, open a separate terminal in the ReactAnimation/visualization folder and run the following command 
-```
-cd ReactAnimation/visualization
-npm install
-npm start
-```
-
-![Visualisation Animation](./assets/Visualization_GIF.gif)
 
 ## Glossary
 
