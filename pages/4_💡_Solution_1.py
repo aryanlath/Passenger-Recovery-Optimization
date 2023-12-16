@@ -32,7 +32,7 @@ def display_data():
 
         # Streamlit app
         st.title(f'Solution File - 1')
-
+        st.write("This displays the first quantum solution generated")
         # PNR selection
         selected_pnr = st.selectbox('Select a PNR:', list(organized_data.keys()))
 

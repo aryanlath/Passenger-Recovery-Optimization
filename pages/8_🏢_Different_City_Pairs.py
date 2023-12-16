@@ -32,6 +32,7 @@ def display_data():
 
         # Streamlit app
         st.title(f'Alternate city pairs accomodation')
+        st.write("This displays the accomodated PNR details with different city pairs")
 
         # PNR selection
         selected_pnr = st.selectbox('Select a PNR:', list(organized_data.keys()))
