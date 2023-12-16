@@ -192,12 +192,12 @@ def quantum_optimize_flight_assignments_bqm(PNR_List,QSol_count=3,city_pairs = F
             if(len(X_PNR_Constraint_1[PNR])==0):
                 continue
             if sum(X_PNR_Constraint_1[PNR]) > 1 :
-                print("std:: BadAlloc \n\n\n\n core dumped segmentation fault oc dhanesh\n\n\n")
+                print("Wrong")
                 exit()
         for Flight, constraint_dic in X_Flight_Capacity_Constraint_1.items():
             for cabin, cabin_list in constraint_dic.items():
                 if sum(cabin_list) > Flight.get_capacity(cabin):
-                    print("std:: BadAlloc \n\n\n\n core dumped segmentation fault oc sreehari\n\n\n")
+                    print("Wrong")
                     exit()
     start_cost_cal = time.time()
     Objective_Value_List =[0]*QSol_count
