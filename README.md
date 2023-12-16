@@ -45,7 +45,9 @@ streamlit run Landing_page.py
 
 Each file contains widgets to adjust various parameters along with some default values.There is also a button indicating wheather we want to allow flights to adjacent city pairs in main page. On pressing the proceed button at the bottom of each page, all the values chosen are written into a python file as variables which can be imported for use in other programs.
 
-Main Page: ![main_page](https://github.com/aryanlath/Passenger-Recovery-Optimization/assets/95119050/7f08041f-a996-4941-b575-561369f394dd)
+### Landing_Page.py
+- Used to generate different solution files and send email to the passengers.
+![landing_page](./assets/Landing_Page_SS2.png)
 
 
  ### PNR_Score.py
