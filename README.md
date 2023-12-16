@@ -111,6 +111,14 @@ Following this, we have 2 more pages corresponding to the other two solutions.
 ![Statistics](./assets/Statistics_SS2.png)
 
 
+## Solution JSON Structure
+
+- Each entry in the solution JSON  is indexed based on the PNR number , each PNR has 4 values 
+1. Original list of flights
+2. Proposed list of flights from out solution
+3. List of indexes of flights cancelled in the original itinerary
+4. Email ID of PNR
+
 
 
 
