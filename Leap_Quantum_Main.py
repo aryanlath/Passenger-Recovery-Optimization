@@ -53,8 +53,6 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
     # X_ijk = 1 if the ith PNR is assigned to the jth flight's kth class
     # Variables
     X = {}
-    X_PNR_Constraint_1 = defaultdict(list)
-    X_Flight_Capacity_Constraint_1 = defaultdict(lambda: defaultdict(list))
     variable_cnt=0
     PNR_to_FeasibleFlights_map={}
     my_dict = {}
@@ -165,9 +163,9 @@ def quantum_optimize_flight_assignments(PNR_List,QSol_count=3,city_pairs = False
     result = []
 
     if not city_pairs:
-        X_PNR_Constraint_1.clear()
-        X_Flight_Capacity_Constraint_1.clear()
         for idx,solution in enumerate(Final_Quantum_Solutions):
+            X_PNR_Constraint_1 = defaultdict(list)
+            X_Flight_Capacity_Constraint_1 = defaultdict(lambda: defaultdict(list))
             for PNR in PNR_List:
                 for FT in PNR_to_FeasibleFlights_map[PNR.pnr_number]:
                     cabins_tuple = list(get_flight_cabin_mappings(FT))
