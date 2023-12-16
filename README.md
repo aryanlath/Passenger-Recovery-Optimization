@@ -15,6 +15,7 @@ We have provided a GUI, deployed using `Streamlit` to provide **flexibility** an
 ## Deployment
 
 ### Installing the dependencies
+**Make sure that you have `Python 3.10` installed in your system**
 
 Run the following command in the terminal
 ```
@@ -23,12 +24,12 @@ pip install -r requirements.txt
 
 ### Setting up the environment file
 
-Make a file named `.env` in the main folder, it's content should be:
+Make a file named `.env` in the main folder, it's content should be: (It has already been made in this case though)
 ```
-GMAPS_API_KEY=your_actual_api_key
-DWAVE_TOKEN=dwave_token
-flight_mail=your_email_id
-flight_mail_password=your_email_password (if using gmail, you need to generate an app password)
+GMAPS_API_KEY=m9E2S8UXfEJDX7zdwDBlHW1eoMDUOOzlCJBiEsnu6gPMEZzr6lE9FNC6SNgTjmly
+DWAVE_TOKEN=DEV-3e05ad7ac21e02030bd41cdbfbbb9ee45989364f
+flight_mail=rsinh1140@gmail.com
+flight_mail_password=asku teig bixk iiwh
 ```
 `GMAPS_API_KEY` can be obtained from the `First Distancematrix accurate application` API of [Distance Matrix](https://distancematrix.ai/)
 
@@ -37,7 +38,7 @@ flight_mail_password=your_email_password (if using gmail, you need to generate a
 ### Running the program
 Now, to run the script enter the following command in the terminal
 ```bash
-streamlit run Landing_page.py
+streamlit run Landing_Page.py
 ```
 
 
