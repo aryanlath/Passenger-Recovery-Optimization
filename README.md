@@ -36,7 +36,7 @@ flight_mail_password=asku teig bixk iiwh
 `DWAVE_TOKEN` can be obtained from [here](https://cloud.dwavesys.com/leap/)
 
 ### Running the program
-Now, to run the script enter the following command in the terminal
+Now, to run the script enter the following command in the terminal inside the folder where this folder is downloaded
 ```bash
 streamlit run Landing_Page.py
 ```
@@ -54,7 +54,8 @@ streamlit run Landing_Page.py
 1. `result_quantum_0.json`, `result_quantum_1.json`,`result_quantum_2.json` are the different solution files with **same** city pairs
 2.  `exception_list_0.json`, `exception_list_1.json`,`exception_list_2.json` are the different solution files with **different** city pairs
 3.  `non_assignments_0.txt`, `non_assignments_1.txt`,`non_assignments_2.txt` are the 3 non assigned list of PNRs corresponding to the 3 solutions.
-*Note: These have been provided with the code for example. However, on running, they are generated according to the dataset used.*
+
+*Note: These have been provided with the code for example inside `Example-soln-files`. However, on running, they are generated according to the dataset used in the parent folder.*
 
 ## Working
 
