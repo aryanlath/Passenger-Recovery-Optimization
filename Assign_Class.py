@@ -151,7 +151,6 @@ def Cabin_to_Class(Assignment_list):
            i+=1
     thread_map={}
     thread_cnt=0
-    #pp.pprint(m)
     for flight_cabin_tuple,PNR_object in flow_map.items():
            thread_map[thread_cnt]=threading.Thread(target=Flow,args=(PNR_object,flight_cabin_tuple)) 
            thread_map[thread_cnt].start()
@@ -161,17 +160,7 @@ def Cabin_to_Class(Assignment_list):
     final_assignments=[]
     for key1, value_list in assignments.items():
         assignments[key1] = sorted(value_list, key=lambda x: x[1])
-        # temp=[]
-        # for flights in assignments[key1]:
-        #     temp.append(flights[0])
-        # assignments[key1]=temp
-
-    # for key,value in assignments.items():
-    #     temp=[]
-    #     for flights in value:
-    #         temp.append(flights[0])
-    #     final_assignments.append(temp)
-    #     # pp.pprint(value)
+        
     for key1, value_list in assignments.items():
         temp=[]
         for flights in value_list:
