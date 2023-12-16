@@ -85,7 +85,7 @@ npm install
 npm start
 ```
 
-![Visualisation Animation](./assets/ResultVisualisation_SS.png)
+![Visualisation Animation](./assets/Visualization_GIF.gif)
 
 ## Glossary
 
