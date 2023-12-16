@@ -22,7 +22,7 @@ def display_data():
     # Parse the data
     with open('result_quantum_2.json', 'r') as file:
         data = json.load(file)
-    if len(data)==0:
+    if len(data)==0 or len(all_flights)==0:
         st.info('Run the code to get the Solution!', icon="🚨")
 
     else:

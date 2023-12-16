@@ -8,6 +8,7 @@ non_assignments*.csv
 out*.txt
 res*.json
 non_assignments*.json
+non_assignments*.txt
 stats.py
 exception*.json
 ReactAnimation/visualization/node_modules

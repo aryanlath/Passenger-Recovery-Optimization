@@ -4,6 +4,24 @@ import streamlit as st
 
 n_cabin=2
 
+dataset_choice = ['vlarge_flight','vlarge_pnr']
+option = st.selectbox(
+    'Select the Dataset to be used',
+    ('small(490)', 'medium(629)','big(1233)','small-test(87)','medium-test(518)','medium-large(1078)'))
+
+if option == 'small(490)':
+    dataset_choice = ['final_flight','final_PNR']
+elif option =='medium(629)':
+    dataset_choice = ['all_acc_flight','final_PNR']
+elif option == 'big(1233)':
+    dataset_choice=['vlarge_flight','vlarge_pnr']
+elif option == 'small-test(87)':
+    dataset_choice=['test_small_flight','test_small_PNR']
+elif option == 'medium-test(518)':
+    dataset_choice=['test_medium_flight','test_medium_PNR']
+elif option == 'medium-large(1078)':
+    dataset_choice=['test_large_flight','test_large_PNR']
+
 st.header("PNR Level Score Modifications")
 st.write("")
 
@@ -156,9 +174,10 @@ with col3:
         f.write("final_PNR = 'Dataset/Final/Final_PNR.csv'\n")
         f.write("vlarge_flight = 'Dataset/Experimental/1233_flight.csv'\n")
         f.write("vlarge_pnr = 'Dataset/Final/Final_PNR.csv'\n")
+        f.write("all_acc_flight = 'Dataset/Experimental/629_flight.csv'\n")
         f.write("# Change the path of test_flight_data_file and test_PNR_data_file according to the size of data_file\n")
-        f.write("test_flight_data_file = vlarge_flight\n")
-        f.write("test_PNR_data_file = vlarge_pnr\n")
+        f.write(f"test_flight_data_file = {dataset_choice[0]}\n")
+        f.write(f"test_PNR_data_file = {dataset_choice[1]}\n")
         
 
         #writing number of cabins

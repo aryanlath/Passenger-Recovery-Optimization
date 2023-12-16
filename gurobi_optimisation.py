@@ -55,7 +55,6 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
     PNR_to_FeasibleFlights_map={}
     dp={}
     dp1={}
-    start = time.time()
     if not city_pairs:
         for PNR in PNR_List:
             PNR_to_Feasible_Flights(g, constants_immutable.all_flights, PNR, PNR_to_FeasibleFlights_map, dp)
@@ -65,15 +64,10 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
             old_arrival_city = constants_immutable.all_flights[PNR.inv_list[-1]].arrival_city
             proposed_arrival_cities = get_city_pairs_cost(old_arrival_city,dp1)
             for city in proposed_arrival_cities:
-                start=time.time()
-                PNR_to_Feasible_Flights(g,constants_immutable.all_flights,PNR,PNR_to_FeasibleFlights_map,dp,3,city[0])
-                end=time.time()
+                PNR_to_Feasible_Flights(g,constants_immutable.all_flights,PNR,PNR_to_FeasibleFlights_map,dp,4,city[0])
 
-    end = time.time()
-    print("Feasible Flights Time: ", end-start)
 
     result = {'Assignments': [],'Non Assignments':[]}
-    start = time.time()
     for PNR in PNR_List:
         for FT in PNR_to_FeasibleFlights_map.get(PNR.pnr_number,[]):
             cabins_tuple = list(get_flight_cabin_mappings(FT))
@@ -87,10 +81,7 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
                 for cabin in cabins_tuple: # cabin is a tuple Eg:  ('FC','PC') and cabins_tuple = list of cabins
                         X_Flight_Capacity_Constraint[flight][cabin[flight_index]].append(X[(PNR, FT, cabin)] * PNR.PAX)
 
-    end = time.time()
-    print("Variables creation Time: ", end-start)
 
-    start = time.time()
     # Constraints
     # Each PNR can be assigned to only one flight class
     for PNR in PNR_List :
@@ -104,9 +95,6 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
         for cabin, cabin_list in constraint_dic.items():
             model.addConstr(sum(cabin_list) <= Flight.get_capacity(cabin))
 
-    end = time.time()
-    print("Adding Constraints time: ", end-start)
-
     for PNR in PNR_List:
         for FT in PNR_to_FeasibleFlights_map.get(PNR.pnr_number,[]):
             cabins_tuple = get_flight_cabin_mappings(FT)
@@ -117,10 +105,10 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
 
     # Set the objective to maximize
     model.setObjective(objective,GRB.MAXIMIZE)
-    start = time.time()
     model.optimize()
     from timings import timings_dict
     timings_dict["Classical_Time"] = model.Runtime*1000
+    print("Classical Time (ms):",model.Runtime*1000)
     # Checking if a solution exists
     if model.status == GRB.OPTIMAL:
         # Extract the solution and its cost
@@ -138,8 +126,6 @@ def optimize_flight_assignments(PNR_List,city_pairs=False):
                         Assigned = True
             if not Assigned:
                 result['Non Assignments'].append(PNR)
-        end = time.time()
-        print("model.optimise() Time: ",end-start)
         return result
     else:
         return "The problem does not have an optimal solution."

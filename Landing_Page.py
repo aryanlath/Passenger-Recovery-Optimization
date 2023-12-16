@@ -238,11 +238,8 @@ def Landing_Page():
         timings_dict["Impacted_PNR"] = total_impacted
 
     # Quantum Pipeline
-        start = time.time()
         quantum_result =quantum_optimize_flight_assignments(Impacted_PNR,QSol_count=3)
-        end = time.time()
-        print("Total Quantum Time:", end-start)
-        print()
+        print("Quantum Part done")
         print("Total Reassigned: ",len(quantum_result[0]['Assignments']))
         print()
 
@@ -253,7 +250,6 @@ def Landing_Page():
         
         # Network flow pipeline
         for i in range(len(quantum_result)):
-            start=time.time()
             final_result = Cabin_to_Class(quantum_result[i]["Assignments"])
 
             # Statistics
@@ -273,9 +269,8 @@ def Landing_Page():
                 f.write(json_final)
 
             hybrid_results[i].append(f'result_quantum_{i}.json')
-            end=time.time()
 
-            print(f"Network Flow time - {i} :",end-start)
+            print(f"Network Flow - {i} done")
             print()
 
     
@@ -295,11 +290,8 @@ def Landing_Page():
         # City Pairs Handling
         if constants_immutable.city_pairs_reqd:
             for i in range(len(quantum_result)):
-                start=time.time()
                 city_pairs_result = optimize_flight_assignments(quantum_result[i]['Non Assignments'],True)
-                end=time.time()
-                print(f"Exception Handling time - {i}: ",end-start)
-                print()
+                print(f"City Pairs- {i} done")
                 print("Total Assignments with different City-Pairs: ", len(city_pairs_result['Assignments']))
 
                 ##Statistics
@@ -311,12 +303,11 @@ def Landing_Page():
                     pnr_score_assigned[i].append(pnr_flight_tuple[0].get_pnr_score())
                 
 
-                start=time.time()
+            
                 final_result = Cabin_to_Class(city_pairs_result["Assignments"])
-                end=time.time()
-                print("Network Flow time :",end-start)
+                print(f"City-Pair Network Flow - {i} done")
                 print()
-                print("Final Assignments")
+                print(f"Final Assignments Got for solution - {i}")
                 json_final = AssignmentsToJSON(final_result)
                 with open(f'exception_list_{i}.json', 'w') as f:
                     f.write(json_final)
@@ -387,20 +378,17 @@ def Landing_Page():
             
                 # Convert the set to a newline-separated string
                 final_non_assignments_str = "\n".join(final_non_assignments)
-                with open(f'non_assignments_{i}.json', 'w') as f:
+                with open(f'non_assignments_{i}.txt', 'w') as f:
                     f.write(final_non_assignments_str)
-                hybrid_results[i].append(f'non_assignments_{i}.json')         
+                hybrid_results[i].append(f'non_assignments_{i}.txt')         
 
         timings_dict["Name"]=test_PNR_data_file
 
-
-        #To print statistics on landing page
-        csv_file_path = "timings_data.csv"
-
-        # Check if the CSV file exists and write data
-        file_exists = os.path.exists(csv_file_path)
-
         # Uncomment to print the timings
+        # #To print statistics on landing page
+        # csv_file_path = "timings_data.csv"
+        # # Check if the CSV file exists and write data
+        # file_exists = os.path.exists(csv_file_path)
         # with open(csv_file_path, mode='a', newline='') as csv_file:
         #     fieldnames = timings_dict.keys()
         #     writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -417,7 +405,6 @@ def Landing_Page():
         #To write current statistics in a file 
         writeStatistics()
 
-    ## Streamlit Code
     
     #Title
     st.title("🧳 Passenger Reaccomodation and Business Rule Engine")
@@ -447,8 +434,9 @@ def Landing_Page():
             json.dump({},file)
         ## Calling the pipeline
         Main_function()
+
     ## Mailing option
-    st.write("Click the below button to send E-mails to all affected PNRs to notify them about their re-accomodation")
+    st.write("Click the below button to send E-mails the impacted PNRs to notify them about their re-accomodation")
     _,_,col3,_,_=st.columns(5)
     with col3:
         if st.button("Send Email"):
