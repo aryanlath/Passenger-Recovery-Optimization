@@ -82,7 +82,7 @@ Each file contains widgets to adjust various parameters along with some default 
 - Used to modify scores for PNR priority calculation parameters like PAX, loyalty, classes, MCT, MAXCT, ETD, etc
 - **writes to constants.py**
   
-![PNR Scores](./assets/PNR_Score_SS2.png)
+![PNR Scores](./assets/PNR_Ranking_SS2.png)
 
 ### Cabin_And_Classes.py
 - Used to allow/disallow class changes during flight allocation and upgrade/downgrade rules
