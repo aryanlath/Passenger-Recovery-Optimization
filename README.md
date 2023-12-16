@@ -47,6 +47,8 @@ Each file contains widgets to adjust various parameters along with some default 
 
 ### Landing_Page.py
 - Used to generate different solution files and send email to the passengers.
+- **Option to add different city pair solution**
+  
 ![landing_page](./assets/Landing_Page_SS2.png)
 
 
