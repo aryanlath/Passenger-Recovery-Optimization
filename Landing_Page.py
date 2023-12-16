@@ -1,4 +1,4 @@
-##MAIN FUNCTION CODE
+##LANDING PAGE
 
 import streamlit as st
 from feasible_flights import *
@@ -40,7 +40,7 @@ hybrid_results = []
 def Landing_Page():
 
     """
-    Function that displays the landing Page and carry out all the main operations
+    Function that displays the landing Page and carry out all the operations in the pipeline
     """
 
 
@@ -55,6 +55,7 @@ def Landing_Page():
         write_list_to_file("diff_city_count",diff_city_count,f)
         write_list_to_file("mean_arrival_delay",mean_arrival_delay,f)
         f.write("pnr_score_assigned = [")
+
         for solution in range(len(pnr_score_assigned)):
             list=pnr_score_assigned[solution]
             if solution!=len(pnr_score_assigned)-1:
@@ -75,9 +76,12 @@ def Landing_Page():
                         f.write(str(list[i]))
                 f.write("]")
                 f.write("]\n")
+
         f.write("pnr_score_non_assigned = [")
+
         for solution in range(len(pnr_score_non_assigned)):
             list=pnr_score_non_assigned[solution]
+
             if solution!=len(pnr_score_non_assigned)-1:
                 f.write("[")
                 for i in range(len(list)):
@@ -87,6 +91,7 @@ def Landing_Page():
                         f.write(str(list[i]))
                 f.write("]")
                 f.write(",")
+
             else:
                 f.write("[")
                 for i in range(len(list)):
@@ -95,22 +100,24 @@ def Landing_Page():
                     else:
                         f.write(str(list[i]))
                 f.write("]")
-                f.write("]\n")                                
+                f.write("]\n")        
+
         f.close()
 
     def display_results(hybrid_results):
         """
-        Display results in streamlit
+        Display results in streamlit interface
         """
 
         if (len(hybrid_results)==2):
+
             col1,col2=st.columns(2)
+
             with col1:
                 #first solution
                 st.write("Solution 1")
                 st.write("Total impacted PNRs are :",total_impacted)
                 st.write("Reaccommodated PNRs :",total_assigned[0])
-                # st.write("Unaccomadated PNRs :",total_non_assigned[0])
                 st.write("Total impacted PAX are :",total_impacted_pax)   
                 st.write("Reaccommodated PAX :",total_assigned_pax[0])     
                 st.write("PNRs Upgraded :",upgrade_count[0])
@@ -125,10 +132,8 @@ def Landing_Page():
                 st.write("Solution 2")
                 st.write("Total impacted PNRs are :",total_impacted)
                 st.write("Reaccommodated PNRs :",total_assigned[1])
-                st.write("Total impacted PAX are :",total_impacted_pax)
-                
+                st.write("Total impacted PAX are :",total_impacted_pax)                
                 st.write("Reaccommodated PAX :",total_assigned_pax[1])
-                # st.write("Unaccomadated PNRs :",total_non_assigned[1])
                 st.write("PNRs Upgraded :",upgrade_count[1])
                 st.write("PNRs Downgraded :",downgrade_count[1])
                 st.write("PNRs with city pairs same :",same_city_count[1])
@@ -137,16 +142,16 @@ def Landing_Page():
                 st.write("Multi-Multi(%) :",multi_multi[1])
                 
         else:
+
             col1,col2,col3=st.columns(3)
+
             with col1:
                 #first solution
                 st.write("Solution 1")
                 st.write("Total impacted PNRs are :",total_impacted)
                 st.write("Reaccommodated PNRs :",total_assigned[0])
                 st.write("Total impacted PAX are :",total_impacted_pax)
-                
                 st.write("Reaccommodated PAX :",total_assigned_pax[0])
-                # st.write("Unaccomadated PNRs :",total_non_assigned[0])
                 st.write("PNRs Upgraded :",upgrade_count[0])
                 st.write("PNRs Downgraded :",downgrade_count[0])
                 st.write("PNRs with city pairs same :",same_city_count[0])
@@ -164,8 +169,6 @@ def Landing_Page():
                 st.write("Reaccommodated PNRs :",total_assigned[1])
                 st.write("Total impacted PAX are :",total_impacted_pax)
                 st.write("Reaccommodated PAX :",total_assigned_pax[1])
-                
-                # st.write("Unaccomadated PNRs :",total_non_assigned[0])
                 st.write("PNRs Upgraded :",upgrade_count[1])
                 st.write("PNRs Downgraded :",downgrade_count[1])
                 st.write("PNRs with city pairs same :",same_city_count[1])
@@ -197,8 +200,9 @@ def Landing_Page():
                   
     def Main_function():
         """
-        Main Function that would run the code
+        Contains the pipeline
         """
+        ## Initiating global access to statistic variables
         global total_impacted
         global total_impacted_pax
         global total_assigned
@@ -217,9 +221,10 @@ def Landing_Page():
         global pnr_score_non_assigned
         global hybrid_results
         
-        # Dont call this anywhere else
+        # Initializing immutable objects
         constants_immutable.all_flights, constants_immutable.pnr_objects, constants_immutable.pnr_flight_mapping, constants_immutable.pnr_to_s2 = Get_All_Maps()
 
+        ## Normalizing variables
         init_normalize_factors()
         
         # Identify the impacted PNRs
@@ -229,22 +234,8 @@ def Landing_Page():
 
         print("Total impacted Passengers: ",len(Impacted_PNR))
         total_impacted = len(Impacted_PNR)
-        # pp.pprint(Impacted_PNR)
-        timings_dict["Impacted_PNR"] = total_impacted
-        # #Classical part
-        # start = time.time()
-        # result = optimize_flight_assignments(Impacted_PNR,False)
-        # end = time.time()
-        # print("Total Classical Time:" , end-start)
-        # print()
-        # # print("Total Reassigned: ",len(result['Assignments']))
-        # #print("Classical Optimal Cost",result['Total Cost'])
-        # # pp.pprint(result['Assignments'])
-        # print("Not Assigned PNRs: ")
-        # #pp.pprint(result['Non Assignments'])
-        # #print("#"*100)
-        # print()
 
+        timings_dict["Impacted_PNR"] = total_impacted
 
     # Quantum Pipeline
         start = time.time()
@@ -288,12 +279,12 @@ def Landing_Page():
             print()
 
     
-            # Delays
+            ## Delays
             temp1, temp2, temp3 = up_dn_arr_delay(json_final)
             upgrade_count.append(temp1)
             downgrade_count.append(temp2)
             mean_arrival_delay.append(temp3)
-
+            ## One-Multi calculation
             temp1, temp2, temp3, temp4 = count_one_multi(json_final)
             one_one.append(temp1)
             one_multi.append(temp2)
@@ -311,7 +302,7 @@ def Landing_Page():
                 print()
                 print("Total Assignments with different City-Pairs: ", len(city_pairs_result['Assignments']))
 
-                ##Stats
+                ##Statistics
                 total_assigned[i]+=len(city_pairs_result['Assignments'])
                 total_assigned_pax[i] += GetTotalPAX(city_pairs_result["Assignments"], 1)
                 total_non_assigned[i]-=len(city_pairs_result['Assignments'])
@@ -332,7 +323,7 @@ def Landing_Page():
                 hybrid_results[i].append(f'exception_list_{i}.json')
 
                 
-                ##Stats
+                ##Statistics
 
                 temp1, temp2, temp3 = up_dn_arr_delay(json_final)
                 upgrade_count[i]+=temp1
@@ -349,10 +340,7 @@ def Landing_Page():
                 multi_one[i]+=temp3
                 multi_one[i]=(multi_one[i]*100)/total_assigned[i]
                 multi_multi[i]+=temp4
-                multi_multi[i]=(multi_multi[i]*100)/total_assigned[i]
-
-                ##Stats
-                
+                multi_multi[i]=(multi_multi[i]*100)/total_assigned[i]         
                 
                 final_non_assignments = set()  # Use a set to store unique pnr_number values
 
@@ -429,7 +417,7 @@ def Landing_Page():
         #To write current statistics in a file 
         writeStatistics()
 
-
+    ## Streamlit Code
     
     #Title
     st.title("🧳 Passenger Reaccomodation and Business Rule Engine")
@@ -457,8 +445,9 @@ def Landing_Page():
 
         with open('exception_list_2.json', 'w') as file:
             json.dump({},file)
-
+        ## Calling the pipeline
         Main_function()
+    ## Mailing option
     st.write("Click the below button to send E-mails to all affected PNRs to notify them about their re-accomodation")
     _,_,col3,_,_=st.columns(5)
     with col3:

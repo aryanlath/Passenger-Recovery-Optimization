@@ -22,8 +22,8 @@ fig.add_trace(go.Pie(labels=['PNRs with same city pairs', 'PNRs with different c
 
 # Set the background color to black
 fig.update_layout(
-    paper_bgcolor='black',  # background color of the entire plot
-    plot_bgcolor='black',   # background color of the plot area
+    # paper_bgcolor='white',  # background color of the entire plot
+    # plot_bgcolor='white',   # background color of the plot area
     font=dict(color='white')  # text color
 )
 
@@ -54,8 +54,8 @@ fig.add_trace(go.Pie(labels=['Class Upgrade', 'Class Downgrade', 'Same Class'], 
 
 # Set the background color to black
 fig.update_layout(
-    paper_bgcolor='black',  # background color of the entire plot
-    plot_bgcolor='black',   # background color of the plot area
+    # paper_bgcolor='white',  # background color of the entire plot
+    # plot_bgcolor='white',   # background color of the plot area
     font=dict(color='white')  # text color
 )
 
