@@ -40,6 +40,16 @@ Now, to run the script enter the following command in the terminal inside the fo
 ```bash
 streamlit run Landing_Page.py
 ```
+(if it doesn't work then):
+
+```bash
+python3 -m streamlit run Landing_Page.py
+```
+(if it doesn't work then):
+
+```bash
+python -m streamlit run Landing_Page.py
+```
 
 ## Streamlit Instructions:
 1. Go to PNR Ranking Score tab in the Streamlit webapp and choose the dataset u want. The number in bracket indicates the number of Impacted PNRs.
