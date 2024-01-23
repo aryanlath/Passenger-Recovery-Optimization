@@ -26,10 +26,10 @@ pip install -r requirements.txt
 
 Make a file named `.env` in the main folder, it's content should be: (It has already been made in this case though)
 ```
-GMAPS_API_KEY=m9E2S8UXfEJDX7zdwDBlHW1eoMDUOOzlCJBiEsnu6gPMEZzr6lE9FNC6SNgTjmly
-DWAVE_TOKEN=DEV-0aff7f35434da018f5f5a6814f1b196922d90b4d
-flight_mail=rsinh1140@gmail.com
-flight_mail_password=asku teig bixk iiwh
+GMAPS_API_KEY=your_key
+DWAVE_TOKEN=your_token
+flight_mail=your_mail
+flight_mail_password=your_password
 ```
 `GMAPS_API_KEY` can be obtained from the `First Distancematrix accurate application` API of [Distance Matrix](https://distancematrix.ai/)
 
